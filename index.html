@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>教學駕駛艙</title>
+  <link rel="stylesheet" href="assets/cockpit.css">
+</head>
+<body>
+  <script src="assets/config.js"></script>
+  <script src="assets/vendor/qrcode.js"></script>
+  <script src="assets/cockpit.js"></script>
+  <script>
+    // 新增單元：在 units 陣列加一筆，href 指向 units/<資料夾>/index.html
+    Cockpit.renderHome({
+      title: '教學駕駛艙',
+      subtitle: '新化國小・互動教學平台',
+      units: [
+        {
+          title: '資安偵探學院',
+          summary: '資訊安全與網路安全：個資、密碼、詐騙訊息、釣魚網址、AI 假聲音、AI 聊天、肖像權、網路霸凌，11 個案件闖關。',
+          href: 'units/g5-cyber-safety/index.html',
+          badges: ['五年級', '資優情意', '資訊安全']
+        },
+        {
+          title: '單元範本（示範）',
+          summary: '展示駕駛艙所有區塊：翻頁簡報、動手操作、想一想、資訊圖表、教師提示。',
+          href: 'templates/unit/index.html',
+          badges: ['範本', '不限科目']
+        }
+      ]
+    });
+  </script>
+</body>
+</html>

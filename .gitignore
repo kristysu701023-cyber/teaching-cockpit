@@ -1,0 +1,16 @@
+desktop.ini
+*.tmp
+~$*
+.env
+*.key
+credentials.*
+.clasprc.json
+__pycache__/
+.venv/
+待刪除/
+# 大型素材留在本機，不進 repo
+*.mp4
+*.mov
+*.pdf
+*.png
+*.pptx

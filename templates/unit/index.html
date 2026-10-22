@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>單元範本｜教學駕駛艙</title>
+  <link rel="stylesheet" href="../../assets/cockpit.css">
+</head>
+<body>
+  <script src="../../assets/config.js"></script>
+  <script src="../../assets/vendor/qrcode.js"></script>
+  <script src="../../assets/cockpit.js"></script>
+  <script>
+    /*
+     * 做新單元：把整個 templates/unit 資料夾複製到 units/<英文資料夾名>/，
+     * 圖片放進該資料夾的 assets/（1920×1080 JPG），再改下面的 UNIT 內容即可。
+     * 影片上傳 YouTube（不公開），只填影片 ID；影片、PDF、原始 PNG 不放進 repo。
+     */
+    Cockpit.renderUnit({
+      title: '單元名稱（範本）',
+      grade: '○年級',
+      subject: '科目',
+
+      objectives: ['學習目標一', '學習目標二', '學習目標三'],
+
+      intro: {
+        title: '開場',
+        slides: []   // 例：['assets/slide_01.jpg', 'assets/slide_02.jpg']
+      },
+
+      sections: [
+        {
+          title: '重點一',
+          standard: '學習內容代碼',
+          text: '用一兩句話說明這個重點。',
+          slides: [],
+          interactive: 'drag-demo',   // 內建示範；也可以直接寫一個 function (canvas, out) {...}
+          quizzes: [
+            {
+              q: '範例題：下面哪一個是正確的？',
+              options: ['選項一', '選項二', '選項三', '選項四'],
+              answer: 1,                 // 正確選項的位置，從 0 開始（1 代表 B）
+              feedback: '在這裡寫解題說明。'
+            }
+          ],
+          infographic: '',             // 例：'assets/01_重點一.jpg'
+          teacherTips: ['教學提示會在教師模式才出現。', '提示裡不要放機密內容。']
+        },
+        {
+          title: '重點二',
+          slides: [],
+          quizzes: [
+            { q: '範例題二', options: ['甲', '乙', '丙', '丁'], answer: 0, feedback: '說明。' }
+          ],
+          infographic: ''
+        }
+      ],
+
+      summary: ['重點一的一句話整理', '重點二的一句話整理'],
+
+      video: { youtube: '' },        // 填 YouTube 影片 ID，例如 'dQw4w9WgXcQ'
+
+      teacher: {
+        mistakes: ['學生常見錯誤一', '學生常見錯誤二'],
+        links: [{ label: 'NotebookLM 筆記本', url: 'https://notebooklm.google.com/' }]
+      }
+    });
+  </script>
+</body>
+</html>
