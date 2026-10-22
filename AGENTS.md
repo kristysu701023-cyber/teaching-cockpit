@@ -24,9 +24,9 @@
 
 - [x] 專案初始化（AGENTS.md、handoff.md、.gitignore）
 - [x] RDQ 需求探索，規格卡確認
-- [x] 框架初版：首頁（單元卡＋QR code）、單元頁範本、共用 CSS／JS、全站設定、部署 workflow
+- [x] 框架初版：首頁（單元卡＋QR code）、單元頁範本、共用 CSS／JS、全站設定、Pages 部署
 - [x] 國小通用版 skill：`skills/teaching-cockpit/SKILL.md`
-- [ ] Kristy 建公開 repo `teaching-cockpit`，推上去，Settings → Pages 的 Source 選 GitHub Actions
+- [x] 建立公開 repo `teaching-cockpit`，推上去，啟用 GitHub Pages
 - [ ] Kristy 在 `assets/config.js` 改教師密碼（目前是 `0000`）
 - [ ] 第一個單元（另開任務，用 skill 製作）
 
@@ -45,8 +45,7 @@
 ├── templates/unit/           單元頁範本（index.html＋assets/）
 ├── units/                    正式單元，一個單元一個資料夾
 ├── skills/teaching-cockpit/  國小通用版生成 skill
-├── rdq/                      需求規格卡
-└── .github/workflows/deploy.yml  push main 自動部署到 GitHub Pages
+└── rdq/                      需求規格卡
 ```
 
 ## 🧩 素材放置規則
@@ -62,7 +61,7 @@
 | 層級 | 內容 | 狀態 |
 |---|---|---|
 | L1 本地 | AGENTS.md＋handoff.md，每次都讀 | ✅ |
-| L2 GitHub | `kristysu701023-cyber/teaching-cockpit`（公開），指定才讀 | ⏳ 尚未建立 repo |
+| L2 GitHub | `kristysu701023-cyber/teaching-cockpit`（公開） | ✅ 已建立並啟用 Pages |
 | L3 Obsidian | — | 未啟用 |
 
 ## 🤝 工作約定
