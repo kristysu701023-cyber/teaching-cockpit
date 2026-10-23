@@ -145,11 +145,15 @@
     var main = el('main', { class: 'cp-main' });
 
     var head = el('section', { class: 'cp-section', id: 'top' }, [el('h2', { text: '學習目標' })]);
+    function secTitle(t, i) {
+      return /^(案件|\d+[\.、\s]|第)/.test(t) ? t : (i + 1) + '. ' + t;
+    }
+
     var chips = el('div', { class: 'chips' });
     (U.objectives || []).forEach(function (o) { chips.appendChild(el('span', { class: 'chip', text: o })); });
     head.appendChild(chips);
     var pills = el('nav', { class: 'pills', 'aria-label': '主題導覽' });
-    (U.sections || []).forEach(function (s, i) { pills.appendChild(el('a', { class: 'pill', href: '#sec' + (i + 1), text: (i + 1) + '. ' + s.title })); });
+    (U.sections || []).forEach(function (s, i) { pills.appendChild(el('a', { class: 'pill', href: '#sec' + (i + 1), text: secTitle(s.title, i) })); });
     pills.appendChild(el('a', { class: 'pill', href: '#summary', text: '總結' }));
     head.appendChild(pills);
     main.appendChild(head);
@@ -160,7 +164,7 @@
 
     (U.sections || []).forEach(function (s, i) {
       var sec = el('section', { class: 'cp-section', id: 'sec' + (i + 1) });
-      sec.appendChild(el('h2', { html: (s.standard ? '<span class="tag">' + s.standard + '</span>' : '') + (i + 1) + '. ' + s.title }));
+      sec.appendChild(el('h2', { html: (s.standard ? '<span class="tag">' + s.standard + '</span>' : '') + secTitle(s.title, i) }));
       if (s.text) sec.appendChild(el('p', { html: s.text }));
       sec.appendChild(el('h3', { text: '簡報' }));
       sec.appendChild(carousel(s.slides, '把這個重點的簡報圖片填到 slides'));

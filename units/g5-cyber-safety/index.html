@@ -86,7 +86,7 @@
         box.appendChild(card); box.appendChild(row); box.appendChild(res); box.appendChild(next);
         function show() {
           var it = items[idx];
-          card.textContent = (idx + 1) + ' / ' + items.length + '　' + it.q;
+          card.textContent = '第 ' + (idx + 1) + ' / ' + items.length + ' 題　' + it.q;
           row.innerHTML = ''; res.textContent = ''; next.hidden = true;
           it.opts.forEach(function (o, i) {
             var b = h('button', 'g-btn', o);
