@@ -5,10 +5,10 @@
 - 框架初版完成：首頁（單元卡＋QR code）、單元頁範本 `templates/unit/`、共用 `assets/cockpit.css`／`cockpit.js`／`config.js`、QR 產生器、README。
 - 國小通用版 skill：`skills/teaching-cockpit/SKILL.md`。
 - GitHub Pages 自動部署已正式上線（https://kristysu701023-cyber.github.io/teaching-cockpit/）。
-- **全單元視覺升級完成**：全面移除舊教材 22 張舊簡報截圖（`orig_01`～`orig_35`，已安全移入 `待刪除/`），全數升級為統一風格的可愛小偵探與高質感教學插畫卡片（開場、案件 1～11 全面煥然一新）。
+- **全單元視覺升級完成**：全面移除舊教材 22 張舊簡報截圖（`orig_01`～`orig_35`，已安全移入 `待刪除/`），全數升級為統一風格的可愛小偵探與高質感教學插畫卡片；開場、案件 1（`case1_treasure_v3.jpg`）、案件 2（`case2_vault_v3.jpg`）黃色底色全數調整為清爽純白大卡片與淡藍主題。
 
 ## 🚦 目前狀態
-- 本地 git 主分支為 main，全數 commit 並 push 直上 GitHub（commit `e9033a1`）。
+- 本地 git 主分支為 main，全數 commit 並 push 直上 GitHub（commit `aecf423`）。
 - GitHub Pages 已建置完成（built），所有新圖已全數上線。
 - Google 雲端硬碟（`G:\我的雲端硬碟\2026AI_Agent\教學駕駛艙`）備份完成。
 - 教師密碼暫定 `0000`，在 `assets/config.js`。
@@ -23,6 +23,6 @@
 - 舊圖已暫存於 `待刪除/`，Kristy 確認後可隨時清空。
 
 ## 🕐 最後更新
-- 時間：2026-10-23 08:01
+- 時間：2026-10-23 08:08
 - 更新者：Antigravity @ LAPTOP-IUMJF2MM
-- Git push：✅（origin/main - e9033a1）
+- Git push：✅（origin/main - aecf423）
