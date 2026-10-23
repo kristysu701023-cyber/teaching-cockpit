@@ -102,3 +102,22 @@
   clean composition, 16:9 widescreen, masterwork storybook illustration.
   ```
 
+---
+
+## 🎨 國小教學駕駛艙 4 大圖片風格庫與選型指南
+
+在規劃任何國小教學單元、投影片與互動學習教材時，依據教學領域與學科屬性，統一挑選以下 **4 大主流風格** 之一：
+
+| 風格類型 | 視覺特徵與表現手法 | 代表 Prompt 關鍵詞 | 最適合的教學主題 |
+|---|---|---|---|
+| **1. 3D 皮克斯立體繪本風**<br>*(資安單元標準風格)* | • 圓潤大眼、生動溫暖表情、立體光影柔和<br>• 道具質感飽滿（發光護盾、高科技平板）<br>• 國小中高年級吸睛度最高、代入感最強 | `3D Pixar Disney style, cute character design, warm soft studio lighting, pure clean white background, high quality 3D digital render` | 科技資訊、資安偵探、AI 探索、自然科學實驗、未來想像 |
+| **2. 宮崎駿／吉卜力手繪水彩生活風**<br>*(Kristy 最愛之生活美學)* | • 溫暖手繪水彩與水粉筆觸、細膩深色手繪墨線<br>• 藍天白雲、陽光微風、校園走廊生活感<br>• 人文氣息與故事氛圍最強，最具溫度 | `Studio Ghibli aesthetic, Hayao Miyazaki anime style, hand-painted watercolor and gouache, delicate ink outlines, heartwarming atmosphere` | 國語文閱讀、情意教育、生命教育、品格故事、社會人文 |
+| **3. 2.5D 扁平立體等角向量風 (Isometric)** | • 乾淨幾何線條、45 度俯視立體空間<br>• 模組清晰、層次嚴謹、理性專業<br>• 圖解複雜結構與運作流程時一目了然 | `Clean isometric 2.5D vector illustration, cute pastel color palette, geometric precision, modern educational infographic, pure white background` | 數學幾何、建築地圖、都市交通網絡、工廠產線、系統流程圖 |
+| **4. 日系暖色手繪繪本插畫風 (Chibi Storybook)** | • 柔和蠟筆／色鉛筆筆觸、淡雅粉彩配色<br>• 無生硬光斑、純真童趣、低壓親切<br>• 消除學生的學習焦慮與緊張感 | `Japanese cute picture book illustration, soft crayon and colored pencil texture, gentle pastel palette, adorable chibi characters, heartwarming` | 低年級生活課程、情緒調適、同儕相處、品德繪本導讀 |
+
+### 🔒 圖片風格一致性三大金律
+1. **全單元固定單一風格**：同一個單元絕不混搭（嚴禁混雜扁平向量與 3D 貼圖）。
+2. **全套統一純白底 16:9**：所有插圖與簡報一律為純白底（`#FFFFFF`），徹底避免灰邊、不對稱色塊或切斷感。
+3. **文字卡片留白餘裕**：任何卡片與右側插圖間，一律預留至少 **50px~80px** 呼吸邊界，卡片內文字亦需留出充足邊距，絕不貼邊、不重疊。
+
+
