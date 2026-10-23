@@ -5,24 +5,25 @@
 - 框架初版完成：首頁（單元卡＋QR code）、單元頁範本 `templates/unit/`、共用 `assets/cockpit.css`／`cockpit.js`／`config.js`、QR 產生器、README。
 - 國小通用版 skill：`skills/teaching-cockpit/SKILL.md`。
 - GitHub Pages 自動部署已正式上線（https://kristysu701023-cyber.github.io/teaching-cockpit/）。
-- **全單元視覺升級完成**：全面移除舊教材 22 張舊簡報截圖（`orig_01`～`orig_35`，已安全移入 `待刪除/`），全數升級為統一風格的可愛小偵探與高質感教學插畫卡片；開場、案件 1（`case1_treasure_v3.jpg`）、案件 2（`case2_vault_v3.jpg`）黃色底色全數調整為清爽純白大卡片與淡藍主題。
+- **案件 3 全新繪本級簡報上線**：Kristy 審核通過【案件 3 個資保衛戰（長密語/2FA）】純白底 16:9 簡報（`v1_passphrase_v2.jpg`，黑髮台灣小男孩手持獅子防禦盾牌與金鑰，留白安全且文字清晰）。
+- **全單元 11 案件角色情境多元規劃確立**：遵循「看情境，不是都用小女孩」原則，自然搭配小男孩、小女孩、阿嬤、同儕等不同角色。
+- **高難度資優想一想題目已全面升級**：11 個案件深度思辨題（含 DDoS、2FA 熵值原理、OAuth 劫持、OSINT 等）已佈建。
 
 ## 🚦 目前狀態
-- 本地 git 主分支為 main，全數 commit 並 push 直上 GitHub（commit `aecf423`）。
-- GitHub Pages 已建置完成（built），所有新圖已全數上線。
-- Google 雲端硬碟（`G:\我的雲端硬碟\2026AI_Agent\教學駕駛艙`）備份完成。
-- 教師密碼暫定 `0000`，在 `assets/config.js`。
+- 案件 3 正式套用全新繪本簡報 `v1_passphrase_v2.jpg`。
+- 本地變更已準備提交並推送到 GitHub Pages。
+- 圖片生成 API 配額冷卻中，冷卻完畢後依規劃排程繪製案件 4、5、7、10、11 預覽圖。
 
 ## ➡️ 下一步
-1. 改 `assets/config.js` 的教師密碼。
-2. 用 `skills/teaching-cockpit/SKILL.md` 製作下一個新單元。
+1. 待生圖配額冷卻後，生成案件 4（小女孩辨識假連結）與案件 5（小男孩與阿嬤約定通關密語）預覽圖給 Kristy 審核。
+2. 經 Kristy 確認滿意後，再批次更新至單元頁面。
 
 ## ⚠️ 注意事項
-- 在本機直接雙擊 index.html 可以看，但 QR code 會是 file:// 網址；給學生掃請用上線網址。
-- 本專案採用 GitHub Pages 原生根目錄部署，每次 `git push origin main` 即自動更新。
-- 舊圖已暫存於 `待刪除/`，Kristy 確認後可隨時清空。
+- 嚴格遵守「先給 Kristy 看完再改」原則，所有新圖均先合成 16:9 預覽圖請示確認。
+- 角色自然多元，不千篇一律。
+- 保持純白底（#FFFFFF）與微軟正黑體向量排版。
 
 ## 🕐 最後更新
-- 時間：2026-10-23 08:08
+- 時間：2026-10-23 10:28
 - 更新者：Antigravity @ LAPTOP-IUMJF2MM
-- Git push：✅（origin/main - aecf423）
+- Git push：進行中
