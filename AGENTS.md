@@ -80,3 +80,25 @@
 - 教師密碼寫在 `assets/config.js`，看原始碼就看得到，只用來收起教學提示；教學提示不放機密內容。
 - 評量作答結果不回傳、不儲存。
 - API key、密碼、憑證（含 `.clasprc.json`）絕不寫進 repo；一律放 `.env` 並列入 `.gitignore`。
+
+---
+
+## 🎨 視覺與生圖風格偏好記錄（Kristy 專屬美學指南）
+
+### 🌟 Kristy 偏好風格：宮崎駿／吉卜力手繪水彩生活美學 (Studio Ghibli Aesthetic)
+- **視覺特徵**：
+  - 溫暖細膩的手繪水彩質感（hand-painted watercolor and gouache texture）。
+  - 乾淨細緻的深色手繪墨線線稿（clean organic ink line art / outlines）。
+  - 充滿故事感與生活感的情境光影：蔚藍天空、蓬鬆棉花白雲、溫暖陽光、街道植栽花盆、生活化街景（如公車站牌、校園長廊、紅綠燈）。
+  - 角色神情純真清澈、表情溫暖自然、生動親切（齊瀏海、可愛大眼或純真笑容、小學生制服/雙肩書包）。
+  - 避免生硬的 3D 塑膠反光或過度寫實，保留日系經典動畫手繪的空氣感與人文溫度。
+
+- **Prompt 提示詞標準公式**：
+  ```
+  Studio Ghibli aesthetic, Hayao Miyazaki anime style, hand-painted watercolor and gouache illustration with delicate ink outlines.
+  [角色描述：如 A cheerful 10-year-old Taiwanese school girl with cute bangs and bright expressive eyes],
+  [情境與動作：taking a selfie with smartphone on a sunny street near a bus stop],
+  [背景與氛圍：vibrant blue sky with fluffy cumulus clouds, warm gentle sunlight, green potted plants along the sidewalk, heartwarming cinematic atmosphere, nostalgic aesthetic],
+  clean composition, 16:9 widescreen, masterwork storybook illustration.
+  ```
+
