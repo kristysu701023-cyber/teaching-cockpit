@@ -52,6 +52,9 @@
       inner.appendChild(img);
       return img;
     });
+    if (imgs.length <= 1) {
+      return el('div', { class: 'carousel single' }, [inner]);
+    }
     var count = el('div', { class: 'carousel-count' });
     function go(n) {
       idx = (n + imgs.length) % imgs.length;
