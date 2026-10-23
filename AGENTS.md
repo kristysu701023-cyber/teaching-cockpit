@@ -27,8 +27,9 @@
 - [x] 框架初版：首頁（單元卡＋QR code）、單元頁範本、共用 CSS／JS、全站設定、Pages 部署
 - [x] 國小通用版 skill：`skills/teaching-cockpit/SKILL.md`
 - [x] 建立公開 repo `teaching-cockpit`，推上去，啟用 GitHub Pages
+- [x] 第一個單元：國小五年級資優專題《資安偵探學院》（units/g5-cyber-safety）11 個案件全套純白底 3D 皮克斯風格投影片與資訊圖表完工上線
 - [ ] Kristy 在 `assets/config.js` 改教師密碼（目前是 `0000`）
-- [ ] 第一個單元（另開任務，用 skill 製作）
+- [ ] 第二個單元（另開任務，用 skill 製作）
 
 ## 📁 資料夾結構
 
