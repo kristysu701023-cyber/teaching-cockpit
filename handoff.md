@@ -5,7 +5,16 @@
 - 框架初版完成：首頁（單元卡＋QR code）、單元頁範本 `templates/unit/`、共用 `assets/cockpit.css`／`cockpit.js`／`config.js`、QR 產生器、README。
 - 國小通用版 skill：`skills/teaching-cockpit/SKILL.md`。
 - GitHub Pages 自動部署已正式上線（https://kristysu701023-cyber.github.io/teaching-cockpit/）。
-- **依據 Kristy 最新指導完成全面升級與校正（Commit `77dc403`、最新修復）**：
+- **依據 Kristy 最新指導完成全站中文字型粗細一致性大修復與案件 11 衛生紙優化（2026-10-25）**：
+  - **根本原因排查與徹底破解**：
+    1. 過去 HTML 採用 Google Fonts 遠端引入（`Noto Sans TC`），因遠端分卷超過 120 個動態分包，Headless Chrome 截圖瞬間未下載齊全，未及下載字元被強制 fallback 回微軟新細明體/宋體（如「驗、證、凌、與、溫、求」變細）。
+    2. 原先設定之 `font-weight: 900;` 觸發 Chrome synthetic bold 演算法對繁體中文字元之筆畫破壞。
+    3. 全面改為載入本地 Windows 完整思源黑體真身：`file:///C:/Windows/Fonts/NotoSansTC-VF.ttf`，字重規範統一為 `font-weight: 700;`，並在 Chrome 截圖命令中加入 `--allow-file-access-from-files`。
+  - **全站 26 張投影片與思維圖解全數批量重渲覆蓋**：
+    - 涵蓋開場封面、工具解密與案件 1 到案件 11（全數套用 Kristy 選定之 Option B 正式內容）。所有複雜繁體字（「驗證、霸凌、溫暖」等）100% 筆畫均勻、黑體扎實、絕無忽粗忽細或缺字 fallback！
+  - **案件 11（`v11_bully_v2.jpg`、`i11_bully_v3.jpg`）衛生紙優化**：
+    - 依 Kristy 指導「直接拿一張衛生紙就好 這個怪怪的」：小女孩手中徹底去除生硬怪異之藍色塑膠包裝盒，改為直接溫柔遞出一張純白柔軟的抽取式衛生紙，畫面溫暖自然親切！
+  - **快取碼全面更新**：`units/g5-cyber-safety/index.html` 內圖片引用全數換上 `?v=20261025_font_fixed`。
   - **首頁開場封面（歡迎來到資安偵探學院）**：重新生成超可愛、大眼圓臉甜美微笑的 3D 皮克斯男女小偵探雙人組（女孩持發光安全盾、男孩持發光放大鏡），並將人物往右側平移，留出左側教學重點與偵探守則卡片的寬敞呼吸空間，完全零重疊、零遮擋（`final_cover.jpg`）。
   - **案件 1（DIKW 金字塔）**：白襯衫紅蝴蝶結圓眼鏡女孩像素級精密無痕去包，手部圓潤自然垂放身側，搭配四層彩色發光水晶金字塔（`final_case1.jpg`）。
   - **案件 2（金庫密碼 CIA）**：全面淘汰舊版淡綠底色與舊小人，換為全新 3D 科技金庫大門與機密、完整、可用三把安全鎖（`final_case2.jpg`）。

@@ -128,6 +128,10 @@
    - **卡片內文說明**：`19px`~`20px`（500/700 權重，行距 1.45~1.5，字級大且舒適）
    - **序號圈圈徽章**：`50px`~`54px`，數字 `24px`~`26px`
    - **底部想一想／金律提示框**：`20px`~`22px`（搭配柔和底色框，視覺焦點明確）
+5. **中文字型渲染金律（杜絕忽粗忽細與細明體 fallback）**：
+   - 投影片與圖解一律使用 Windows 本地完整思源黑體：`file:///C:/Windows/Fonts/NotoSansTC-VF.ttf`，嚴禁使用遠端 Google Fonts `@import`（防止網路動態分卷延遲導致部分字元 fallback 回新細明體）。
+   - 字重一律規範為標準 `font-weight: 700;`，禁止使用 `900` 以防瀏覽器 synthetic bold 破壞複雜繁體字筆畫結構。
+   - Chrome headless 截圖必須帶有 `--allow-file-access-from-files`。
 
 ### 🖼️ 單元圖片製作流程（必走）
 
