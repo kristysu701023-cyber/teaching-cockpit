@@ -189,24 +189,67 @@
 
     var v = U.video || {};
     var vsec = el('section', { class: 'cp-section', id: 'video' }, [el('h2', { text: '影片' })]);
-    function parseYtId(input) {
-      if (!input) return '';
-      var m = String(input).match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
-      return m ? m[1] : String(input).trim();
+    function parseYtInfo(input) {
+      if (!input) return null;
+      var str = typeof input === 'string' ? input : (input.url || input.youtube || '');
+      var m = str.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+      var id = m ? m[1] : (str.length === 11 ? str : '');
+      if (!id) return null;
+      var tMatch = str.match(/[?&]t=(\d+)s?/);
+      var start = (typeof input === 'object' && input.start) ? input.start : (tMatch ? tMatch[1] : '');
+      var title = (typeof input === 'object' && input.title) ? input.title : '';
+      return { id: id, start: start, title: title, raw: str };
     }
     var yts = [];
-    if (Array.isArray(v.youtube)) {
-      yts = v.youtube.map(parseYtId).filter(Boolean);
-    } else if (v.youtube) {
-      var parsed = parseYtId(v.youtube);
-      if (parsed) yts.push(parsed);
-    }
-    if (yts.length > 0) {
-      yts.forEach(function (ytId) {
-        vsec.appendChild(el('div', { class: 'video-wrap', style: 'margin-bottom: 16px;' }, [
-          el('iframe', { src: 'https://www.youtube-nocookie.com/embed/' + ytId, title: '教學影片', loading: 'lazy', allowfullscreen: '' })
-        ]));
+    var list = v.items || (Array.isArray(v.youtube) ? v.youtube : (v.youtube ? [v.youtube] : []));
+    list.forEach(function (item) {
+      var info = parseYtInfo(item);
+      if (info) yts.push(info);
+    });
+
+    if (yts.length === 1) {
+      var item0 = yts[0];
+      var embedUrl = 'https://www.youtube-nocookie.com/embed/' + item0.id + (item0.start ? '?start=' + item0.start : '');
+      if (item0.title) {
+        vsec.appendChild(el('div', { style: 'font-size:1.15rem;font-weight:700;margin-bottom:10px;color:var(--chalk-accent);', text: '🎬 ' + item0.title }));
+      }
+      vsec.appendChild(el('div', { class: 'video-wrap' }, [
+        el('iframe', { src: embedUrl, title: item0.title || '教學影片', loading: 'lazy', allowfullscreen: '' })
+      ]));
+    } else if (yts.length > 1) {
+      var tabsWrap = el('div', { style: 'display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;' });
+      var playerWrap = el('div', { class: 'video-wrap' });
+      var activeIframe = el('iframe', { src: '', title: '教學影片', loading: 'lazy', allowfullscreen: '' });
+      playerWrap.appendChild(activeIframe);
+
+      var tabButtons = [];
+      yts.forEach(function (yt, idx) {
+        var label = yt.title || ('影片 ' + (idx + 1));
+        var btn = el('button', {
+          class: 'cp-btn',
+          style: 'padding:8px 16px;border-radius:20px;font-size:0.95rem;cursor:pointer;transition:all .2s;',
+          text: '🎬 ' + label
+        });
+        btn.addEventListener('click', function () {
+          tabButtons.forEach(function (b) {
+            b.style.background = 'transparent';
+            b.style.borderColor = 'var(--chalk-dim)';
+            b.style.color = 'var(--chalk-dim)';
+          });
+          btn.style.background = 'rgba(255,255,255,0.15)';
+          btn.style.borderColor = 'var(--chalk-accent)';
+          btn.style.color = 'var(--chalk-text)';
+          var src = 'https://www.youtube-nocookie.com/embed/' + yt.id + (yt.start ? '?start=' + yt.start : '');
+          activeIframe.src = src;
+        });
+        tabsWrap.appendChild(btn);
+        tabButtons.push(btn);
       });
+
+      vsec.appendChild(tabsWrap);
+      vsec.appendChild(playerWrap);
+      // 預設點擊第一個按鈕
+      if (tabButtons.length > 0) tabButtons[0].click();
     } else {
       vsec.appendChild(el('div', { class: 'placeholder', text: '影片請上傳 YouTube（不公開），再把影片網址或 ID 填入 video.youtube' }));
     }
