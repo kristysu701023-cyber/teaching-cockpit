@@ -189,8 +189,27 @@
 
     var v = U.video || {};
     var vsec = el('section', { class: 'cp-section', id: 'video' }, [el('h2', { text: '影片' })]);
-    if (v.youtube) vsec.appendChild(el('div', { class: 'video-wrap' }, [el('iframe', { src: 'https://www.youtube-nocookie.com/embed/' + v.youtube, title: '教學影片', loading: 'lazy', allowfullscreen: '' })]));
-    else vsec.appendChild(el('div', { class: 'placeholder', text: '影片請上傳 YouTube（不公開），再把影片 ID 填到 video.youtube' }));
+    function parseYtId(input) {
+      if (!input) return '';
+      var m = String(input).match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+      return m ? m[1] : String(input).trim();
+    }
+    var yts = [];
+    if (Array.isArray(v.youtube)) {
+      yts = v.youtube.map(parseYtId).filter(Boolean);
+    } else if (v.youtube) {
+      var parsed = parseYtId(v.youtube);
+      if (parsed) yts.push(parsed);
+    }
+    if (yts.length > 0) {
+      yts.forEach(function (ytId) {
+        vsec.appendChild(el('div', { class: 'video-wrap', style: 'margin-bottom: 16px;' }, [
+          el('iframe', { src: 'https://www.youtube-nocookie.com/embed/' + ytId, title: '教學影片', loading: 'lazy', allowfullscreen: '' })
+        ]));
+      });
+    } else {
+      vsec.appendChild(el('div', { class: 'placeholder', text: '影片請上傳 YouTube（不公開），再把影片網址或 ID 填入 video.youtube' }));
+    }
     main.appendChild(vsec);
 
     var t = U.teacher || {};
