@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>世界的角落｜教學駕駛艙</title>
+  <link rel="stylesheet" href="../../assets/cockpit.css?v=20261024w">
+  <style>
+    /* 本單元專用：闖關任務與探險護照的樣式（只影響這一頁） */
+    .game { display: grid; gap: 14px; padding: 16px; background: var(--board-2); border-radius: var(--radius); border: 1px solid var(--line); }
+    .game .hint { color: var(--chalk-dim); font-size: .95rem; }
+    .m-item { background: var(--board-3); border-radius: 12px; padding: 12px 14px; display: grid; gap: 10px; border-left: 5px solid transparent; }
+    .m-item.ok { border-left-color: var(--green); }
+    .m-item.bad { border-left-color: var(--pink); }
+    .m-q { font-weight: 700; }
+    .m-q .n { color: var(--title); margin-right: 6px; }
+    .m-q .need { font-weight: 400; color: var(--chalk-dim); font-size: .9rem; margin-left: 4px; }
+    .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .g-btn { min-height: var(--touch); padding: 6px 14px; border-radius: 10px; border: 1.5px solid var(--line); background: var(--board-2); color: var(--chalk); text-align: left; }
+    .g-btn:hover { border-color: var(--title); }
+    .g-btn.picked { border-color: var(--blue); background: #e3eefa; font-weight: 700; }
+    .g-btn.right { border-color: var(--green); background: #e2f3e8; }
+    .g-btn.wrong { border-color: var(--pink); background: #fbe5e3; }
+    .g-btn:disabled { cursor: default; }
+    .g-main { background: var(--title); color: #fff; border-color: var(--title); font-weight: 700; text-align: center; }
+    .g-main:hover { background: var(--wood-dark); }
+    .sort-card { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; align-items: center; background: var(--board-2); border-radius: 10px; padding: 6px 10px; border: 1.5px solid transparent; }
+    .sort-card.right { border-color: var(--green); }
+    .sort-card.wrong { border-color: var(--pink); }
+    @media (max-width: 560px) { .sort-card { grid-template-columns: 1fr; } }
+    .why { display: none; color: var(--chalk); background: #fff8e6; border-radius: 8px; padding: 8px 12px; }
+    .done .why { display: block; }
+    .m-text { width: 100%; min-height: 84px; font: inherit; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--board-2); color: var(--chalk); resize: vertical; }
+    .m-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+    .m-status { color: var(--chalk-dim); }
+    .m-score { font-size: 1.25rem; font-weight: 700; color: var(--title); }
+    .m-ans { display: none; gap: 10px; }
+    .done .m-ans { display: grid; }
+    .m-ans img { border-radius: 10px; cursor: zoom-in; border: 1px solid var(--line); }
+    /* 探險護照 */
+    .rv-card { display: inline-grid; place-items: center; min-width: 7em; min-height: var(--touch); padding: 6px 16px; border-radius: 10px; border: 2px dashed var(--line); background: var(--board-2); color: var(--chalk-dim); font: inherit; font-weight: 700; cursor: pointer; }
+    .rv-card.open { border-style: solid; border-color: var(--green); background: #e2f3e8; color: var(--chalk); }
+    .rv-note { display: none; background: #fff8e6; border-radius: 8px; padding: 8px 12px; }
+    .rv-note.show { display: block; }
+    .stamps { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 10px; }
+    .stamp { display: grid; justify-items: center; gap: 4px; text-align: center; font-size: .85rem; color: var(--chalk-dim); text-decoration: none; }
+    .stamp span.c { width: 60px; height: 60px; border-radius: 50%; border: 3px dashed var(--line); display: grid; place-items: center; font-weight: 700; }
+    .stamp.on { color: var(--chalk); }
+    .stamp.on span.c { border: 3px double #a8322b; color: #a8322b; background: #fdf0ee; transform: rotate(-8deg); }
+    .grad { display: none; color: #a8322b; font-weight: 700; font-size: 1.1rem; }
+    .grad.show { display: block; }
+    /* 拖曳答案卡 */
+    .fill-text { line-height: 2.4; }
+    .blank { display: inline-flex; align-items: center; justify-content: center; gap: 4px; min-width: 6em; min-height: 44px; vertical-align: middle; margin: 0 4px; padding: 1px; border: 2px dashed var(--blue); background: #f4f8fd; border-radius: 999px; }
+    .blank .chip-d { margin: 0; }
+    .blank:empty::after { content: '　'; }
+    .blank:not(:empty) { min-width: 0; min-height: 0; padding: 0; border-color: transparent; background: none; }
+    .blank:not(:empty) .chip-d { min-height: 36px; padding: 2px 14px; line-height: 1.4; }
+    .blank.right, .blank.right:not(:empty) { border-color: transparent; background: none; }
+    .blank.wrong, .blank.wrong:not(:empty) { border-color: transparent; background: none; }
+    .blank.right .chip-d { border-color: var(--green); background: #e2f3e8; }
+    .blank.wrong .chip-d { border-color: var(--pink); background: #fbe5e3; }
+    .blank.wrong:empty { border-color: var(--pink); border-style: solid; background: #fbe5e3; }
+    .bank { display: flex; flex-wrap: wrap; gap: 8px; min-height: 56px; padding: 10px; border: 2px dashed var(--line); border-radius: 10px; background: var(--board); }
+    .done .bank:empty { display: none; }
+    .chip-d { min-height: 40px; padding: 4px 14px; border-radius: 999px; border: 1.5px solid var(--blue); background: #e3eefa; color: var(--chalk); font-weight: 700; touch-action: none; user-select: none; -webkit-user-select: none; cursor: grab; }
+    body.dragging, body.dragging * { user-select: none; -webkit-user-select: none; cursor: grabbing; }
+    .chip-d.sel { outline: 3px solid var(--yellow); outline-offset: 2px; }
+    .chip-d.lift { opacity: .35; }
+    .chip-d.ghost { position: fixed; z-index: 999; pointer-events: none; transform: translate(-50%, -50%) scale(1.06); box-shadow: 0 6px 18px rgba(0,0,0,.2); }
+    .chip-d.right { border-color: var(--green); background: #e2f3e8; }
+    .chip-d.wrong { border-color: var(--pink); background: #fbe5e3; }
+    .done .chip-d { cursor: default; }
+    .fix { font-weight: 700; color: var(--green); margin-left: 4px; font-size: .9rem; }
+    .fix::before { content: '→ '; }
+    .bins { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; }
+    .bin { background: var(--board-2); border-radius: 10px; padding: 8px; display: grid; grid-template-rows: auto 1fr; gap: 6px; border: 1.5px solid var(--line); }
+    .bin-t { font-weight: 700; color: var(--title); text-align: center; }
+    .binzone { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; min-height: 90px; padding: 6px; border-radius: 8px; background: var(--board-3); }
+  </style>
+</head>
+<body>
+  <script src="../../assets/config.js?v=20261024w"></script>
+  <script src="../../assets/vendor/qrcode.js?v=20261024w"></script>
+  <script src="../../assets/cockpit.js?v=20261024w"></script>
+  <script>
+    /* ── 闖關任務 ──
+     * 框架的互動區給的是 640×360 畫布；任務需要按鈕和文字，
+     * 所以 dom() 把畫布換成一般的區塊（只影響本單元，不改共用的 cockpit.js）。
+     * 學生先全部作答，按「交卷看答案」才一次揭曉對錯、解說與參考答案圖。 */
+    function dom(build) {
+      return function (canvas, out) {
+        var box = document.createElement('div');
+        box.className = 'game';
+        canvas.replaceWith(box);
+        build(box, out);
+      };
+    }
+    function h(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
+    function same(a, b) { return a.length === b.length && a.every(function (x) { return b.indexOf(x) >= 0; }); }
+    function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+
+    /* ── 拖曳：把答案卡拉進空格或分類框 ──
+     * 手指或滑鼠按住卡片拖到空格放開；也可以先點卡片、再點空格。點空格裡的卡片會退回卡片區。 */
+    function dragKit(box) {
+      var picked = null, drag = null;
+      function locked() { return box.classList.contains('done'); }
+      function select(c) {
+        if (picked) picked.classList.remove('sel');
+        picked = c && c !== picked ? c : null;
+        if (picked) picked.classList.add('sel');
+      }
+      function bankOf(c) { return c.closest('.m-item').querySelector('.bank'); }
+      function place(c, zone) {
+        if (!zone || zone.closest('.m-item') !== c.closest('.m-item')) return false;
+        if (zone.classList.contains('blank')) {
+          var old = zone.querySelector('.chip-d');
+          if (old === c) return true;
+          if (old) bankOf(c).appendChild(old);
+        }
+        zone.appendChild(c);
+        zone.closest('.m-item').dispatchEvent(new Event('change', { bubbles: true }));
+        return true;
+      }
+      function chip(text, data) {
+        var c = h('button', 'chip-d', text);
+        c.type = 'button';
+        Object.keys(data || {}).forEach(function (k) { c.dataset[k] = data[k]; });
+        c.addEventListener('pointerdown', function (e) {
+          if (locked()) return;
+          e.preventDefault();
+          drag = { c: c, x: e.clientX, y: e.clientY, ghost: null, id: e.pointerId };
+          document.body.classList.add('dragging');
+          c.setPointerCapture(e.pointerId);
+        });
+        c.addEventListener('pointermove', function (e) {
+          if (!drag || drag.c !== c) return;
+          if (!drag.ghost && Math.hypot(e.clientX - drag.x, e.clientY - drag.y) > 6) {
+            drag.ghost = c.cloneNode(true);
+            drag.ghost.className = 'chip-d ghost';
+            document.body.appendChild(drag.ghost);
+            c.classList.add('lift');
+          }
+          if (drag.ghost) { drag.ghost.style.left = e.clientX + 'px'; drag.ghost.style.top = e.clientY + 'px'; }
+        });
+        function end(e) {
+          if (!drag || drag.c !== c) return;
+          var d = drag; drag = null;
+          document.body.classList.remove('dragging');
+          if (d.ghost) {
+            d.ghost.remove(); c.classList.remove('lift');
+            var under = document.elementFromPoint(e.clientX, e.clientY);
+            var zone = under && (under.closest('.dz') || (under.closest('.bin') && under.closest('.bin').querySelector('.binzone')));
+            if (zone && zone.classList.contains('bank') && zone.closest('.m-item') === c.closest('.m-item')) { zone.appendChild(c); c.closest('.m-item').dispatchEvent(new Event('change', { bubbles: true })); }
+            else place(c, zone);
+            select(null);
+          } else if (picked && picked !== c && !picked.parentNode.classList.contains('bank') && c.parentNode.classList.contains('bank') && c.closest('.m-item') === picked.closest('.m-item')) {
+            var back = picked; c.parentNode.appendChild(back); select(null); back.closest('.m-item').dispatchEvent(new Event('change', { bubbles: true }));
+          } else select(c);
+        }
+        c.addEventListener('pointerup', end);
+        c.addEventListener('pointercancel', function () { if (drag && drag.ghost) { drag.ghost.remove(); c.classList.remove('lift'); } drag = null; document.body.classList.remove('dragging'); });
+        return c;
+      }
+      box.addEventListener('click', function (e) {
+        if (locked() || !picked || e.target.closest('.chip-d')) return;
+        var zone = e.target.closest('.dz') || (e.target.closest('.bin') && e.target.closest('.bin').querySelector('.binzone'));
+        if (!zone || zone.closest('.m-item') !== picked.closest('.m-item')) return;
+        if (zone.classList.contains('bank')) { zone.appendChild(picked); zone.closest('.m-item').dispatchEvent(new Event('change', { bubbles: true })); select(null); }
+        else if (place(picked, zone)) select(null);
+      });
+      return { chip: chip };
+    }
+
+    // 題型：fill 填空（把答案卡拉進空格）、sort 分類（把卡片拉進分類框）、
+    //       choice 單選、multi 複選、pick 自由複選（沒有標準答案）、open 自由書寫
+    function mission(id, items, answers) {
+      return dom(function (box) {
+        box.appendChild(h('p', 'hint', '把下面的答案卡拖到空格或框框裡（也可以先點卡片、再點空格）。放錯了可以再拖到別的地方，或點卡片再點新位置；拖回答案區就能取消。全部完成後按「交卷看答案」，才會一起揭曉。'));
+        var kit = dragKit(box), states = [];
+        items.forEach(function (it, k) {
+          var card = h('div', 'm-item'), q = h('div', 'm-q');
+          q.appendChild(h('span', 'n', (k + 1) + '.'));
+          q.appendChild(document.createTextNode(it.q));
+          if (it.type === 'multi') q.appendChild(h('span', 'need', '（選 ' + it.a.length + ' 個）'));
+          if (it.type === 'pick') q.appendChild(h('span', 'need', '（可以多選）'));
+          card.appendChild(q);
+          var st = { it: it, card: card, pick: [], btns: [] };
+
+          if (it.type === 'fill' || it.type === 'sort') {
+            var bank = h('div', 'bank dz');
+            if (it.type === 'fill') {
+              var p = h('div', 'fill-text'), words = [];
+              it.text.split(/(\{[^}]+\})/).forEach(function (part) {
+                var m = part.match(/^\{(.+)\}$/);
+                if (m) { var z = h('span', 'dz blank'); z.dataset.ans = m[1]; p.appendChild(z); words.push(m[1]); }
+                else if (part) p.appendChild(document.createTextNode(part));
+              });
+              card.appendChild(p);
+              shuffle(words.concat(it.extra || [])).forEach(function (w) { bank.appendChild(kit.chip(w)); });
+              card.appendChild(bank);
+            } else {
+              shuffle(it.cards).forEach(function (c) { bank.appendChild(kit.chip(c[0], { bin: c[1] })); });
+              card.appendChild(bank);
+              var bins = h('div', 'bins');
+              it.labels.forEach(function (lb, li) {
+                var b = h('div', 'bin'), z = h('div', 'dz binzone');
+                b.appendChild(h('div', 'bin-t', lb));
+                z.dataset.bin = li;
+                b.appendChild(z);
+                bins.appendChild(b);
+              });
+              card.appendChild(bins);
+            }
+            st.bank = bank;
+            card.addEventListener('change', update);
+          } else if (it.type === 'choice' || it.type === 'multi' || it.type === 'pick') {
+            var row = h('div', 'row');
+            it.opts.forEach(function (o, i) {
+              var b = h('button', 'g-btn', o);
+              b.onclick = function () {
+                if (box.classList.contains('done')) return;
+                if (it.type === 'choice') st.pick = [i];
+                else {
+                  var at = st.pick.indexOf(i);
+                  if (at >= 0) st.pick.splice(at, 1);
+                  else if (it.type === 'pick' || st.pick.length < it.a.length) st.pick.push(i);
+                }
+                st.btns.forEach(function (x, j) { x.classList.toggle('picked', st.pick.indexOf(j) >= 0); });
+                update();
+              };
+              st.btns.push(b);
+              row.appendChild(b);
+            });
+            card.appendChild(row);
+          } else if (it.type === 'open') {
+            st.text = h('textarea', 'm-text');
+            st.text.placeholder = '寫下你的想法';
+            st.text.oninput = update;
+            card.appendChild(st.text);
+          }
+          var why = h('div', 'why');
+          why.innerHTML = it.why || '';
+          if (it.why) card.appendChild(why);
+          box.appendChild(card);
+          states.push(st);
+        });
+
+        function answered(st) {
+          var it = st.it;
+          if (it.type === 'fill') return Array.prototype.every.call(st.card.querySelectorAll('.blank'), function (z) { return z.querySelector('.chip-d'); });
+          if (it.type === 'sort') return !st.bank.querySelector('.chip-d');
+          if (it.type === 'open') return st.text.value.trim().length > 0;
+          if (it.type === 'multi') return st.pick.length === it.a.length;
+          return st.pick.length > 0;
+        }
+        var bar = h('div', 'm-bar'), status = h('span', 'm-status'), btn = h('button', 'g-btn g-main', '交卷看答案'), warned = false;
+        bar.appendChild(status); bar.appendChild(btn);
+        box.appendChild(bar);
+        var score = h('div', 'm-score');
+        box.appendChild(score);
+
+        var ans = h('div', 'm-ans');
+        if (answers && answers.length) {
+          ans.appendChild(h('h3', '', '參考答案'));
+          answers.forEach(function (src) {
+            var img = h('img');
+            img.src = src; img.alt = '參考答案'; img.loading = 'lazy';
+            img.onclick = function () { window.open(src, '_blank'); };
+            ans.appendChild(img);
+          });
+          box.appendChild(ans);
+        }
+
+        function update() {
+          var n = states.filter(answered).length;
+          status.textContent = '已完成 ' + n + ' / ' + states.length + ' 題';
+          if (warned && n === states.length) { warned = false; btn.textContent = '交卷看答案'; }
+        }
+        function reveal() {
+          var graded = 0, right = 0;
+          states.forEach(function (st) {
+            var it = st.it, ok = null;
+            st.btns.forEach(function (b) { b.disabled = true; });
+            if (it.type === 'choice' || it.type === 'multi') {
+              st.btns.forEach(function (b, j) {
+                if (it.type === 'choice' ? j === it.a : it.a.indexOf(j) >= 0) b.classList.add('right');
+                else if (st.pick.indexOf(j) >= 0) b.classList.add('wrong');
+              });
+              ok = it.type === 'choice' ? st.pick[0] === it.a : same(st.pick, it.a);
+            } else if (it.type === 'fill') {
+              ok = true;
+              st.card.querySelectorAll('.blank').forEach(function (z) {
+                var c = z.querySelector('.chip-d'), good = c && c.textContent === z.dataset.ans;
+                z.classList.add(good ? 'right' : 'wrong');
+                if (!good) { ok = false; z.appendChild(h('span', 'fix', z.dataset.ans)); }
+              });
+            } else if (it.type === 'sort') {
+              ok = true;
+              st.card.querySelectorAll('.binzone .chip-d').forEach(function (c) {
+                var good = c.dataset.bin === c.parentNode.dataset.bin;
+                c.classList.add(good ? 'right' : 'wrong');
+                if (!good) { ok = false; c.appendChild(h('span', 'fix', it.labels[c.dataset.bin])); }
+              });
+            } else if (it.type === 'open') st.text.readOnly = true;
+            if (ok !== null) { graded++; if (ok) right++; st.card.classList.add(ok ? 'ok' : 'bad'); }
+          });
+          box.classList.add('done');
+          score.textContent = graded ? '答對 ' + right + ' / ' + graded + ' 題' + (right === graded ? '，全部答對！' : '，紅色的地方看看正確答案和解說，再想一想。') : '看看下面的參考答案。';
+          btn.textContent = '重新作答';
+          stampDone(id);
+        }
+        function reset() {
+          box.querySelectorAll('.fix').forEach(function (f) { f.remove(); });
+          states.forEach(function (st) {
+            st.card.classList.remove('ok', 'bad');
+            if (st.bank) {
+              st.card.querySelectorAll('.blank').forEach(function (z) { z.classList.remove('right', 'wrong'); });
+              shuffle(Array.prototype.slice.call(st.card.querySelectorAll('.chip-d'))).forEach(function (c) { c.classList.remove('right', 'wrong', 'sel'); st.bank.appendChild(c); });
+            } else if (st.it.type === 'open') { st.text.readOnly = false; }
+            else { st.pick = []; st.btns.forEach(function (b) { b.disabled = false; b.className = 'g-btn'; }); }
+          });
+          box.classList.remove('done');
+          score.textContent = '';
+          btn.textContent = '交卷看答案';
+          update();
+        }
+        btn.onclick = function () {
+          if (box.classList.contains('done')) return reset();
+          var left = states.length - states.filter(answered).length;
+          if (left && !warned) { warned = true; btn.textContent = '還有 ' + left + ' 題沒完成，確定交卷？'; return; }
+          warned = false;
+          reveal();
+        };
+        update();
+      });
+    }
+
+    var MISSIONS = {
+      africa: mission('africa', [
+        { type: 'fill', q: '非洲的位置', text: '非洲北邊隔著{地中海}和{歐洲}相望，東北邊隔著{紅海}和{亞洲}相鄰；西邊面對{大西洋}，東邊面對{印度洋}。', extra: ['太平洋', '美洲'], why: '非洲和亞洲在東北角的埃及相連，那裡挖了蘇伊士運河，連接地中海和紅海。' },
+        { type: 'fill', q: '非洲的地形', text: '非洲以{高原}為主；北部有世界最大的炎熱沙漠{撒哈拉}沙漠；中部是{剛果}盆地，剛果河蘊藏豐富的{水力}資源；東部因{斷層}陷落形成東非大裂谷，有火山和湖泊，例如非洲最高峰{吉力馬札羅}山。', extra: ['平原', '冰河', '石油'], why: '地殼裂開、斷層陷落形成大裂谷，所以附近有火山和湖泊；吉力馬札羅山就是火山。' },
+        { type: 'fill', q: '非洲的氣候', text: '最宜人的是北部沿岸的{溫帶地中海型}氣候；長頸鹿和獅子最喜歡住在{熱帶莽原}。', extra: ['寒帶', '熱帶沙漠'], why: '熱帶莽原有大片草原和零星的樹，草食動物多，獅子也跟著來。' },
+        { type: 'fill', q: '族群與文化', text: '非洲以撒哈拉沙漠為界，南北族群文化不同。歐洲列強用{經緯度}畫直線分殖民地，造成族群衝突、引發{戰爭}，例如{盧安達}大屠殺；南非也曾施行{種族隔離}政策。', extra: ['河流', '埃及'], why: '邊界直直畫下去，把同一個族群拆開，又把不同族群放進同一國，獨立後長期動亂。' },
+        { type: 'sort', q: '非洲人民的三大困境：把每張卡片拉到對的框框', labels: ['環境問題', '貧窮問題', '疾病問題'], cards: [
+          ['人口增加、過度開發', 0], ['乾旱與沙漠化', 0],
+          ['戰亂與乾旱造成饑荒', 1], ['背負龐大外債', 1],
+          ['缺乏自來水和醫療', 2], ['愛滋病威脅生命', 2]
+        ], why: '未來展望：運用豐富的礦產發展工業，推動生態旅遊與觀光業。' }
+      ], ['assets/ans1_africa.jpg']),
+
+      kenya: mission('kenya', [
+        { type: 'sort', q: '這是臺灣還是東非？把卡片拉到對的框框', labels: ['臺灣', '東非'], cards: [
+          ['副熱帶季風氣候，雨量多', 0],
+          ['熱帶莽原和高地氣候，乾季溼季分明', 1],
+          ['常遇到颱風和地震', 0],
+          ['嚴重乾旱，有時又遇到洪水', 1],
+          ['有全民健保，看病方便', 0],
+          ['醫療資源缺乏，很多人看不到醫生', 1],
+          ['推行 12 年國民基本教育', 0],
+          ['學校缺經費、缺老師，貧困的孩子很難上學', 1]
+        ], why: '同樣是孩子，生在不同的地方，生活條件差很多。' },
+        { type: 'fill', q: '致命的沙蚤', text: '沙蚤只有大約{0.1}公分，會從{赤腳}鑽進皮膚，啃食骨肉，造成潰爛、截肢，甚至致命。所以要送能包住整隻腳的{包鞋}。', extra: ['10', '鼻子', '拖鞋'], why: '東非偏鄉很多五歲以下的孩子沒有鞋穿，赤腳就是沙蚤的入口；拖鞋和涼鞋會露出腳，擋不住沙蚤。' }
+      ], ['assets/ans2_compare.jpg']),
+
+      shoes: mission('shoes', [
+        { type: 'fill', q: '舊鞋救命的緣起', text: '{2014}年，創辦人楊右任聽岳父說肯亞孩子被{沙蚤}寄生，在網路上募鞋，數萬雙鞋湧入，裝滿{貨櫃}送往肯亞。', extra: ['2004', '蚊子', '飛機'] },
+        { type: 'fill', q: '舊鞋救命提供的幫助', text: '在臺灣募集{二手鞋}和物資，送到東非偏鄉；派{醫療團}做沙蚤治療和衛生教育；把運送物資的舊貨櫃改造成堅固的{教室}。', extra: ['手機', '遊樂園'], why: '送鞋擋住沙蚤，醫療團用藥水洗腳清創，貨櫃到了當地還能變成教室。' },
+        { type: 'fill', q: '為什麼叫「Step30」？', text: 'Step 是跨出{第一步}，追隨岳父在非洲服務的腳步；30 是鼓勵{30 歲以下}的年輕人，勇敢投入改變世界的人道救助。', extra: ['最後一步', '30 歲以上'] },
+        { type: 'fill', q: '從一雙鞋，長出翻轉貧窮的生態系', text: '鑿水井、建人工湖的{活水計畫}；蓋貨櫃教室、磚塊教室的{興學計畫}；用垃圾來換鞋的{垃圾換鞋計畫}；還有養雞農耕計畫和沙蚤醫療。', extra: ['太空旅行計畫', '電玩比賽計畫'] },
+        { type: 'sort', q: '哪些鞋可以捐？把每雙鞋拉到對的框框', labels: ['可以捐', '不能捐'], cards: [
+          ['平底包鞋，沒有破洞', 0],
+          ['鞋帶綁好、成雙的運動鞋', 0],
+          ['夾腳拖鞋', 1],
+          ['涼鞋', 1],
+          ['高跟鞋', 1],
+          ['雨鞋', 1],
+          ['破洞、發霉的鞋', 1]
+        ], why: '要能包住雙腳、防護沙蚤，又適合當地環境。拖鞋、涼鞋會露出腳；高跟鞋、雨鞋不適合當地走路和天氣。' },
+        { type: 'fill', q: '捐鞋前要注意', text: '不要隨時寄送！務必先上{官網}看公告，確認「{開放寄送期間}」再寄出。', extra: ['學校', '舊衣回收箱'] },
+        { type: 'open', q: '你鞋櫃裡用不到的一雙鞋，可能開啟別人的希望。我可以怎麼做？', why: '例如：整理鞋櫃，挑出還能穿的包鞋綁好，等官網開放時和家人一起寄出；把舊鞋救命的故事告訴同學。' }
+      ], ['assets/ans2_step30.jpg', 'assets/ans2_donate.jpg']),
+
+      horn: mission('horn', [
+        { type: 'sort', q: '哪些國家在非洲之角？把國家拉到對的框框', labels: ['非洲之角', '不在非洲之角'], cards: [
+          ['衣索比亞', 0], ['索馬利亞', 0], ['厄利垂亞', 0], ['吉布地', 0], ['肯亞', 0],
+          ['埃及', 1], ['南非', 1], ['奈及利亞', 1]
+        ], why: '非洲之角是索馬利亞、衣索比亞、厄利垂亞、吉布地，常把肯亞也算進來。埃及在北非，南非在最南端，奈及利亞在西非。' },
+        { type: 'fill', q: '非洲之角的特色', text: '位在非洲{東北}部，形狀像{犀牛角}，是連接{印度洋}和{紅海}的海上要衝；氣候炎熱、乾溼季分明，降雨減少導致嚴重{乾旱}和飢荒。', extra: ['西南', '太平洋', '大雪'], why: '船從印度洋經過這裡進入紅海，再穿過蘇伊士運河到地中海。' },
+        { type: 'fill', q: '誰來救援？', text: '2020 年獲得諾貝爾和平獎、對抗飢餓的是{世界糧食計畫署}（WFP），總部在義大利{羅馬}。', extra: ['世界衛生組織', '日內瓦'] },
+        { type: 'fill', q: '世界糧食計畫署怎麼幫忙？', text: '緊急時直接運送米、麵粉等實物{糧食}；發放{現金}或代金券，讓災民在當地市場買食物；在{衝突}地區提供糧食，防止飢餓被當作戰爭武器。', extra: ['玩具', '房子'] }
+      ]),
+
+      bangladesh: mission('bangladesh', [
+        { type: 'fill', q: '血汗工廠', text: '工資{極低}、工時長、常被迫加班，廠房也不安全。2013 年{拉納廣場}大樓倒塌，造成 1100 多人死亡。', extra: ['很高', '天安門'] },
+        { type: 'fill', q: '達卡三輪車的商機', text: '三輪車是最主要的交通工具，提供大量{鄉村移民}就業，還帶動三輪車製造、零件維修和三輪車{彩繪}藝術。', extra: ['觀光客', '雕刻'] },
+        { type: 'fill', q: '拆船廠的健康威脅', text: '吸入{石綿}、鉛等有毒物質，容易得{癌症}和呼吸道疾病；很多工人赤腳赤手工作，常被{鋼板}砸傷、墜落或遇到爆炸。', extra: ['花粉', '感冒', '木板'] },
+        { type: 'fill', q: '孟加拉的崛起之路', text: '設加工出口區、吸引外資、發展{紡織業}，成為世界第{二}大成衣出口國；興建高速公路、捷運與科學園區；{鄉村銀行}用微型貸款幫助婦女創業。', extra: ['五十', '觀光業'], why: '你身上的衣服，說不定就是孟加拉製造的。翻開衣服標籤看看！' }
+      ], ['assets/ans4_bangladesh.jpg']),
+
+      home: mission('home', [
+        { type: 'sort', q: '世界公民的三種行動：把每件事拉到對的框框', labels: ['珍惜擁有', '參與援助', '發揮影響'], cards: [
+          ['不浪費食物和水', 0], ['愛惜身邊的物品和學習資源', 0],
+          ['捐出狀態良好的二手鞋或衣物', 1], ['支持公益計畫', 1],
+          ['把世界的角落的故事告訴家人朋友', 2], ['和同學分享舊鞋救命的故事', 2]
+        ], why: '幫助別人也能讓自己快樂，微小的改變，就能點亮世界的角落。' },
+        { type: 'open', q: '身為小學生的你，能為世界的角落做些什麼？寫下一件你這個星期就能做到的事。' }
+      ], ['assets/ans5_citizen.jpg'])
+    };
+    Cockpit.renderUnit({
+      title: '世界的角落',
+      grade: '六年級資優班',
+      subject: '情意發展・世界公民',
+
+      objectives: [
+        '說出非洲的位置、地形、氣候，以及非洲人民面臨的三大困境',
+        '比較臺灣和東非的生活，了解「舊鞋救命」怎麼幫助肯亞的孩子',
+        '認識非洲之角的飢荒和世界糧食計畫署的援助',
+        '了解孟加拉的貧窮挑戰與翻轉方法，想一想自己能為世界做什麼'
+      ],
+
+      intro: {
+        title: '開場：走進看不見的遠方，尋找改變的力量',
+        slides: ['assets/cover.jpg']
+      },
+
+      sections: [
+        {
+          title: '第一站：廣袤的黑土大陸——非洲',
+          text: '非洲是世界第二大洲，地形以<b>高原</b>為主：北部有撒哈拉沙漠，中部是剛果盆地，東部有東非大裂谷和吉力馬札羅山。這片大陸資源豐富，卻長期動盪，人民面臨環境、貧窮、疾病三大困境。',
+          slides: ['assets/st1_africa_map.jpg', 'assets/st1_conflict.jpg'],
+          interactive: MISSIONS.africa,
+          teacherTips: ['簡報第 1 頁先讓小組討論 1 分鐘再作答。答案：問題 1 地中海、大西洋；問題 2 撒哈拉沙漠、吉力馬札羅山；問題 3 熱帶莽原。', '簡報第 2 頁：族群衝突先舉手投票，答案是 (C) 歐洲列強以經緯度畫分殖民地；三大困境是環境、貧窮、疾病。兩題都可以用簡報下方的翻牌揭曉。', '影片「東非動物大遷徙」（播放 3:17–9:39）參考答案：1. 大約 3000 萬年前板塊運動把非洲撕裂，形成陸地上最大的裂谷；火山帶來的礦物讓平原和湖泊很肥沃，氣候溫和多雨，草長得好，吸引上百萬隻牛羚和斑馬。2. 這裡是熱帶莽原，乾溼季分明；七月乾季，坦尚尼亞的塞倫蓋提草枯水少，動物跟著溼土的氣味往北到肯亞的馬賽馬拉找水和草，十一月雨季前再回到塞倫蓋提，每年順時針繞大約 3000 公里。3. 斑馬先吃上面比較硬的草，牛羚吃下面短短的嫩草，等草長回來，跟在後面的瞪羚再吃。4. 渡過馬拉河：河裡有餓了一整年的尼羅鱷，樹上還有禿鷹等著。', '闖關答案：位置 地中海、歐洲、紅海、亞洲、大西洋、印度洋；地形 高原、撒哈拉、剛果、水力、斷層、吉力馬札羅；氣候 溫帶地中海型、熱帶莽原；族群 經緯度、戰爭、盧安達、種族隔離；三大困境 環境（人口增加過度開發、乾旱與沙漠化）、貧窮（饑荒、外債）、疾病（缺自來水和醫療、愛滋病）。']
+        },
+        {
+          title: '第二站：赤道上的十字架——肯亞',
+          text: '肯亞在東非，赤道從中間穿過。想像你穿越到東非，氣候、天然災害、醫療、教育會有什麼不同？在東非偏鄉，一隻只有 0.1 公分的沙蚤，就能奪走孩子的健康。',
+          slides: ['assets/st2_kenya.jpg', 'assets/st2_jigger.jpg', 'assets/st2_guess.jpg'],
+          interactive: MISSIONS.kenya,
+          teacherTips: ['簡報第 1 頁小組討論 1 分鐘：穿越到東非，生活會有什麼天翻地覆的改變？參考答案：氣候 臺灣是副熱帶季風氣候、雨量多，東非是熱帶莽原和高地氣候、乾溼季分明；天然災害 臺灣常有颱風和地震，東非是嚴重乾旱，有時又遇洪水；醫療 臺灣有全民健保、看病方便，東非醫療資源缺乏、很多人看不到醫生；教育 臺灣有 12 年國教，東非學校缺經費、缺老師，貧困孩子很難上學。', '簡報第 2 頁「想一想」：舊鞋救命怎麼提供實質幫助？參考答案：在臺灣募集二手包鞋送到東非，擋住沙蚤；派醫療團用藥水洗腳清創、做衛生教育；後來還鑿水井、蓋貨櫃教室、推動養雞農耕。', '簡報第 3 頁「猜猜看」：一雙舊鞋為什麼能救命？參考答案：沙蚤只有 0.1 公分，會從赤腳鑽進皮膚寄生，造成潰爛、感染，甚至截肢、喪命；穿上包住整隻腳的鞋子，就能擋住沙蚤，也不容易被沙石割傷。', '簡報檔裡的《蚤回盼望》沙蚤醫療篇影片可以在這一站播放，請學生邊看邊想：志工怎麼治療？為什麼一定要穿包鞋？參考答案：志工用藥水幫孩子洗腳、清創，把沙蚤處理掉再上藥；包鞋能包住整隻腳，沙蚤鑽不進去，拖鞋和涼鞋會露出腳。', '影片「沒有鞋子穿的東非孩子」（播放 3:11–9:10）參考答案：1. 腳趾和腳底腫脹、潰爛，是沙蚤病；他們從來沒有穿過鞋，沙蚤從赤腳鑽進皮膚。2. 先洗腳，再把腳泡在藥水裡大約 3 分鐘殺死沙蚤；以前用刀片或針把蟲和卵挖出來，現在泡藥比較不痛。3. 痛到不能走路，孩子沒辦法上學，媽媽沒辦法工作；嚴重時沙蚤會吃到小腿，甚至要截肢。4. 沙蚤會從露出來的腳鑽進去，涼鞋、拖鞋擋不住，要包住整隻腳的鞋，再加上保持衛生，才能真正預防。', '闖關答案：臺灣 副熱帶季風氣候、颱風和地震、全民健保、12 年國教；東非 熱帶莽原和高地氣候、乾旱和洪水、醫療資源缺乏、學校缺經費缺老師。致命的沙蚤 0.1、赤腳、包鞋。']
+        },
+        {
+          title: '第二站之二：一雙鞋，救一條命',
+          text: '2014 年，臺灣的楊右任聽岳父說肯亞孩子被沙蚤寄生，在網路上發起募鞋，數萬雙鞋湧入、裝滿貨櫃送往肯亞。<b>舊鞋救命（Step30）</b>從一雙鞋開始，長出水井、教室、農耕等翻轉貧窮的計畫。',
+          slides: ['assets/st2_name.jpg', 'assets/st2_ecosystem.jpg', 'assets/st2_numbers.jpg', 'assets/st2_donate_q.jpg', 'assets/st2_reflect.jpg'],
+          interactive: MISSIONS.shoes,
+          teacherTips: ['簡報第 1 頁「為什麼叫 Step30」：Step 是跨出第一步，追隨岳父在非洲的人道服務腳步；30 是鼓勵 30 歲以下的年輕人投入人道救助，合起來就是希望的未來。', '簡報第 2 頁生態系：養雞農耕計畫、興學計畫（貨櫃教室、磚塊教室）、垃圾換鞋計畫、沙蚤醫療與衛教（藥水洗腳清創）、活水計畫（鑿水井、建人工湖、成立水井委員會）。', '「愛心的篩選邏輯」可以先小組討論再作答：什麼鞋可以捐？為什麼？參考答案：可以捐沒有破洞、成雙綁好的平底包鞋和運動鞋；不能捐拖鞋、涼鞋（露出腳，擋不住沙蚤）、高跟鞋和雨鞋（不適合當地走路和天氣）、破洞發霉的鞋（不能穿、不衛生）。捐之前要先上官網確認開放寄送期間。', '「反思：從我的鞋櫃，到世界的角落」參考答案：整理鞋櫃，挑出還能穿的包鞋，清乾淨、綁好成雙，等官網開放時和家人一起寄出；也可以把舊鞋救命的故事告訴同學和家人。', '「看得見的改變」數字取自舊鞋救命 2025 年度報告，之後可到官網查最新數字。', '影片「一雙鞋 一口活水」（公視《獨立特派員》第 883 集，2024 年 12 月，約 16 分鐘）參考答案：1. 沙蚤鑽進腳趾縫，在皮膚下吃肉、產卵，手腳會變形，痛到不能工作、不能走路，有人覺得丟臉躲起來；孩子上學會覺得羞恥，沒辦法專心讀書。2. 要耐穿、能包住整隻腳的鞋子才擋得住沙蚤（志工會把鞋子凹一凹、捏一捏，檢查會不會裂開、脫膠）；拖鞋、破損和發霉的鞋都不收。放在鞋櫃好幾年的鞋，鞋底一捏就碎，只能當垃圾，反而要花很多經費處理。3. 就算治好沙蚤，孩子喝了有細菌的髒水，一樣容易死亡；當地取水要走兩、三公里，人和動物共用水源，水很混濁，女孩晚上去取水很危險。有了水井，生病的人變少，也省下時間去工作和上學。4. 在非洲之角的索馬利蘭，一年雨量很少，往下挖一、兩百公尺都找不到水，所以改成把雨水存起來：水流過好幾道人工湖和石頭過濾，存進集水壩，用來給牲畜喝、種牧草和灌溉，讓乾掉的土地重新變綠、長出生態。（已依公視官方字幕核對）', '闖關答案：緣起 2014、沙蚤、貨櫃；幫助 二手鞋、醫療團、教室；Step30 第一步、30 歲以下；生態系 活水計畫、興學計畫、垃圾換鞋計畫；可以捐 平底包鞋、成雙運動鞋，其他都不能捐；捐鞋前 官網、開放寄送期間。']
+        },
+        {
+          title: '第三站：最飢餓的犀牛角——非洲之角',
+          text: '非洲東北部向印度洋突出，形狀像犀牛角，叫做<b>非洲之角</b>。這裡是連接印度洋和紅海的海上要衝，卻有戰亂、旱災與蝗禍，是世界上營養不良最嚴重的地區。',
+          slides: ['assets/st3_horn.jpg'],
+          interactive: MISSIONS.horn,
+          teacherTips: ['地圖框框只給國名第一個字，可以先請學生猜五個國名，再進入闖關任務。', '最新狀況（2026 年）：索馬利亞約 600 萬人嚴重缺糧（IPC，2026 年 5 月），加上國際捐款大幅減少，世界糧食計畫署只幫得到大約十分之一需要幫助的人。簡報上的蝗災主要發生在 2019–2021 年。', '「猜猜看」參考答案：1. 五個國家是索馬利亞、衣索比亞、厄利垂亞、吉布地，加上常被算進來的肯亞；氣候炎熱、乾溼季分明，降雨減少造成嚴重乾旱和飢荒，加上戰亂和蝗災。2. 世界糧食計畫署（WFP），2020 年獲諾貝爾和平獎，總部在義大利羅馬。', '闖關答案：非洲之角 衣索比亞、索馬利亞、厄利垂亞、吉布地、肯亞，不在的是埃及、南非、奈及利亞；特色 東北、犀牛角、印度洋、紅海、乾旱；誰來救援 世界糧食計畫署、羅馬；怎麼幫忙 糧食、現金、衝突。']
+        },
+        {
+          title: '第四站：人口爆炸的水鄉——孟加拉',
+          text: '孟加拉不在非洲，在南亞，人口非常密集，也面臨極端的貧窮考驗：血汗工廠、拆船廠的危險工作，以及靠三輪車維生的移民。後來它靠紡織業和小額貸款，一步步翻轉命運。',
+          slides: ['assets/st4_bangladesh.jpg'],
+          interactive: MISSIONS.bangladesh,
+          teacherTips: ['小組討論 1 分鐘再作答。參考答案：1. 血汗工廠工資極低、工時長、常被迫加班，廠房不安全，2013 年拉納廣場大樓倒塌造成 1100 多人死亡。2. 三輪車提供大量鄉村移民工作，帶動三輪車製造、零件維修和三輪車彩繪藝術。3. 拆船廠工人吸入石綿、鉛等有毒物質，容易得癌症和呼吸道疾病，常赤腳赤手工作，會被鋼板砸傷、墜落或遇到爆炸。4. 設加工出口區吸引外資、發展紡織業，成為世界第二大成衣出口國；興建高速公路、捷運和科學園區；鄉村銀行用微型貸款幫助婦女創業。', '可以請學生翻看自己衣服的標籤，找找產地。補充：依 WTO 2024 年資料，孟加拉仍是世界第二大成衣出口國，但第三名的越南已經快追上了。', '闖關答案：血汗工廠 極低、拉納廣場；三輪車 鄉村移民、彩繪；拆船廠 石綿、癌症、鋼板；崛起 紡織業、二、鄉村銀行。']
+        },
+        {
+          title: '終點站：回到我們溫暖的家',
+          text: '走過缺水缺電的非洲、沒有鞋穿的東非孩子、危機四伏的孟加拉工廠……看看你腳上的鞋子、桌上的午餐，身為小學生的你，能為世界的角落做些什麼？',
+          slides: ['assets/end_home.jpg'],
+          interactive: MISSIONS.home,
+          teacherTips: ['靜下心想一想，再寫下自己這週能做到的一件事。參考答案（開放題，合理即可）：吃完營養午餐不浪費；和家人整理鞋櫃，準備捐出還能穿的包鞋；把舊鞋救命或世界的角落的故事說給家人聽；翻看衣服標籤，認識它從哪裡來。', '闖關答案：珍惜擁有 不浪費食物和水、愛惜物品和學習資源；參與援助 捐出狀態良好的二手鞋或衣物、支持公益計畫；發揮影響 把世界的角落的故事告訴家人朋友、和同學分享舊鞋救命的故事。']
+        }
+      ],
+
+      summary: [
+        '非洲以高原為主，北有撒哈拉沙漠、東有東非大裂谷；殖民時期用經緯度畫的邊界，留下長期的族群衝突。',
+        '非洲人民面臨環境、貧窮、疾病三大困境。',
+        '一雙包鞋就能擋住沙蚤：舊鞋救命從送鞋開始，長出水井、教室、農耕等計畫。',
+        '非洲之角乾旱與饑荒嚴重，世界糧食計畫署（WFP）在這裡送糧救命，2020 年獲諾貝爾和平獎。',
+        '孟加拉靠紡織業與小額貸款翻轉貧窮；我們可以珍惜擁有、參與援助、發揮影響。'
+      ],
+
+      video: { youtube: '28Vkk1NkxT4' },
+
+      teacher: {
+        mistakes: [
+          '以為「什麼鞋都能捐」：拖鞋、涼鞋擋不住沙蚤，捐鞋前要看官網的開放寄送期間。',
+          '以為非洲是一個國家：非洲是一個洲，有五十多個國家。',
+          '把孟加拉當成非洲國家：孟加拉在南亞。',
+          '只覺得「他們好可憐」：引導學生想到自己能做的行動，而不是只有同情。'
+        ],
+        links: [
+          { label: '世界糧食計畫署 WFP', url: 'https://www.wfp.org/' },
+          { label: '延伸觀看：舊鞋救命創辦人楊右任專訪（YouTube）', url: 'https://www.youtube.com/watch?v=28Vkk1NkxT4' }
+        ]
+      }
+    });
+
+    /* 各站影片：放在簡報後面、闖關任務前面，附「邊看邊想」 */
+    /* 標題已經有「第幾站」，拿掉框架自動加的 1. 2. 編號 */
+    document.querySelectorAll('.cp-section h2, .pills .pill').forEach(function (n) { n.textContent = n.textContent.replace(/^\d+\.\s*/, ''); });
+    function mmss(t) { return Math.floor(t / 60) + ':' + ('0' + t % 60).slice(-2); }
+    function addVideo(secId, ytId, start, title, questions, end) {
+      var sec = document.getElementById(secId), task = sec && Array.prototype.filter.call(sec.querySelectorAll('h3'), function (t) { return t.textContent === '動手操作'; })[0];
+      if (!task) return;
+      var wrap = document.createElement('div');
+      wrap.innerHTML = '<h3>影片時間：' + title + (end ? '（播放 ' + mmss(start) + '–' + mmss(end) + '）' : '') + '</h3><div class="video-wrap"><iframe src="https://www.youtube-nocookie.com/embed/' + ytId + '?rel=0' + (start ? '&start=' + start : '') + (end ? '&end=' + end : '') + '" title="' + title + '" loading="lazy" allowfullscreen></iframe></div>' +
+        (questions ? '<div class="m-item" style="margin-top:10px"><div class="m-q">邊看邊想</div><div>' + questions.map(function (q, i) { return (i + 1) + '. ' + q; }).join('<br>') + '</div></div>' : '');
+      while (wrap.firstChild) sec.insertBefore(wrap.firstChild, task);
+    }
+    /* 最後的延伸影片：補上摘要、邊看邊想和教師版答案 */
+    (function () {
+      var v = document.getElementById('video'); if (!v) return;
+      var h2 = v.querySelector('h2'); if (h2) h2.textContent = '延伸影片：舊鞋救命創辦人楊右任的故事';
+      var vw = v.querySelector('.video-wrap'), box = document.createElement('div');
+      box.innerHTML = '<div class="m-item" style="margin-bottom:10px"><div class="m-q">影片摘要（約 3 分鐘）</div><div>只讀到國中、曾在澳洲街頭塗鴉被警察追的楊右任，因為遇見一位曾混過幫派的牧師而改變人生。他在部落格貼出一張募鞋海報，號召了 20 萬人響應，發起「舊鞋救命」。走進非洲後，他發現問題環環相扣，很多人過著赤貧的生活，需要水井、學校和診所。臺灣的一點點資源，到了非洲就能帶來很大的改變。</div></div>';
+      v.insertBefore(box.firstChild, vw);
+      box.innerHTML = '<div class="m-item" style="margin-top:10px"><div class="m-q">邊看邊想</div><div>1. 楊右任年輕時是什麼樣的人？是誰改變了他？<br>2. 舊鞋救命一開始做什麼？後來發現非洲還需要什麼？<br>3. 發完鞋子，孩子們隔天又光著腳，為什麼？<br>4. 跟著楊右任去非洲當志工的年輕人，住在哪裡？他們有什麼改變？</div></div>' +
+        '<div class="teacher-only teacher-box"><div class="label">教學提示</div><ul><li>延伸影片參考答案：1. 只讀到國中，被送出國後在街頭塗鴉、被警察追；在澳洲遇到一位曾混過幫派、全身刺青的牧師，看見自己想要的生活，牧師鼓勵他回臺灣幫助迷失的年輕人。2. 先幫村民治療被沙蚤侵害的腳、發鞋給貧困的孩子；幾個月後發現問題環環相扣，還需要水井、學校和診所。3. 媽媽們把鞋子收起來，要留到半個月後的聖誕節當禮物，她們從沒想過能送孩子這麼好的禮物。4. 住在貧窮的村落，不住高級飯店；很多志工的生命因此改變，有人後來成為國際救援工作者。</li></ul></div>';
+      while (box.firstChild) v.appendChild(box.firstChild);
+    })();
+    addVideo('sec1', '3b49PIRb9G8', 197, '東非動物大遷徙', ['東非大裂谷是怎麼形成的？它讓這裡的草原有什麼好處？', '每年七月，為什麼兩百萬隻牛羚和斑馬要從坦尚尼亞走到肯亞？什麼時候再回來？', '斑馬、牛羚、瞪羚怎麼「輪流」吃同一片草？', '遷徙路上最危險的難關是什麼？'], 579);
+    addVideo('sec2', 'oyr18hd2Ouk', 191, '沒有鞋子穿的東非孩子', ['影片裡五歲的男孩和三歲的弟弟，腳發生了什麼事？為什麼會這樣？', '舊鞋救命的診所怎麼治療沙蚤？以前的方法和現在有什麼不同？', '得了沙蚤病，孩子和媽媽的生活會受到什麼影響？', '為什麼送的一定要是包鞋？'], 550);
+    addVideo('sec3', 'b9FibGg-crA', 0, '一雙鞋 一口活水（公視《獨立特派員》2024）', ['沙蚤會帶給感染的人，還有上學的孩子什麼困擾？', '什麼樣的鞋子才適合捐？哪些鞋子反而會造成麻煩？', '為什麼舊鞋救命除了送鞋，還要蓋水井？', '在挖不到水的索馬利蘭，舊鞋救命和法國社會企業家挖的人工湖，怎麼幫助當地？']);
+
+    /* 課堂討論：老師按卡片逐一翻開答案，答案不畫在簡報圖上，方便日後修改 */
+    function addReveal(secId, title, groups) {
+      var sec = document.getElementById(secId), car = sec && sec.querySelector('.carousel');
+      if (!car) return;
+      var box = h('div', 'game');
+      groups.forEach(function (g) {
+        var item = h('div', 'm-item'), row = h('div', 'row'), note = h('div', 'rv-note', g.note || '');
+        item.appendChild(h('div', 'm-q', g.q));
+        var cards = g.answers.map(function (a) {
+          var c = h('button', 'rv-card', '點我翻牌'); c.type = 'button';
+          c.onclick = function () {
+            var open = !c.classList.contains('open');
+            c.classList.toggle('open', open); c.textContent = open ? a : '點我翻牌';
+            note.classList.toggle('show', cards.every(function (x) { return x.classList.contains('open'); }));
+          };
+          row.appendChild(c); return c;
+        });
+        item.appendChild(row); if (g.note) item.appendChild(note); box.appendChild(item);
+      });
+      var t = h('h3', null, title);
+      car.parentNode.insertBefore(box, car.nextSibling); car.parentNode.insertBefore(t, box);
+    }
+    addReveal('sec1', '課堂討論：翻牌看答案', [
+      { q: '【舉手投票】造成非洲族群衝突的原因是什麼？', answers: ['(C) 歐洲列強以經緯度畫分殖民地'],
+        note: '歐洲國家沿著經緯度直直畫線分殖民地，把同一個族群拆到不同國家，又把不同族群放進同一國，獨立後容易發生衝突。地圖上的紅色虛線就是這種直線國界。' },
+      { q: '【想一想】非洲人民面臨哪三大困境？', answers: ['環境問題', '貧窮問題', '疾病問題'],
+        note: '環境：乾旱、沙漠化；貧窮：戰亂和乾旱造成饑荒、背負外債；疾病：缺乏乾淨的水和醫療、愛滋病。' }
+    ]);
+
+    /* 闖關任務不用框架的「動手操作」標題；沒有資訊圖表的段落把佔位框拿掉 */
+    document.querySelectorAll('section[id^="sec"] h3').forEach(function (t) {
+      if (t.textContent === '動手操作') t.textContent = '闖關任務';
+      if (t.textContent === '資訊圖表' && t.nextElementSibling && t.nextElementSibling.classList.contains('placeholder')) { t.nextElementSibling.remove(); t.remove(); }
+    });
+
+    /* ── 探險護照：每一站交卷後蓋一個章 ──
+     * 只存在這台平板的瀏覽器裡（localStorage），不會傳到任何地方，也不記錄姓名。 */
+    var KEY = 'g6-world-corners', passport = { done: {} };
+    try { passport = Object.assign(passport, JSON.parse(localStorage.getItem(KEY) || '{}')); } catch (e) {}
+    var STOPS = [['africa', '非洲'], ['kenya', '肯亞'], ['shoes', '舊鞋救命'], ['horn', '非洲之角'], ['bangladesh', '孟加拉'], ['home', '回家']];
+    var panel = document.createElement('section');
+    panel.className = 'cp-section'; panel.id = 'passport';
+    panel.innerHTML = '<h2>我的探險護照</h2><p class="hint" style="color:var(--chalk-dim)">每一站的闖關任務交卷後，就會蓋一個章。護照只存在這台平板上。</p><div class="stamps" id="stampList"></div><p class="grad" id="grad">六個章都蓋滿了！你是世界公民探險家。</p>';
+    var anchor = document.getElementById('intro') || document.getElementById('top');
+    anchor.parentNode.insertBefore(panel, anchor.nextSibling);
+    var stampEls = STOPS.map(function (s, i) {
+      var a = document.createElement('a');
+      a.className = 'stamp'; a.href = '#sec' + (i + 1);
+      a.innerHTML = '<span class="c">' + (i + 1) + '</span><span>' + s[1] + '</span>';
+      panel.querySelector('#stampList').appendChild(a);
+      return a;
+    });
+    function refreshStamps() {
+      var all = true;
+      STOPS.forEach(function (s, i) { var on = !!passport.done[s[0]]; stampEls[i].classList.toggle('on', on); if (!on) all = false; });
+      panel.querySelector('#grad').classList.toggle('show', all);
+    }
+    function stampDone(id) {
+      passport.done[id] = 1;
+      try { localStorage.setItem(KEY, JSON.stringify(passport)); } catch (e) {}
+      refreshStamps();
+    }
+    refreshStamps();
+  </script>
+</body>
+</html>
