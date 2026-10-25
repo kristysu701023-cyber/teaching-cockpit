@@ -10,8 +10,8 @@
 - 參考範本：https://github.com/mathruffian-dot/math-cockpit（國中數學版）
 - 本機位置：`C:\2026AI_Agent\教學駕駛艙`
 - 雲端同步：`G:\我的雲端硬碟\2026AI_Agent\教學駕駛艙`（robocopy）
-- GitHub：`kristysu701023-cyber/teaching-cockpit`（**公開**，GitHub Pages 需要；這是「repo 一律私有」的例外，尚未建立）
-- 網址：https://kristysu701023-cyber.github.io/teaching-cockpit/（repo 建好、啟用 Pages 後生效）
+- GitHub：`kristysu701023-cyber/teaching-cockpit`（**公開**，GitHub Pages 需要；這是「repo 一律私有」的例外）
+- 網址：https://kristysu701023-cyber.github.io/teaching-cockpit/
 
 ## 🗓️ 關鍵時程
 
@@ -19,7 +19,9 @@
 |---|---|
 | 2026-10-21 | 專案初始化 |
 | 2026-10-22 | RDQ 規格卡確認，框架初版完成 |
+| 2026-10-24 | 第二單元《世界的角落》上線（022fb88） |
 | 2026-10-25 | 第一單元《資安偵探學院》11 案全套 3D 皮克斯視覺大修復、偵探證微卡片重構、《2020》網路危機全套短片收錄完工上線 |
+| 2026-10-25 | 新單元開工流程寫進 SKILL.md／AGENTS.md（ea10dfb） |
 
 ## 🎯 目標與路線圖
 
@@ -30,7 +32,11 @@
 - [x] 建立公開 repo `teaching-cockpit`，推上去，啟用 GitHub Pages
 - [x] 第一個單元：國小五年級資優專題《資安偵探學院》（units/g5-cyber-safety）11 個案件全套純白底 3D 皮克斯風格投影片、資訊圖表、偵探證微卡片、全套短片全面完工定案上線
 - [ ] Kristy 在 `assets/config.js` 改教師密碼（目前是 `0000`）
-- [ ] 第二個單元（另開任務，用 skill 製作）
+- [x] 第二個單元：六年級情意《世界的角落》（units/g6-world-corners）六站拖拉闖關、真實地圖、影片分段與邊看邊想、教師版每題有答案，已上線
+- [x] 新單元開工流程（先選製作方式 → 先定文字 → 選畫風 → 整單元預覽）寫進 skill 與本檔
+- [ ] 清除暫存檔：Kristy 勾選待清除清單後移到 `待刪除/`
+- [ ] 第三個單元（照「新單元開工流程」）
+- [ ] 可選：兩個單元的 Word 學習單（學生版＋教師解答版）
 
 ## 📁 資料夾結構
 
@@ -46,6 +52,8 @@
 │   └── vendor/qrcode.js      QR 產生器（本地檔，MIT）
 ├── templates/unit/           單元頁範本（index.html＋assets/）
 ├── units/                    正式單元，一個單元一個資料夾
+│   ├── g5-cyber-safety/      五年級情意《資安偵探學院》
+│   └── g6-world-corners/     六年級情意《世界的角落》
 ├── skills/teaching-cockpit/  國小通用版生成 skill
 └── rdq/                      需求規格卡
 ```
@@ -64,7 +72,7 @@
 |---|---|---|
 | L1 本地 | AGENTS.md＋handoff.md，每次都讀 | ✅ |
 | L2 GitHub | `kristysu701023-cyber/teaching-cockpit`（公開） | ✅ 已建立並啟用 Pages |
-| L3 Obsidian | — | 未啟用 |
+| L3 Obsidian | `G:\我的雲端硬碟\Obsidian筆記\Claude專案\教學駕駛艙\`（專案摘要、專案工作流程）＋首頁待辦 | ✅ 收工時更新 |
 
 ## 🤝 工作約定
 
