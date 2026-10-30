@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>做壓力的主人｜教學駕駛艙</title>
+  <link rel="stylesheet" href="../../assets/cockpit.css?v=20261024w">
+  <style>
+    /* 本單元專用：闖關任務與抗壓徽章的樣式（只影響這一頁） */
+    .game { display: grid; gap: 14px; padding: 16px; background: var(--board-2); border-radius: var(--radius); border: 1px solid var(--line); }
+    .game .hint { color: var(--chalk-dim); font-size: .95rem; }
+    .m-item { background: var(--board-3); border-radius: 12px; padding: 12px 14px; display: grid; gap: 10px; border-left: 5px solid transparent; }
+    .m-item.ok { border-left-color: var(--green); }
+    .m-item.bad { border-left-color: var(--pink); }
+    .m-q { font-weight: 700; }
+    .m-q .n { color: var(--title); margin-right: 6px; }
+    .m-q .need { font-weight: 400; color: var(--chalk-dim); font-size: .9rem; margin-left: 4px; }
+    .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .g-btn { min-height: var(--touch); padding: 6px 14px; border-radius: 10px; border: 1.5px solid var(--line); background: var(--board-2); color: var(--chalk); text-align: left; }
+    .g-btn:hover { border-color: var(--title); }
+    .g-btn.picked { border-color: var(--blue); background: #e3eefa; font-weight: 700; }
+    .g-btn.right { border-color: var(--green); background: #e2f3e8; }
+    .g-btn.wrong { border-color: var(--pink); background: #fbe5e3; }
+    .g-btn:disabled { cursor: default; }
+    .g-main { background: var(--title); color: #fff; border-color: var(--title); font-weight: 700; text-align: center; }
+    .g-main:hover { background: var(--wood-dark); }
+    .sort-card { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; align-items: center; background: var(--board-2); border-radius: 10px; padding: 6px 10px; border: 1.5px solid transparent; }
+    .sort-card.right { border-color: var(--green); }
+    .sort-card.wrong { border-color: var(--pink); }
+    @media (max-width: 560px) { .sort-card { grid-template-columns: 1fr; } }
+    .why { display: none; color: var(--chalk); background: #fff8e6; border-radius: 8px; padding: 8px 12px; }
+    .done .why { display: block; }
+    .m-text { width: 100%; min-height: 84px; font: inherit; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--board-2); color: var(--chalk); resize: vertical; }
+    .m-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+    .m-status { color: var(--chalk-dim); }
+    .m-score { font-size: 1.25rem; font-weight: 700; color: var(--title); }
+    .m-ans { display: none; gap: 10px; }
+    .done .m-ans { display: grid; }
+    .m-ans img { border-radius: 10px; cursor: zoom-in; border: 1px solid var(--line); }
+    /* 探險護照 */
+    .rv-card { display: inline-grid; place-items: center; min-width: 7em; min-height: var(--touch); padding: 6px 16px; border-radius: 10px; border: 2px dashed var(--line); background: var(--board-2); color: var(--chalk-dim); font: inherit; font-weight: 700; cursor: pointer; }
+    .rv-card.open { border-style: solid; border-color: var(--green); background: #e2f3e8; color: var(--chalk); }
+    .rv-note { display: none; background: #fff8e6; border-radius: 8px; padding: 8px 12px; }
+    .rv-note.show { display: block; }
+    .stamps { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 10px; }
+    .stamp { display: grid; justify-items: center; gap: 4px; text-align: center; font-size: .85rem; color: var(--chalk-dim); text-decoration: none; }
+    .stamp span.c { width: 60px; height: 60px; border-radius: 50%; border: 3px dashed var(--line); display: grid; place-items: center; font-weight: 700; }
+    .stamp.on { color: var(--chalk); }
+    .stamp.on span.c { border: 3px double #a8322b; color: #a8322b; background: #fdf0ee; transform: rotate(-8deg); }
+    .grad { display: none; color: #a8322b; font-weight: 700; font-size: 1.1rem; }
+    .grad.show { display: block; }
+    /* 拖曳答案卡 */
+    .fill-text { line-height: 2.4; }
+    .blank { display: inline-flex; align-items: center; justify-content: center; gap: 4px; min-width: 6em; min-height: 44px; vertical-align: middle; margin: 0 4px; padding: 1px; border: 2px dashed var(--blue); background: #f4f8fd; border-radius: 999px; }
+    .blank .chip-d { margin: 0; }
+    .blank:empty::after { content: '　'; }
+    .blank:not(:empty) { min-width: 0; min-height: 0; padding: 0; border-color: transparent; background: none; }
+    .blank:not(:empty) .chip-d { min-height: 36px; padding: 2px 14px; line-height: 1.4; }
+    .blank.right, .blank.right:not(:empty) { border-color: transparent; background: none; }
+    .blank.wrong, .blank.wrong:not(:empty) { border-color: transparent; background: none; }
+    .blank.right .chip-d { border-color: var(--green); background: #e2f3e8; }
+    .blank.wrong .chip-d { border-color: var(--pink); background: #fbe5e3; }
+    .blank.wrong:empty { border-color: var(--pink); border-style: solid; background: #fbe5e3; }
+    .bank { display: flex; flex-wrap: wrap; gap: 8px; min-height: 56px; padding: 10px; border: 2px dashed var(--line); border-radius: 10px; background: var(--board); }
+    .done .bank:empty { display: none; }
+    .chip-d { min-height: 40px; padding: 4px 14px; border-radius: 999px; border: 1.5px solid var(--blue); background: #e3eefa; color: var(--chalk); font-weight: 700; touch-action: none; user-select: none; -webkit-user-select: none; cursor: grab; }
+    body.dragging, body.dragging * { user-select: none; -webkit-user-select: none; cursor: grabbing; }
+    .chip-d.sel { outline: 3px solid var(--yellow); outline-offset: 2px; }
+    .chip-d.lift { opacity: .35; }
+    .chip-d.ghost { position: fixed; z-index: 999; pointer-events: none; transform: translate(-50%, -50%) scale(1.06); box-shadow: 0 6px 18px rgba(0,0,0,.2); }
+    .chip-d.right { border-color: var(--green); background: #e2f3e8; }
+    .chip-d.wrong { border-color: var(--pink); background: #fbe5e3; }
+    .done .chip-d { cursor: default; }
+    .fix { font-weight: 700; color: var(--green); margin-left: 4px; font-size: .9rem; }
+    .fix::before { content: '→ '; }
+    .bins { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; }
+    .bin { background: var(--board-2); border-radius: 10px; padding: 8px; display: grid; grid-template-rows: auto 1fr; gap: 6px; border: 1.5px solid var(--line); }
+    .bin-t { font-weight: 700; color: var(--title); text-align: center; }
+    .binzone { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; min-height: 90px; padding: 6px; border-radius: 8px; background: var(--board-3); }
+  </style>
+</head>
+<body>
+  <script src="../../assets/config.js?v=20261024w"></script>
+  <script src="../../assets/vendor/qrcode.js?v=20261024w"></script>
+  <script src="../../assets/cockpit.js?v=20261024w"></script>
+  <script>
+    /* ── 闖關任務 ──
+     * 框架的互動區給的是 640×360 畫布；任務需要按鈕和文字，
+     * 所以 dom() 把畫布換成一般的區塊（只影響本單元，不改共用的 cockpit.js）。
+     * 學生先全部作答，按「交卷看答案」才一次揭曉對錯、解說與參考答案圖。 */
+    function dom(build) {
+      return function (canvas, out) {
+        var box = document.createElement('div');
+        box.className = 'game';
+        canvas.replaceWith(box);
+        build(box, out);
+      };
+    }
+    function h(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
+    function same(a, b) { return a.length === b.length && a.every(function (x) { return b.indexOf(x) >= 0; }); }
+    function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+
+    /* ── 拖曳：把答案卡拉進空格或分類框 ──
+     * 手指或滑鼠按住卡片拖到空格放開；也可以先點卡片、再點空格。點空格裡的卡片會退回卡片區。 */
+    function dragKit(box) {
+      var picked = null, drag = null;
+      function locked() { return box.classList.contains('done'); }
+      function select(c) {
+        if (picked) picked.classList.remove('sel');
+        picked = c && c !== picked ? c : null;
+        if (picked) picked.classList.add('sel');
+      }
+      function bankOf(c) { return c.closest('.m-item').querySelector('.bank'); }
+      function place(c, zone) {
+        if (!zone || zone.closest('.m-item') !== c.closest('.m-item')) return false;
+        if (zone.classList.contains('blank')) {
+          var old = zone.querySelector('.chip-d');
+          if (old === c) return true;
+          if (old) bankOf(c).appendChild(old);
+        }
+        zone.appendChild(c);
+        zone.closest('.m-item').dispatchEvent(new Event('change', { bubbles: true }));
+        return true;
+      }
+      function chip(text, data) {
+        var c = h('button', 'chip-d', text);
+        c.type = 'button';
+        Object.keys(data || {}).forEach(function (k) { c.dataset[k] = data[k]; });
+        c.addEventListener('pointerdown', function (e) {
+          if (locked()) return;
+          e.preventDefault();
+          drag = { c: c, x: e.clientX, y: e.clientY, ghost: null, id: e.pointerId };
+          document.body.classList.add('dragging');
+          c.setPointerCapture(e.pointerId);
+        });
+        c.addEventListener('pointermove', function (e) {
+          if (!drag || drag.c !== c) return;
+          if (!drag.ghost && Math.hypot(e.clientX - drag.x, e.clientY - drag.y) > 6) {
+            drag.ghost = c.cloneNode(true);
+            drag.ghost.className = 'chip-d ghost';
+            document.body.appendChild(drag.ghost);
+            c.classList.add('lift');
+          }
+          if (drag.ghost) { drag.ghost.style.left = e.clientX + 'px'; drag.ghost.style.top = e.clientY + 'px'; }
+        });
+        function end(e) {
+          if (!drag || drag.c !== c) return;
+          var d = drag; drag = null;
+          document.body.classList.remove('dragging');
+          if (d.ghost) {
+            d.ghost.remove(); c.classList.remove('lift');
+            var under = document.elementFromPoint(e.clientX, e.clientY);
+            var zone = under && (under.closest('.dz') || (under.closest('.bin') && under.closest('.bin').querySelector('.binzone')));
+            if (zone && zone.classList.contains('bank') && zone.closest('.m-item') === c.closest('.m-item')) { zone.appendChild(c); c.closest('.m-item').dispatchEvent(new Event('change', { bubbles: true })); }
+            else place(c, zone);
+            select(null);
+          } else if (picked && picked !== c && !picked.parentNode.classList.contains('bank') && c.parentNode.classList.contains('bank') && c.closest('.m-item') === picked.closest('.m-item')) {
+            var back = picked; c.parentNode.appendChild(back); select(null); back.closest('.m-item').dispatchEvent(new Event('change', { bubbles: true }));
+          } else select(c);
+        }
+        c.addEventListener('pointerup', end);
+        c.addEventListener('pointercancel', function () { if (drag && drag.ghost) { drag.ghost.remove(); c.classList.remove('lift'); } drag = null; document.body.classList.remove('dragging'); });
+        return c;
+      }
+      box.addEventListener('click', function (e) {
+        if (locked() || !picked || e.target.closest('.chip-d')) return;
+        var zone = e.target.closest('.dz') || (e.target.closest('.bin') && e.target.closest('.bin').querySelector('.binzone'));
+        if (!zone || zone.closest('.m-item') !== picked.closest('.m-item')) return;
+        if (zone.classList.contains('bank')) { zone.appendChild(picked); zone.closest('.m-item').dispatchEvent(new Event('change', { bubbles: true })); select(null); }
+        else if (place(picked, zone)) select(null);
+      });
+      return { chip: chip };
+    }
+
+    // 題型：fill 填空（把答案卡拉進空格）、sort 分類（把卡片拉進分類框）、
+    //       choice 單選、multi 複選、pick 自由複選（沒有標準答案）、open 自由書寫
+    function mission(id, items, answers) {
+      return dom(function (box) {
+        box.appendChild(h('p', 'hint', '把下面的答案卡拖到空格或框框裡（也可以先點卡片、再點空格）。放錯了可以再拖到別的地方，或點卡片再點新位置；拖回答案區就能取消。全部完成後按「交卷看答案」，才會一起揭曉。'));
+        var kit = dragKit(box), states = [];
+        items.forEach(function (it, k) {
+          var card = h('div', 'm-item'), q = h('div', 'm-q');
+          q.appendChild(h('span', 'n', (k + 1) + '.'));
+          q.appendChild(document.createTextNode(it.q));
+          if (it.type === 'multi') q.appendChild(h('span', 'need', '（選 ' + it.a.length + ' 個）'));
+          if (it.type === 'pick') q.appendChild(h('span', 'need', '（可以多選）'));
+          card.appendChild(q);
+          var st = { it: it, card: card, pick: [], btns: [] };
+
+          if (it.type === 'fill' || it.type === 'sort') {
+            var bank = h('div', 'bank dz');
+            if (it.type === 'fill') {
+              var p = h('div', 'fill-text'), words = [];
+              it.text.split(/(\{[^}]+\})/).forEach(function (part) {
+                var m = part.match(/^\{(.+)\}$/);
+                if (m) { var z = h('span', 'dz blank'); z.dataset.ans = m[1]; p.appendChild(z); words.push(m[1]); }
+                else if (part) p.appendChild(document.createTextNode(part));
+              });
+              card.appendChild(p);
+              shuffle(words.concat(it.extra || [])).forEach(function (w) { bank.appendChild(kit.chip(w)); });
+              card.appendChild(bank);
+            } else {
+              shuffle(it.cards).forEach(function (c) { bank.appendChild(kit.chip(c[0], { bin: c[1] })); });
+              card.appendChild(bank);
+              var bins = h('div', 'bins');
+              it.labels.forEach(function (lb, li) {
+                var b = h('div', 'bin'), z = h('div', 'dz binzone');
+                b.appendChild(h('div', 'bin-t', lb));
+                z.dataset.bin = li;
+                b.appendChild(z);
+                bins.appendChild(b);
+              });
+              card.appendChild(bins);
+            }
+            st.bank = bank;
+            card.addEventListener('change', update);
+          } else if (it.type === 'choice' || it.type === 'multi' || it.type === 'pick') {
+            var row = h('div', 'row');
+            it.opts.forEach(function (o, i) {
+              var b = h('button', 'g-btn', o);
+              b.onclick = function () {
+                if (box.classList.contains('done')) return;
+                if (it.type === 'choice') st.pick = [i];
+                else {
+                  var at = st.pick.indexOf(i);
+                  if (at >= 0) st.pick.splice(at, 1);
+                  else if (it.type === 'pick' || st.pick.length < it.a.length) st.pick.push(i);
+                }
+                st.btns.forEach(function (x, j) { x.classList.toggle('picked', st.pick.indexOf(j) >= 0); });
+                update();
+              };
+              st.btns.push(b);
+              row.appendChild(b);
+            });
+            card.appendChild(row);
+          } else if (it.type === 'open') {
+            st.text = h('textarea', 'm-text');
+            st.text.placeholder = '寫下你的想法';
+            st.text.oninput = update;
+            card.appendChild(st.text);
+          }
+          var why = h('div', 'why');
+          why.innerHTML = it.why || '';
+          if (it.why) card.appendChild(why);
+          box.appendChild(card);
+          states.push(st);
+        });
+
+        function answered(st) {
+          var it = st.it;
+          if (it.type === 'fill') return Array.prototype.every.call(st.card.querySelectorAll('.blank'), function (z) { return z.querySelector('.chip-d'); });
+          if (it.type === 'sort') return !st.bank.querySelector('.chip-d');
+          if (it.type === 'open') return st.text.value.trim().length > 0;
+          if (it.type === 'multi') return st.pick.length === it.a.length;
+          return st.pick.length > 0;
+        }
+        var bar = h('div', 'm-bar'), status = h('span', 'm-status'), btn = h('button', 'g-btn g-main', '交卷看答案'), warned = false;
+        bar.appendChild(status); bar.appendChild(btn);
+        box.appendChild(bar);
+        var score = h('div', 'm-score');
+        box.appendChild(score);
+
+        var ans = h('div', 'm-ans');
+        if (answers && answers.length) {
+          ans.appendChild(h('h3', '', '參考答案'));
+          answers.forEach(function (src) {
+            var img = h('img');
+            img.src = src; img.alt = '參考答案'; img.loading = 'lazy';
+            img.onclick = function () { window.open(src, '_blank'); };
+            ans.appendChild(img);
+          });
+          box.appendChild(ans);
+        }
+
+        function update() {
+          var n = states.filter(answered).length;
+          status.textContent = '已完成 ' + n + ' / ' + states.length + ' 題';
+          if (warned && n === states.length) { warned = false; btn.textContent = '交卷看答案'; }
+        }
+        function reveal() {
+          var graded = 0, right = 0;
+          states.forEach(function (st) {
+            var it = st.it, ok = null;
+            st.btns.forEach(function (b) { b.disabled = true; });
+            if (it.type === 'choice' || it.type === 'multi') {
+              st.btns.forEach(function (b, j) {
+                if (it.type === 'choice' ? j === it.a : it.a.indexOf(j) >= 0) b.classList.add('right');
+                else if (st.pick.indexOf(j) >= 0) b.classList.add('wrong');
+              });
+              ok = it.type === 'choice' ? st.pick[0] === it.a : same(st.pick, it.a);
+            } else if (it.type === 'fill') {
+              ok = true;
+              st.card.querySelectorAll('.blank').forEach(function (z) {
+                var c = z.querySelector('.chip-d'), good = c && c.textContent === z.dataset.ans;
+                z.classList.add(good ? 'right' : 'wrong');
+                if (!good) { ok = false; z.appendChild(h('span', 'fix', z.dataset.ans)); }
+              });
+            } else if (it.type === 'sort') {
+              ok = true;
+              st.card.querySelectorAll('.binzone .chip-d').forEach(function (c) {
+                var good = c.dataset.bin === c.parentNode.dataset.bin;
+                c.classList.add(good ? 'right' : 'wrong');
+                if (!good) { ok = false; c.appendChild(h('span', 'fix', it.labels[c.dataset.bin])); }
+              });
+            } else if (it.type === 'open') st.text.readOnly = true;
+            if (ok !== null) { graded++; if (ok) right++; st.card.classList.add(ok ? 'ok' : 'bad'); }
+          });
+          box.classList.add('done');
+          score.textContent = graded ? '答對 ' + right + ' / ' + graded + ' 題' + (right === graded ? '，全部答對！' : '，紅色的地方看看正確答案和解說，再想一想。') : '看看下面的參考答案。';
+          btn.textContent = '重新作答';
+          stampDone(id);
+        }
+        function reset() {
+          box.querySelectorAll('.fix').forEach(function (f) { f.remove(); });
+          states.forEach(function (st) {
+            st.card.classList.remove('ok', 'bad');
+            if (st.bank) {
+              st.card.querySelectorAll('.blank').forEach(function (z) { z.classList.remove('right', 'wrong'); });
+              shuffle(Array.prototype.slice.call(st.card.querySelectorAll('.chip-d'))).forEach(function (c) { c.classList.remove('right', 'wrong', 'sel'); st.bank.appendChild(c); });
+            } else if (st.it.type === 'open') { st.text.readOnly = false; }
+            else { st.pick = []; st.btns.forEach(function (b) { b.disabled = false; b.className = 'g-btn'; }); }
+          });
+          box.classList.remove('done');
+          score.textContent = '';
+          btn.textContent = '交卷看答案';
+          update();
+        }
+        btn.onclick = function () {
+          if (box.classList.contains('done')) return reset();
+          var left = states.length - states.filter(answered).length;
+          if (left && !warned) { warned = true; btn.textContent = '還有 ' + left + ' 題沒完成，確定交卷？'; return; }
+          warned = false;
+          reveal();
+        };
+        update();
+      });
+    }
+
+    var MISSIONS = {
+      what: mission('what', [
+        { type: 'sort', q: '壓力三步驟：把三張卡片拉到對的框框', labels: ['壓力源', '壓力感', '壓力反應'], cards: [
+          ['下週要段考', 0], ['我覺得好緊張，怕考不好', 1], ['晚上睡不著，肚子痛', 2]
+        ], why: '先有事情發生（壓力源），心裡覺得有壓力（壓力感），身體和心情才跟著起變化（壓力反應）。' },
+        { type: 'choice', q: '同樣要上台報告，小明緊張得要命，小華卻覺得還好。最可能的原因是？', opts: ['(A) 小華比較聰明', '(B) 兩人「覺得自己能不能處理」和「對自己的期望」不同', '(C) 小明身體不好', '(D) 上台報告本來就不會有壓力'], a: 1, why: '壓力感不是事情本身決定的，跟你怎麼看自己、對自己要求多高有關。' },
+        { type: 'choice', q: '比賽前，誰的壓力最剛好？', opts: ['阿哲：一點都不在意，練習時一直滑手機', '小美：有點緊張，所以每天認真練習', '大偉：緊張到睡不著，上場腦袋一片空白'], a: 1, why: '阿哲壓力太少、提不起勁；大偉壓力太多、慌亂出錯；小美的壓力剛剛好，讓她更專心、更努力。' }
+      ]),
+
+      source: mission('source', [
+        { type: 'sort', q: '這是哪一種壓力源？把情境卡拉到對的框框', labels: ['課業', '人際', '家庭', '自己', '3C 與社群'], cards: [
+          ['明天要考數學，還有兩課沒複習', 0], ['專題報告下週要上台', 0],
+          ['好朋友這幾天不跟我說話', 1], ['同學叫我幫他寫作業，我不想但不敢拒絕', 1],
+          ['爸媽說「你一定可以考第一名」', 2], ['家裡要搬家，我要轉學', 2],
+          ['我覺得每件事都要做到完美才行', 3],
+          ['群組訊息一直跳，不馬上回怕被說不理人', 4], ['看到同學發的出國照片，覺得自己好無聊', 4]
+        ], why: '壓力不只來自考試：朋友、家人的期待、對自己的要求、手機裡的世界，都可能帶來壓力。' },
+        { type: 'open', q: '寫下最近讓你有壓力的三件事，並在後面寫它屬於哪一類（寫的內容只留在這台平板，不會上傳）。', why: '例如：下週數學競賽（課業）、和好朋友吵架還沒和好（人際）、想把每科都拿滿分（自己）。' }
+      ]),
+
+      body: mission('body', [
+        { type: 'sort', q: '壓力的警訊：把每張症狀卡拉到對的框框', labels: ['情緒反應', '生理反應', '疾病'], cards: [
+          ['緊張', 0], ['灰心', 0], ['恐懼', 0], ['煩躁', 0],
+          ['手腳冰冷', 1], ['冒冷汗', 1], ['肩頸痠痛', 1], ['胃痛', 1],
+          ['偏頭痛', 2], ['腸道發炎', 2], ['感冒', 2], ['高血壓', 2]
+        ], why: '情緒和生理反應是「警訊」，提醒你該處理壓力了；一直不理它，就可能變成疾病。會感冒，是因為長期壓力讓抵抗力變差。' },
+        { type: 'choice', q: '小安明天要比賽，心跳很快、手心冒汗。這代表什麼？', opts: ['(A) 他生病了，應該放棄比賽', '(B) 身體正在幫他準備面對挑戰', '(C) 他膽子太小', '(D) 只有大人才會這樣'], a: 1, why: '這是「戰鬥或逃跑反應」：短時間出現很正常，是身體在給你力氣和專注力。' }
+      ]),
+
+      boost: mission('boost', [
+        { type: 'sort', q: '壓力帶來的能力：把人物拉到對的框框', labels: ['勇往直前', '急中生智', '風吹草動也察覺'], cards: [
+          ['韓信背水一戰', 0], ['曹操獻刀', 1], ['伍子胥過昭關', 2],
+          ['林書豪：可能是最後一場比賽，放手一搏', 0], ['薩利機長：引擎熄火，決定迫降在河上', 1]
+        ], why: '同樣是壓力，韓信的士兵沒有退路而拚命，曹操在危急時想出好辦法，伍子胥因為害怕被發現而特別警覺。林書豪也是「沒有退路」所以全力以赴；薩利機長在很短的時間裡冷靜想出最好的辦法。' },
+        { type: 'sort', q: '壓力分析流程圖：背水一戰。把每張卡片拉到流程圖對的步驟', labels: ['遇到的問題', '壓力', '反應', '結果'], cards: [
+          ['趙國有 20 萬大軍，韓信只有 3 萬人', 0], ['背後是河，沒有退路', 1], ['士兵拚命作戰', 2], ['以少勝多，打敗趙國', 3]
+        ], why: '問題 → 壓力 → 反應 → 結果：沒有退路的壓力，讓士兵拚盡全力。' },
+        { type: 'sort', q: '壓力分析流程圖：林來瘋。現代也有一樣的流程，把卡片拉到對的步驟', labels: ['遇到的問題', '壓力', '反應', '結果'], cards: [
+          ['很少上場，快要被球隊放棄', 0], ['這可能是最後一場比賽', 1], ['放手一搏，打出自己的球風', 2], ['拿下 25 分，掀起林來瘋', 3]
+        ], why: '林書豪和韓信一樣「沒有退路」，壓力反而讓他全力以赴。壓力本身不好也不壞，關鍵是面對它的方式。' },
+        { type: 'open', q: '選一個你知道的名人或歷史故事，說說他遇到什麼壓力、怎麼反應、結果如何。', why: '例如：司馬光砸缸。壓力：同伴掉進水缸快淹死了；反應：急中生智拿石頭砸破水缸；結果：救出同伴。' }
+      ]),
+
+      tips: mission('tips', [
+        { type: 'sort', q: '輕重緩急：把這週的待辦事項拉到對的格子', labels: ['重要又緊急（第 1 個做）', '重要但不急（排時間做）', '緊急但不太重要（快速處理）', '不急也不太重要（最後做）'], cards: [
+          ['明天要交的數學作業', 0],
+          ['下週五的專題報告', 1], ['下個月的科展', 1],
+          ['今天要還圖書館的書', 2], ['同學傳訊息問要不要上線玩遊戲', 2],
+          ['整理書桌抽屜', 3]
+        ], why: '先做重要又緊急的；重要但不急的要先排進行事曆，不然最後會變成又急又重要。' },
+        { type: 'sort', q: '用哪一招？把每個情境拉到最適合的抗壓妙方', labels: ['找出原因，解決問題', '合理期望', '提升處事能力', '建立支援網', '健康生活習慣'], cards: [
+          ['小琪覺得「一定要答應朋友，才不會被討厭」，常常勉強自己', 0],
+          ['小芸參加 4 個社團、2 個比賽，每天寫作業到 11 點', 1],
+          ['阿凱的科展報告好複雜，不知道從哪裡開始', 2],
+          ['小恩被同學排擠，不敢跟任何人說', 3],
+          ['大宇每天滑手機到半夜，白天沒精神、心情很差', 4]
+        ], why: '小琪換個想法：「即使我拒絕，我們依然能做朋友。」小芸要拒絕超載；阿凱分解步驟；小恩找人說出來；大宇早點睡、多運動。' },
+        { type: 'choice', q: '阿凱要做科展，用「分解步驟」的第一步應該是？', opts: ['(A) 一次做完整份報告', '(B) 先列出要做的小任務：定題目、查資料、做實驗、寫報告', '(C) 等最後一天再做', '(D) 請爸媽幫他做'], a: 1, why: '大任務拆成小步驟，每一步都做得到，壓力就變小了。' }
+      ]),
+
+      master: mission('master', [
+        { type: 'multi', q: '影片中的學生說自己有哪些壓力？', opts: ['(A) 六日補習班，睡不飽', '(B) 同學 IG 追蹤都破千，只有我沒有', '(C) 臉上痘痘消不了', '(D) 被選上當班長'], a: [0, 1, 2], why: '影片 0:15–0:27。哥哥姊姊也有很多壓力，壓力是每個人都會遇到的。' },
+        { type: 'choice', q: '根據影片，只有大約多少國高中生遇到煩惱，會跟輔導室討論？', opts: ['(A) 1.3%', '(B) 13%', '(C) 50.8%', '(D) 80%'], a: 0, why: '影片 1:42。很多人覺得「去輔導室就代表有問題」而不敢去，其實輔導室是讓你找人聊聊的地方，輔導老師不會隨便告訴別人。' },
+        { type: 'open', q: '我的抗壓計畫：從第二站寫的壓力挑一個，選一招最適合的抗壓妙方，再寫一個你可以求助的人。', why: '例如：專題報告快來不及了 → 第 3 招分解步驟，每天做一小段 → 求助導師。' },
+        { type: 'open', q: '在你的成長經驗中，有沒有因為壓力而帶來能力提升的經驗？（可以用：那時候我遇到…、我用了…、後來我學會了…）', why: '例如：三年級第一次參加朗讀比賽，我很緊張，每天對著鏡子練習，後來上台說話比較不怕了。' }
+      ])
+    };
+
+    Cockpit.renderUnit({
+      title: '做壓力的主人',
+      grade: '五年級資優班',
+      subject: '情意發展・壓力調適',
+
+      objectives: [
+        '說出壓力源、壓力感、壓力反應是什麼，知道適度的壓力能幫助表現',
+        '找出自己生活中的壓力來源',
+        '認出壓力在情緒、生理、疾病三方面的警訊',
+        '從歷史故事分析「壓力變助力」的過程',
+        '會用抗壓五招處理生活中的壓力，也知道可以向誰求助'
+      ],
+
+      intro: {
+        title: '開場：壓力像風，也能讓風箏飛得更高',
+        slides: ['assets/cover.jpg']
+      },
+
+      sections: [
+        {
+          title: '第一站：壓力是什麼',
+          text: '壓力是遇到挑戰時，身體和心裡進入的「備戰狀態」。它有三個步驟：<b>壓力源</b>（讓你有壓力的事情）→ <b>壓力感</b>（你覺得壓力有多大）→ <b>壓力反應</b>（身體、心情、行為的變化）。壓力感的大小，取決於「覺得自己能不能處理」和「對自己的期望有多高」。壓力太少提不起勁，太多會慌亂出錯，<b>剛剛好</b>的時候表現最好。',
+          slides: ['assets/s1_steps.jpg', 'assets/s1_curve.jpg'],
+          interactive: MISSIONS.what,
+          teacherTips: ['開場可先問：「你印象中的壓力是什麼？」請學生說出最近一件有壓力的事，再引入三步驟。', '資優生常見的壓力是對自己期望太高，可從第 2 題帶到這一點。', '闖關答案：1. 壓力源＝下週要段考；壓力感＝我覺得好緊張，怕考不好；壓力反應＝晚上睡不著，肚子痛。2. (B)。3. 小美（阿哲壓力太少，大偉壓力太多）。']
+        },
+        {
+          title: '第二站：我的壓力從哪裡來',
+          text: '常見的壓力源有五類：<b>課業</b>（考試、作業、比賽）、<b>人際</b>（朋友吵架、被排擠、不敢拒絕）、<b>家庭</b>（家人的期待、搬家轉學）、<b>自己</b>（想做到完美、跟別人比較）、<b>3C 與社群</b>（訊息要秒回、在意按讚數）。',
+          slides: ['assets/s2_sources.jpg'],
+          interactive: MISSIONS.source,
+          teacherTips: ['寫下自己的壓力可讓自願者分享，不強迫。終點站的臺灣吧影片也提到補習、IG 追蹤數、家人「你一定可以上台大」的期待，可以前後呼應。', '闖關答案：課業 明天考數學、專題報告上台；人際 好朋友不說話、不敢拒絕寫作業；家庭 爸媽說一定考第一名、搬家轉學；自己 每件事都要完美；3C 與社群 群組訊息怕被說不理人、看到出國照片覺得無聊。第 2 題寫自己真實的壓力、分類合理即可。']
+        },
+        {
+          title: '第三站：身體發出的警報',
+          text: '遇到壓力時，腎上腺會分泌壓力荷爾蒙（腎上腺素、皮質醇），心跳加快、呼吸變快、肌肉繃緊，這叫「<b>戰鬥或逃跑反應</b>」，讓你有力氣面對挑戰。短時間是幫手；壓力太久、太頻繁，身體一直在備戰，就會出狀況。壓力的警訊分三類：<b>情緒反應</b>、<b>生理反應</b>、<b>疾病</b>。',
+          slides: ['assets/s3_body.jpg', 'assets/s3_signals.jpg'],
+          interactive: MISSIONS.body,
+          teacherTips: ['可請學生回想上台前、考試前自己身體的感覺，對照三類警訊。若有學生長期頭痛、胃痛，提醒導師留意並轉介。', '情緒部分本單元只要認得出來；怎麼調整情緒留到六年級「情緒解方」。', 'TED-Ed 影片（4:42）已分成兩段：第 1 段 0:00–3:44、第 2 段 4:01–4:42，跳過 3:44–4:00（列出慢性壓力的其他影響，其中 3:53 有「性功能障礙」一詞）。兩段都會自動開「中文（台灣）」字幕；若沒出現，再從字幕選單選取。3:15–3:44 講端粒，較難，可快轉。參考答案：1. 不只是情緒，是全身性的生理反應（0:20–0:22）。2. 腎上腺；皮質醇、腎上腺素、去甲腎上腺素（0:46–0:53）。3. 心跳加速、血壓上升，久了會變成高血壓（1:01–1:03）。4. 大腦透過神經把壓力傳到腸道，擾亂腸子蠕動，也讓胃容易有灼熱感（1:31–2:02）。5. 把壓力當成可以控制、駕馭的挑戰，不是難以承受的威脅；短期表現較好，長期也較健康（4:13–4:21）。', '闖關答案：情緒反應 緊張、灰心、恐懼、煩躁；生理反應 手腳冰冷、冒冷汗、肩頸痠痛、胃痛；疾病 偏頭痛、腸道發炎、感冒、高血壓。第 2 題 (B)。']
+        },
+        {
+          title: '第四站：壓力也能是助力',
+          text: '適度的壓力能讓人<b>勇往直前</b>、<b>急中生智</b>、感官更敏銳。<br>▸ <b>韓信背水一戰</b>：西元前 204 年，韓信讓兵力較少的漢軍背對河水列陣，士兵沒有退路只能拚命，最後打敗趙軍。<br>▸ <b>曹操獻刀</b>：曹操想刺殺董卓，拔刀時被董卓從鏡子裡看到，立刻跪下說要獻上寶刀，化解危機。<br>▸ <b>伍子胥過昭關</b>：父兄被楚平王殺害，伍子胥逃往吳國，害怕被發現的壓力讓他對四周的風吹草動特別敏銳；傳說他一夜之間愁白了頭。<br><br><b>今天也有這樣的例子</b><br>▸ <b>林書豪「林來瘋」</b>（2012）：在 NBA 很少上場、差點被球隊放棄，還借睡在隊友家的小沙發。比賽前經紀人對他說：「這可能是你在 NBA 的最後一場比賽，那就打出屬於你自己的球風。」他賽前很焦慮，上場後卻放開來打，那場拿下 25 分，「林來瘋」就從這一場開始。<br>▸ <b>薩利機長「哈德遜奇蹟」</b>（2009）：飛機起飛後撞上鳥群，兩具引擎都熄火。薩利機長判斷飛不回機場，在很短的時間裡決定迫降在紐約的哈德遜河上，機上 155 人全部生還。他說自己「只是個克盡職責的凡人」。',
+          slides: ['assets/s4_hanxin.jpg', 'assets/s4_caocao.jpg', 'assets/s4_wuzixu.jpg'],
+          interactive: MISSIONS.boost,
+          teacherTips: ['曹操獻刀出自小說《三國演義》第四回，不是正史；伍子胥一夜白頭是民間傳說。可請學生分辨「歷史」和「小說、傳說」。', '林來瘋影片（10N觀點，播 0:00–3:00）：英文原音、畫面有中文字幕，可以邊看邊停。字幕有錯字「放手一博」「斷士壯腕」，可請學生找出來（放手一搏、壯士斷腕）。4:00 以後講他離開紐約時被誤會的委屈，不必播。參考答案：1. 這可能是你在 NBA 的最後一場比賽，要打出屬於你自己的球風（0:04、1:48）。2. 隊友家的小沙發，頭和腳都掛在外面，睡得很差（0:32–1:07）。3. 賽前很焦慮；上場後很放鬆，下半場進入忘我、很順的狀態（2:20–2:44）。4. 都沒有退路，所以全力以赴。', '薩利機長沒有放影片：網路上只有電影預告片，可視需要在教師連結開給學生看（1:54，有引擎起火畫面，沒有血腥）。', '闖關答案：1. 韓信、林書豪＝勇往直前，曹操、薩利機長＝急中生智，伍子胥＝風吹草動也察覺。2. 背水一戰：問題＝趙國 20 萬大軍、韓信只有 3 萬人；壓力＝背後是河沒有退路；反應＝士兵拚命作戰；結果＝以少勝多。3. 林來瘋：問題＝很少上場快被放棄；壓力＝可能是最後一場比賽；反應＝放手一搏打出自己的球風；結果＝拿下 25 分掀起林來瘋。4. 開放題，參考：司馬光砸缸（壓力：同伴掉進水缸；反應：急中生智砸破缸；結果：救出同伴）。']
+        },
+        {
+          title: '第五站：抗壓妙方五招',
+          text: '1. <b>找出原因，解決問題</b>：例如不敢拒絕朋友，是因為覺得「一定要答應才不會被討厭」；換成「即使我拒絕，我們依然能做朋友」。<br>2. <b>對自己建立合理期望</b>：量力而行，不必事事完美；拒絕超載。<br>3. <b>提升處事能力</b>：用輕重緩急排次序；把複雜的任務分解成小步驟。<br>4. <b>建立支援網</b>：找人說出來；接受別人的幫忙。<br>5. <b>健康的生活習慣</b>：運動、均衡飲食、睡飽、留時間休息和做喜歡的事。',
+          slides: ['assets/s5_priorities.jpg', 'assets/s5_steps.jpg', 'assets/s5_support.jpg', 'assets/s5_healthy.jpg'],
+          interactive: MISSIONS.tips,
+          teacherTips: ['原簡報的四格表寫「左下角最先做」，和學習單「按迫切性和重要程度排序」的排法不一致，這裡改用「重要 × 緊急」四格。', '第 4 招「建立支援網」可接到終點站的求助管道。', '闖關答案：1. 重要又緊急 明天要交的數學作業；重要但不急 專題報告、科展；緊急但不太重要 還圖書館的書、同學問要不要玩遊戲；不急也不太重要 整理抽屜。2. 小琪 找出原因；小芸 合理期望；阿凱 提升處事能力；小恩 建立支援網；大宇 健康生活習慣。3. (B)。']
+        },
+        {
+          title: '終點站：我是壓力的主人',
+          text: '壓力大到自己處理不了時，<b>求助是勇敢的表現</b>。可以找家人、導師、信任的大人、學校輔導室，也可以撥打 <b>1925 安心專線</b>（24 小時免付費）。',
+          slides: ['assets/end.jpg'],
+          interactive: MISSIONS.master,
+          teacherTips: ['影片角色是國高中生，可先說明「哥哥姊姊也有壓力」。影片 1:30–1:36 有「15–24 歲死因第二名為自殺」的統計畫面，建議播到 1:29 先暫停、跳到 1:36 再播，或播放前先預告。', '臺灣吧影片參考答案：1. 六日補習班睡不飽、同學 IG 追蹤都破千只有我沒有、臉上痘痘消不了（0:15–0:27）。2. 期待太高的時候，像「你一定可以上台大！」（0:54–0:59）。3. 覺得去輔導室就代表有問題；其實輔導室是讓你找人聊聊的地方，輔導老師不會隨便告訴別人（1:48–2:09）。4. 輔導室、信任圈（朋友、家人、信任的大人）、1925 安心專線、心快活心理健康學習平台（2:42–2:54）。', '對於情緒很低落的學生，請依學校輔導流程轉介。', '闖關答案：1. (A)(B)(C)。2. (A) 1.3%。3. 招式要和壓力對得上即可，例如「專題報告快來不及 → 分解步驟 → 求助導師」。4. 開放題，說出遇到的壓力、用的方法、學到的能力即可。']
+        }
+      ],
+
+      summary: [
+        '壓力有三步驟：壓力源 → 壓力感 → 壓力反應；壓力剛剛好，表現最好。',
+        '壓力源有課業、人際、家庭、自己、3C 與社群五類。',
+        '壓力的警訊分成情緒反應、生理反應、疾病三類；短時間的壓力反應是身體在幫你。',
+        '韓信、曹操、伍子胥都在壓力下發揮出能力：壓力也能是助力。',
+        '抗壓五招：找出原因、合理期望、提升處事能力、建立支援網、健康生活；需要時勇敢求助。'
+      ],
+
+      teacher: {
+        mistakes: [
+          '以為「有壓力就是不好」：適度的壓力能讓表現更好，重點是怎麼面對。',
+          '以為「去輔導室就代表有問題」：輔導室是找人聊聊的地方。',
+          '把「情緒調節技巧」（深呼吸、轉念）一次教完：本單元聚焦壓力的認識和處理事情，情緒調節留到六年級「情緒解方」。'
+        ],
+        links: [
+          { label: '臺灣吧 × 社家署：當學生真的很爽？壓力山大該怎麼調適（YouTube）', url: 'https://www.youtube.com/watch?v=wuliU91-h-8' },
+          { label: 'TED-Ed：How stress affects your body', url: 'https://www.ted.com/talks/sharon_horesh_bergquist_how_stress_affects_your_body' },
+          { label: '10N觀點：林來瘋十週年（YouTube，7:39）', url: 'https://www.youtube.com/watch?v=a3-Ec80uGN8' },
+          { label: '華納兄弟台灣：薩利機長 從208秒的危機到24分鐘的奇蹟（電影宣傳片，1:54）', url: 'https://www.youtube.com/watch?v=JXgVcjJjQFo' },
+          { label: '教師參考：Kelly McGonigal〈如何讓壓力成為你的朋友〉TED 演講', url: 'https://www.ted.com/talks/kelly_mcgonigal_how_to_make_stress_your_friend' }
+        ]
+      }
+    });
+
+    /* 標題已經有「第幾站」，拿掉框架自動加的 1. 2. 編號 */
+    document.querySelectorAll('.cp-section h2, .pills .pill').forEach(function (n) { n.textContent = n.textContent.replace(/^\d+\.\s*/, ''); });
+    /* 本單元的影片放在各站裡，拿掉框架最後的影片區 */
+    (function () { var v = document.getElementById('video'); if (v) v.remove(); document.querySelectorAll('.pills .pill').forEach(function (p) { if (p.getAttribute('href') === '#video') p.remove(); }); })();
+    function mmss(t) { return Math.floor(t / 60) + ':' + ('0' + t % 60).slice(-2); }
+    function addVideo(secId, ytId, start, title, questions, end, extra) {
+      var sec = document.getElementById(secId), task = sec && Array.prototype.filter.call(sec.querySelectorAll('h3'), function (t) { return t.textContent === '動手操作'; })[0];
+      if (!task) return;
+      var wrap = document.createElement('div');
+      wrap.innerHTML = '<h3>影片時間：' + title + (end ? '（播放 ' + mmss(start) + '–' + mmss(end) + '）' : '') + '</h3><div class="video-wrap"><iframe src="https://www.youtube-nocookie.com/embed/' + ytId + '?rel=0' + (start ? '&start=' + start : '') + (end ? '&end=' + end : '') + (extra || '') + '" title="' + title + '" loading="lazy" allowfullscreen></iframe></div>' +
+        (questions ? '<div class="m-item" style="margin-top:10px"><div class="m-q">邊看邊想</div><div>' + questions.map(function (q, i) { return (i + 1) + '. ' + q; }).join('<br>') + '</div></div>' : '');
+      while (wrap.firstChild) sec.insertBefore(wrap.firstChild, task);
+    }
+    var tedCC = '&cc_load_policy=1&cc_lang_pref=zh-TW&hl=zh-TW';
+    addVideo('sec3', 'v-t1Z5-oPtU', 0, 'How stress affects your body（TED-Ed）第 1 段', null, 224, tedCC);
+    addVideo('sec3', 'v-t1Z5-oPtU', 241, 'How stress affects your body（TED-Ed）第 2 段', ['壓力只是一種情緒嗎？影片怎麼說？', '壓力荷爾蒙是哪個器官分泌的？說出一種壓力荷爾蒙。', '腎上腺素會讓心臟和血壓發生什麼變化？', '壓力為什麼會讓人肚子不舒服？', '影片最後說，用什麼想法看待壓力比較好？'], 282, tedCC);
+    addVideo('sec4', 'a3-Ec80uGN8', 0, '林來瘋十週年（10N觀點，英文原音、中文字幕）', ['比賽前，經紀人跟林書豪說了什麼？', '比賽前一晚他睡在哪裡？睡得好嗎？', '林書豪賽前的心情怎樣？上場後呢？', '想一想：林書豪的「最後一場比賽」和韓信的背水一戰，有什麼地方很像？'], 180);
+    addVideo('sec6', 'wuliU91-h-8', 0, '當學生真的很爽？壓力山大該怎麼調適（臺灣吧 × 社家署）', ['影片中的學生說自己有哪些壓力？', '家裡的關心什麼時候可能變成重擔？', '很多同學不敢去輔導室，是因為覺得什麼？輔導室其實是什麼樣的地方？', '影片最後介紹了哪些求助管道？']);
+
+    document.querySelectorAll('section[id^="sec"] h3').forEach(function (t) {
+      if (t.textContent === '動手操作') t.textContent = '闖關任務';
+      if (t.textContent === '資訊圖表' && t.nextElementSibling && t.nextElementSibling.classList.contains('placeholder')) { t.nextElementSibling.remove(); t.remove(); }
+    });
+
+    /* ── 抗壓徽章：每一站交卷後點亮一枚 ──
+     * 只存在這台平板的瀏覽器裡（localStorage），不會傳到任何地方，也不記錄姓名。 */
+    var KEY = 'g5-stress-master', passport = { done: {} };
+    try { passport = Object.assign(passport, JSON.parse(localStorage.getItem(KEY) || '{}')); } catch (e) {}
+    var STOPS = [['what', '認識壓力'], ['source', '壓力來源'], ['body', '身體警報'], ['boost', '壓力變助力'], ['tips', '抗壓五招'], ['master', '壓力的主人']];
+    var panel = document.createElement('section');
+    panel.className = 'cp-section'; panel.id = 'passport';
+    panel.innerHTML = '<h2>我的抗壓徽章</h2><p class="hint" style="color:var(--chalk-dim)">每一站的闖關任務交卷後，就會點亮一枚徽章。徽章只存在這台平板上。</p><div class="stamps" id="stampList"></div><p class="grad" id="grad">六枚徽章都點亮了！你是壓力的主人。</p>';
+    var anchor = document.getElementById('intro') || document.getElementById('top');
+    anchor.parentNode.insertBefore(panel, anchor.nextSibling);
+    var stampEls = STOPS.map(function (s, i) {
+      var a = document.createElement('a');
+      a.className = 'stamp'; a.href = '#sec' + (i + 1);
+      a.innerHTML = '<span class="c">' + (i + 1) + '</span><span>' + s[1] + '</span>';
+      panel.querySelector('#stampList').appendChild(a);
+      return a;
+    });
+    function refreshStamps() {
+      var all = true;
+      STOPS.forEach(function (s, i) { var on = !!passport.done[s[0]]; stampEls[i].classList.toggle('on', on); if (!on) all = false; });
+      panel.querySelector('#grad').classList.toggle('show', all);
+    }
+    function stampDone(id) {
+      passport.done[id] = 1;
+      try { localStorage.setItem(KEY, JSON.stringify(passport)); } catch (e) {}
+      refreshStamps();
+    }
+    refreshStamps();
+  </script>
+</body>
+</html>
