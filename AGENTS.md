@@ -113,7 +113,8 @@
 - **Prompt 提示詞標準公式**：
   ```
   Studio Ghibli aesthetic, Hayao Miyazaki anime style, hand-painted watercolor and gouache illustration with delicate ink outlines.
-  [角色描述：如 A cheerful 10-year-old Taiwanese school girl with cute bangs and bright expressive eyes],
+  [角色描述：依情境選男生或女生，如 A cheerful 10-year-old Taiwanese school boy with short neat hair and bright expressive eyes],
+  [背景人物（有才寫）：a mix of boys and girls with distinct, varied faces, hairstyles, heights and expressions, not identical],
   [情境與動作：taking a selfie with smartphone on a sunny street near a bus stop],
   [背景與氛圍：vibrant blue sky with fluffy cumulus clouds, warm gentle sunlight, green potted plants along the sidewalk, heartwarming cinematic atmosphere, nostalgic aesthetic],
   clean composition, 16:9 widescreen, masterwork storybook illustration.
@@ -169,3 +170,4 @@
 5. **換圖先給她看**：已上線或已放進版面的圖，替換前先給 Kristy 看新圖、同意才換；舊圖移到 `待刪除/`，不直接覆蓋。
 6. **生圖工具不限**：Canva、Gemini、ChatGPT 或 Kristy 自己生圖都可以。她自己生圖時，先給她一段共用風格描述（風格、色碼、光線、背景、16:9、角色外型），再為每張圖寫可直接貼上的提示詞（共用描述＋該張場景），附檔名對照；圖交回後統一裁切、縮放、轉檔並照第 4 點檢查。
 7. **圖片規格**：1600×900 JPG、quality 75（單張約 70–150 KB），檔案不要太大。
+8. **人物有男有女、長相不重複**（Kristy 2026-11-01）：主角依情境安排男生或女生，全單元不要都是同一性別；背景人物的臉型、髮型、身高、表情要各不相同，不要長得一模一樣。每張提示詞都寫進這個要求（英文可用 `a mix of boys and girls with distinct, varied faces, hairstyles, heights and expressions, not identical`），圖交回後也照這點檢查。既有圖片不追溯重畫，Kristy 要重畫再說。
