@@ -193,7 +193,7 @@
               var p = h('div', 'fill-text'), words = [];
               it.text.split(/(\{[^}]+\})/).forEach(function (part) {
                 var m = part.match(/^\{(.+)\}$/);
-                if (m) { var z = h('span', 'dz blank'); z.dataset.ans = m[1]; p.appendChild(z); words.push(m[1]); }
+                if (m) { var parts = m[1].split('@'), z = h('span', 'dz blank'); z.dataset.ans = parts[0]; if (parts[1]) z.dataset.grp = parts[1]; p.appendChild(z); words.push(parts[0]); }
                 else if (part) p.appendChild(document.createTextNode(part));
               });
               card.appendChild(p);
@@ -290,10 +290,20 @@
               ok = it.type === 'choice' ? st.pick[0] === it.a : same(st.pick, it.a);
             } else if (it.type === 'fill') {
               ok = true;
-              st.card.querySelectorAll('.blank').forEach(function (z) {
-                var c = z.querySelector('.chip-d'), good = c && c.textContent === z.dataset.ans;
+              // 同一組（{答案@組名}）的格子順序不限：放進該組任一個還沒用過的答案都算對
+              var blanks = Array.prototype.slice.call(st.card.querySelectorAll('.blank')), pool = {};
+              blanks.forEach(function (z) { if (z.dataset.grp) (pool[z.dataset.grp] = pool[z.dataset.grp] || []).push(z.dataset.ans); });
+              var marks = blanks.map(function (z) {
+                var c = z.querySelector('.chip-d'), t = c && c.textContent;
+                if (!z.dataset.grp) return t === z.dataset.ans;
+                var i = t ? pool[z.dataset.grp].indexOf(t) : -1;
+                if (i >= 0) pool[z.dataset.grp].splice(i, 1);
+                return i >= 0;
+              });
+              blanks.forEach(function (z, k) {
+                var good = marks[k];
                 z.classList.add(good ? 'right' : 'wrong');
-                if (!good) { ok = false; z.appendChild(h('span', 'fix', z.dataset.ans)); }
+                if (!good) { ok = false; z.appendChild(h('span', 'fix', z.dataset.grp ? pool[z.dataset.grp].shift() : z.dataset.ans)); }
               });
             } else if (it.type === 'sort') {
               ok = true;
@@ -386,7 +396,7 @@
           ['衣索比亞', 0], ['索馬利亞', 0], ['厄利垂亞', 0], ['吉布地', 0], ['肯亞', 0],
           ['埃及', 1], ['南非', 1], ['奈及利亞', 1]
         ], why: '非洲之角是索馬利亞、衣索比亞、厄利垂亞、吉布地，常把肯亞也算進來。埃及在北非，南非在最南端，奈及利亞在西非。' },
-        { type: 'fill', q: '非洲之角的特色', text: '位在非洲{東北}部，形狀像{犀牛角}，是連接{印度洋}和{紅海}的海上要衝；氣候炎熱、乾溼季分明，降雨減少導致嚴重{乾旱}和飢荒。', extra: ['西南', '太平洋', '大雪'], why: '船從印度洋經過這裡進入紅海，再穿過蘇伊士運河到地中海。' },
+        { type: 'fill', q: '非洲之角的特色', text: '位在非洲{東北}部，形狀像{犀牛角}，是連接{印度洋@sea}和{紅海@sea}的海上要衝；氣候炎熱、乾溼季分明，降雨減少導致嚴重{乾旱}和飢荒。', extra: ['西南', '太平洋', '大雪'], why: '船從印度洋經過這裡進入紅海，再穿過蘇伊士運河到地中海。' },
         { type: 'fill', q: '誰來救援？', text: '2020 年獲得諾貝爾和平獎、對抗飢餓的是{世界糧食計畫署}（WFP），總部在義大利{羅馬}。', extra: ['世界衛生組織', '日內瓦'] },
         { type: 'fill', q: '世界糧食計畫署怎麼幫忙？', text: '緊急時直接運送米、麵粉等實物{糧食}；發放{現金}或代金券，讓災民在當地市場買食物；在{衝突}地區提供糧食，防止飢餓被當作戰爭武器。', extra: ['玩具', '房子'] }
       ]),
@@ -451,7 +461,7 @@
           text: '非洲東北部向印度洋突出，形狀像犀牛角，叫做<b>非洲之角</b>。這裡是連接印度洋和紅海的海上要衝，卻有戰亂、旱災與蝗禍，是世界上營養不良最嚴重的地區。',
           slides: ['assets/st3_horn.jpg'],
           interactive: MISSIONS.horn,
-          teacherTips: ['地圖框框只給國名第一個字，可以先請學生猜五個國名，再進入闖關任務。', '最新狀況（2026 年）：索馬利亞約 600 萬人嚴重缺糧（IPC，2026 年 5 月），加上國際捐款大幅減少，世界糧食計畫署只幫得到大約十分之一需要幫助的人。簡報上的蝗災主要發生在 2019–2021 年。', '「猜猜看」參考答案：1. 五個國家是索馬利亞、衣索比亞、厄利垂亞、吉布地，加上常被算進來的肯亞；氣候炎熱、乾溼季分明，降雨減少造成嚴重乾旱和飢荒，加上戰亂和蝗災。2. 世界糧食計畫署（WFP），2020 年獲諾貝爾和平獎，總部在義大利羅馬。', '闖關答案：非洲之角 衣索比亞、索馬利亞、厄利垂亞、吉布地、肯亞，不在的是埃及、南非、奈及利亞；特色 東北、犀牛角、印度洋、紅海、乾旱；誰來救援 世界糧食計畫署、羅馬；怎麼幫忙 糧食、現金、衝突。']
+          teacherTips: ['地圖框框只給國名第一個字，可以先請學生猜五個國名，再進入闖關任務。', '最新狀況（2026 年）：索馬利亞約 600 萬人嚴重缺糧（IPC，2026 年 5 月），加上國際捐款大幅減少，世界糧食計畫署只幫得到大約十分之一需要幫助的人。簡報上的蝗災主要發生在 2019–2021 年。', '「猜猜看」參考答案：1. 五個國家是索馬利亞、衣索比亞、厄利垂亞、吉布地，加上常被算進來的肯亞；氣候炎熱、乾溼季分明，降雨減少造成嚴重乾旱和飢荒，加上戰亂和蝗災。2. 世界糧食計畫署（WFP），2020 年獲諾貝爾和平獎，總部在義大利羅馬。', '闖關答案：非洲之角 衣索比亞、索馬利亞、厄利垂亞、吉布地、肯亞，不在的是埃及、南非、奈及利亞；特色 東北、犀牛角、印度洋、紅海（這兩格順序不限）、乾旱；誰來救援 世界糧食計畫署、羅馬；怎麼幫忙 糧食、現金、衝突。']
         },
         {
           title: '第四站：人口爆炸的水鄉——孟加拉',
