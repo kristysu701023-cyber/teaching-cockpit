@@ -13,7 +13,7 @@
 - 本機與 GitHub 同步。
 
 ## ➡️ 下一步
-1. 確認暫存檔清單後刪除：`待刪除/video_search_20261103`、`preview_review/`。
+1. 確認暫存檔清單後刪除：本機 `待刪除/video_search_20261103`（1.2 MB）、`preview_review/`（64.6 MB）；G 槽備份的 `待刪除/`（142.8 MB，本機已沒有）、`preview_review/`（64.6 MB）。
 2. 可選：單元 Word 學習單。
 
 ## ⚠️ 注意事項
