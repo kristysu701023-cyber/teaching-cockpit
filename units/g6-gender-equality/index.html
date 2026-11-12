@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>不一樣又怎樣：性別平等任務｜教學駕駛艙</title>
+  <link rel="stylesheet" href="../../assets/cockpit.css?v=20261024w">
+  <style>
+    /* 本單元專用：闖關任務與任務護照的樣式（只影響這一頁） */
+    .game { display: grid; gap: 14px; padding: 16px; background: var(--board-2); border-radius: var(--radius); border: 1px solid var(--line); }
+    .game .hint { color: var(--chalk-dim); font-size: .95rem; }
+    .m-item { background: var(--board-3); border-radius: 12px; padding: 12px 14px; display: grid; gap: 10px; border-left: 5px solid transparent; }
+    .m-item.ok { border-left-color: var(--green); }
+    .m-item.bad { border-left-color: var(--pink); }
+    .m-q { font-weight: 700; }
+    .m-q .n { color: var(--title); margin-right: 6px; }
+    .m-q .need { font-weight: 400; color: var(--chalk-dim); font-size: .9rem; margin-left: 4px; }
+    .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .g-btn { min-height: var(--touch); padding: 6px 14px; border-radius: 10px; border: 1.5px solid var(--line); background: var(--board-2); color: var(--chalk); text-align: left; }
+    .g-btn:hover { border-color: var(--title); }
+    .g-btn.picked { border-color: var(--blue); background: #e3eefa; font-weight: 700; }
+    .g-btn.right { border-color: var(--green); background: #e2f3e8; }
+    .g-btn.wrong { border-color: var(--pink); background: #fbe5e3; }
+    .g-btn:disabled { cursor: default; }
+    .g-main { background: var(--title); color: #fff; border-color: var(--title); font-weight: 700; text-align: center; }
+    .g-main:hover { background: var(--wood-dark); }
+    .sort-card { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; align-items: center; background: var(--board-2); border-radius: 10px; padding: 6px 10px; border: 1.5px solid transparent; }
+    .sort-card.right { border-color: var(--green); }
+    .sort-card.wrong { border-color: var(--pink); }
+    @media (max-width: 560px) { .sort-card { grid-template-columns: 1fr; } }
+    .why { display: none; color: var(--chalk); background: #fff8e6; border-radius: 8px; padding: 8px 12px; }
+    .done .why { display: block; }
+    .m-text { width: 100%; min-height: 84px; font: inherit; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--board-2); color: var(--chalk); resize: vertical; }
+    .m-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+    .m-status { color: var(--chalk-dim); }
+    .m-score { font-size: 1.25rem; font-weight: 700; color: var(--title); }
+    .m-ans { display: none; gap: 10px; }
+    .done .m-ans { display: grid; }
+    .m-ans img { border-radius: 10px; cursor: zoom-in; border: 1px solid var(--line); }
+    /* 任務護照 */
+    .rv-card { display: inline-grid; place-items: center; min-width: 7em; min-height: var(--touch); padding: 6px 16px; border-radius: 10px; border: 2px dashed var(--line); background: var(--board-2); color: var(--chalk-dim); font: inherit; font-weight: 700; cursor: pointer; }
+    .rv-card.open { border-style: solid; border-color: var(--green); background: #e2f3e8; color: var(--chalk); }
+    .rv-note { display: none; background: #fff8e6; border-radius: 8px; padding: 8px 12px; }
+    .rv-note.show { display: block; }
+    .stamps { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 10px; }
+    .stamp { display: grid; justify-items: center; gap: 4px; text-align: center; font-size: .85rem; color: var(--chalk-dim); text-decoration: none; }
+    .stamp span.c { width: 60px; height: 60px; border-radius: 50%; border: 3px dashed var(--line); display: grid; place-items: center; font-weight: 700; }
+    .stamp.on { color: var(--chalk); }
+    .stamp.on span.c { border: 3px double #a8322b; color: #a8322b; background: #fdf0ee; transform: rotate(-8deg); }
+    .grad { display: none; color: #a8322b; font-weight: 700; font-size: 1.1rem; }
+    .grad.show { display: block; }
+    /* 拖曳答案卡 */
+    .fill-text { line-height: 2.4; }
+    .blank { display: inline-flex; align-items: center; justify-content: center; gap: 4px; min-width: 6em; min-height: 44px; vertical-align: middle; margin: 0 4px; padding: 1px; border: 2px dashed var(--blue); background: #f4f8fd; border-radius: 999px; }
+    .blank .chip-d { margin: 0; }
+    .blank:empty::after { content: '　'; }
+    .blank:not(:empty) { min-width: 0; min-height: 0; padding: 0; border-color: transparent; background: none; }
+    .blank:not(:empty) .chip-d { min-height: 36px; padding: 2px 14px; line-height: 1.4; }
+    .blank.right, .blank.right:not(:empty) { border-color: transparent; background: none; }
+    .blank.wrong, .blank.wrong:not(:empty) { border-color: transparent; background: none; }
+    .blank.right .chip-d { border-color: var(--green); background: #e2f3e8; }
+    .blank.wrong .chip-d { border-color: var(--pink); background: #fbe5e3; }
+    .blank.wrong:empty { border-color: var(--pink); border-style: solid; background: #fbe5e3; }
+    .bank { display: flex; flex-wrap: wrap; gap: 8px; min-height: 56px; padding: 10px; border: 2px dashed var(--line); border-radius: 10px; background: var(--board); }
+    .done .bank:empty { display: none; }
+    .chip-d { min-height: 40px; padding: 4px 14px; border-radius: 999px; border: 1.5px solid var(--blue); background: #e3eefa; color: var(--chalk); font-weight: 700; touch-action: none; user-select: none; -webkit-user-select: none; cursor: grab; }
+    body.dragging, body.dragging * { user-select: none; -webkit-user-select: none; cursor: grabbing; }
+    .chip-d.sel { outline: 3px solid var(--yellow); outline-offset: 2px; }
+    .chip-d.lift { opacity: .35; }
+    .chip-d.ghost { position: fixed; z-index: 999; pointer-events: none; transform: translate(-50%, -50%) scale(1.06); box-shadow: 0 6px 18px rgba(0,0,0,.2); }
+    .chip-d.right { border-color: var(--green); background: #e2f3e8; }
+    .chip-d.wrong { border-color: var(--pink); background: #fbe5e3; }
+    .done .chip-d { cursor: default; }
+    .fix { font-weight: 700; color: var(--green); margin-left: 4px; font-size: .9rem; }
+    .fix::before { content: '→ '; }
+    .bins { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; }
+    .bin { background: var(--board-2); border-radius: 10px; padding: 8px; display: grid; grid-template-rows: auto 1fr; gap: 6px; border: 1.5px solid var(--line); }
+    .bin-t { font-weight: 700; color: var(--title); text-align: center; }
+    .order-list { display: grid; gap: 6px; }
+    .order-row { display: flex; align-items: center; gap: 8px; }
+    .order-n { flex: none; width: 4em; font-weight: 700; color: var(--title); }
+    .order-row .blank { min-width: 14em; justify-content: flex-start; }
+    .binzone { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; min-height: 90px; padding: 6px; border-radius: 8px; background: var(--board-3); }
+    /* 片頭曲／片尾曲：插畫＋歌詞逐句淡入 */
+    .song { display: grid; gap: 8px; }
+    .song-stage { position: relative; aspect-ratio: 16 / 9; border-radius: var(--radius); overflow: hidden; background: #222; }
+    /* 跟著歌詞換圖：每張圖疊在一起，輪到的那張淡入，並慢慢放大、平移（鏡頭推移） */
+    .song-stage > img.scene { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; opacity: 0; transition: opacity 1.4s ease; }
+    .song-stage > img.scene.on { opacity: 1; }
+    .song-stage > img.scene.kb { animation: kb0 16s ease-out forwards; }
+    .song-stage > img.scene.kb[data-kb="1"] { animation-name: kb1; }
+    .song-stage > img.scene.kb[data-kb="2"] { animation-name: kb2; }
+    .song-stage > img.scene.kb[data-kb="3"] { animation-name: kb3; }
+    .song-stage.paused > img.scene { animation-play-state: paused; }
+    @keyframes kb0 { from { transform: scale(1); } to { transform: scale(1.14) translate(-2%, -1.5%); } }
+    @keyframes kb1 { from { transform: scale(1.14) translate(2%, 0); } to { transform: scale(1.02); } }
+    @keyframes kb2 { from { transform: scale(1.06) translate(-2.5%, 1%); } to { transform: scale(1.12) translate(2.5%, -1%); } }
+    @keyframes kb3 { from { transform: scale(1.02); } to { transform: scale(1.12) translate(1%, 2%); } }
+    @media (prefers-reduced-motion: reduce) { .song-stage > img.scene.kb { animation: none; } }
+    .song-shade { position: absolute; inset: auto 0 0 0; height: 38%; background: linear-gradient(to top, rgba(0,0,0,.62), rgba(0,0,0,0)); pointer-events: none; }
+    .song-lyric { position: absolute; left: 4%; right: 4%; bottom: 7%; text-align: center; color: #fff; font-weight: 700; font-size: clamp(1rem, 3.2vw, 2rem); text-shadow: 0 2px 8px rgba(0,0,0,.7); opacity: 0; transform: translateY(10px); transition: opacity .6s, transform .6s; pointer-events: none; }
+    .song-lyric.show { opacity: 1; transform: none; }
+    .song-title { position: absolute; left: 0; right: 0; top: 4%; text-align: center; color: #fff; font-weight: 700; font-size: clamp(1.4rem, 5vw, 3rem); text-shadow: 0 3px 12px rgba(0,0,0,.75); transition: opacity .8s; pointer-events: none; }
+    .song-title small { display: block; font-size: .45em; font-weight: 400; margin-top: 6px; }
+    .song-stage.playing .song-title { opacity: 0; }
+    .song-play { position: absolute; left: 50%; top: 86%; transform: translate(-50%, -50%); min-height: var(--touch); padding: 10px 26px; border-radius: 999px; border: 0; background: rgba(255,255,255,.92); color: #333; font: inherit; font-weight: 700; font-size: 1.1rem; cursor: pointer; box-shadow: 0 4px 16px rgba(0,0,0,.3); }
+    .song-stage.playing .song-play { top: auto; bottom: 4%; left: auto; right: 3%; transform: none; padding: 6px 16px; font-size: .95rem; opacity: .85; }
+    .song-credit { color: var(--chalk-dim); font-size: .85rem; text-align: right; }
+    /* 封面標籤：先一張張貼上來，唱到「撕下標籤」時被撕掉 */
+    .tag-sticker { position: absolute; padding: .35em .8em; border-radius: 6px; background: #fff7d6; color: #333; font-weight: 700; font-size: clamp(.8rem, 2.2vw, 1.35rem); box-shadow: 0 3px 10px rgba(0,0,0,.25); opacity: 0; transform: scale(.4) rotate(var(--r)); transition: opacity .4s, transform .5s cubic-bezier(.3,1.6,.5,1); pointer-events: none; }
+    .tag-sticker.on { opacity: 1; transform: scale(1) rotate(var(--r)); }
+    .tag-sticker.off { opacity: 0; transform: translate(var(--fx), -140%) rotate(calc(var(--r) * -4)) scale(.7); transition: opacity .9s, transform .9s ease-in; }
+    .end-pledge { display: none; position: absolute; inset: 0; place-items: center; background: rgba(0,0,0,.35); color: #fff; font-weight: 700; font-size: clamp(1.2rem, 4vw, 2.4rem); text-shadow: 0 2px 10px rgba(0,0,0,.6); text-align: center; padding: 0 8%; }
+    .end-pledge.show { display: grid; }
+    .seg-label { font-weight: 700; color: var(--title); margin: 6px 0 4px; }
+  </style>
+</head>
+<body>
+  <script src="../../assets/config.js?v=20261024w"></script>
+  <script src="../../assets/vendor/qrcode.js?v=20261024w"></script>
+  <script src="../../assets/cockpit.js?v=20261024w"></script>
+  <script>
+    /* ── 闖關任務 ──
+     * 框架的互動區給的是 640×360 畫布；任務需要按鈕和文字，
+     * 所以 dom() 把畫布換成一般的區塊（只影響本單元，不改共用的 cockpit.js）。
+     * 學生先全部作答，按「交卷看答案」才一次揭曉對錯、解說與參考答案圖。 */
+    function dom(build) {
+      return function (canvas, out) {
+        var box = document.createElement('div');
+        box.className = 'game';
+        canvas.replaceWith(box);
+        build(box, out);
+      };
+    }
+    function h(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
+    function same(a, b) { return a.length === b.length && a.every(function (x) { return b.indexOf(x) >= 0; }); }
+    function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+
+    /* ── 拖曳：把答案卡拉進空格或分類框 ──
+     * 手指或滑鼠按住卡片拖到空格放開；也可以先點卡片、再點空格。點空格裡的卡片會退回卡片區。 */
+    function dragKit(box) {
+      var picked = null, drag = null;
+      function locked() { return box.classList.contains('done'); }
+      function select(c) {
+        if (picked) picked.classList.remove('sel');
+        picked = c && c !== picked ? c : null;
+        if (picked) picked.classList.add('sel');
+      }
+      function bankOf(c) { return c.closest('.m-item').querySelector('.bank'); }
+      function place(c, zone) {
+        if (!zone || zone.closest('.m-item') !== c.closest('.m-item')) return false;
+        if (zone.classList.contains('blank')) {
+          var old = zone.querySelector('.chip-d');
+          if (old === c) return true;
+          if (old) bankOf(c).appendChild(old);
+        }
+        zone.appendChild(c);
+        zone.closest('.m-item').dispatchEvent(new Event('change', { bubbles: true }));
+        return true;
+      }
+      function chip(text, data) {
+        var c = h('button', 'chip-d', text);
+        c.type = 'button';
+        Object.keys(data || {}).forEach(function (k) { c.dataset[k] = data[k]; });
+        c.addEventListener('pointerdown', function (e) {
+          if (locked()) return;
+          e.preventDefault();
+          drag = { c: c, x: e.clientX, y: e.clientY, ghost: null, id: e.pointerId };
+          document.body.classList.add('dragging');
+          c.setPointerCapture(e.pointerId);
+        });
+        c.addEventListener('pointermove', function (e) {
+          if (!drag || drag.c !== c) return;
+          if (!drag.ghost && Math.hypot(e.clientX - drag.x, e.clientY - drag.y) > 6) {
+            drag.ghost = c.cloneNode(true);
+            drag.ghost.className = 'chip-d ghost';
+            document.body.appendChild(drag.ghost);
+            c.classList.add('lift');
+          }
+          if (drag.ghost) { drag.ghost.style.left = e.clientX + 'px'; drag.ghost.style.top = e.clientY + 'px'; }
+        });
+        function end(e) {
+          if (!drag || drag.c !== c) return;
+          var d = drag; drag = null;
+          document.body.classList.remove('dragging');
+          if (d.ghost) {
+            d.ghost.remove(); c.classList.remove('lift');
+            var under = document.elementFromPoint(e.clientX, e.clientY);
+            var zone = under && (under.closest('.dz') || (under.closest('.bin') && under.closest('.bin').querySelector('.binzone')));
+            if (zone && zone.classList.contains('bank') && zone.closest('.m-item') === c.closest('.m-item')) { zone.appendChild(c); c.closest('.m-item').dispatchEvent(new Event('change', { bubbles: true })); }
+            else place(c, zone);
+            select(null);
+          } else if (picked && picked !== c && !picked.parentNode.classList.contains('bank') && c.parentNode.classList.contains('bank') && c.closest('.m-item') === picked.closest('.m-item')) {
+            var back = picked; c.parentNode.appendChild(back); select(null); back.closest('.m-item').dispatchEvent(new Event('change', { bubbles: true }));
+          } else select(c);
+        }
+        c.addEventListener('pointerup', end);
+        c.addEventListener('pointercancel', function () { if (drag && drag.ghost) { drag.ghost.remove(); c.classList.remove('lift'); } drag = null; document.body.classList.remove('dragging'); });
+        return c;
+      }
+      box.addEventListener('click', function (e) {
+        if (locked() || !picked || e.target.closest('.chip-d')) return;
+        var zone = e.target.closest('.dz') || (e.target.closest('.bin') && e.target.closest('.bin').querySelector('.binzone'));
+        if (!zone || zone.closest('.m-item') !== picked.closest('.m-item')) return;
+        if (zone.classList.contains('bank')) { zone.appendChild(picked); zone.closest('.m-item').dispatchEvent(new Event('change', { bubbles: true })); select(null); }
+        else if (place(picked, zone)) select(null);
+      });
+      return { chip: chip };
+    }
+
+    // 題型：fill 填空（把答案卡拉進空格）、sort 分類（把卡片拉進分類框）、
+    //       choice 單選、multi 複選、pick 自由複選（沒有標準答案）、open 自由書寫
+    function mission(id, items, answers) {
+      return dom(function (box) {
+        box.appendChild(h('p', 'hint', '選擇題直接點答案；拖曳題把卡片拖到框框或格子裡（也可以先點卡片、再點位置）。放錯了可以再拖到別的地方，拖回卡片區就能取消。全部完成後按「交卷看答案」，才會一起揭曉。'));
+        var kit = dragKit(box), states = [];
+        items.forEach(function (it, k) {
+          var card = h('div', 'm-item'), q = h('div', 'm-q');
+          q.appendChild(h('span', 'n', (k + 1) + '.'));
+          q.appendChild(document.createTextNode(it.q));
+          if (it.type === 'multi') q.appendChild(h('span', 'need', '（選 ' + it.a.length + ' 個）'));
+          if (it.type === 'pick') q.appendChild(h('span', 'need', '（可以多選）'));
+          card.appendChild(q);
+          var st = { it: it, card: card, pick: [], btns: [] };
+
+          if (it.type === 'fill' || it.type === 'sort' || it.type === 'order') {
+            var bank = h('div', 'bank dz');
+            if (it.type === 'order') {
+              // 排序：把步驟卡依序拖進第 1、2、3……格，判分方式和填空格相同
+              var list = h('div', 'order-list');
+              it.steps.forEach(function (s, si) {
+                var r = h('div', 'order-row'), z = h('span', 'dz blank');
+                r.appendChild(h('span', 'order-n', '第 ' + (si + 1) + ' 步'));
+                z.dataset.ans = s;
+                r.appendChild(z);
+                list.appendChild(r);
+              });
+              card.appendChild(list);
+              shuffle(it.steps).forEach(function (s) { bank.appendChild(kit.chip(s)); });
+              card.appendChild(bank);
+            } else if (it.type === 'fill') {
+              var p = h('div', 'fill-text'), words = [];
+              it.text.split(/(\{[^}]+\})/).forEach(function (part) {
+                var m = part.match(/^\{(.+)\}$/);
+                if (m) { var parts = m[1].split('@'), z = h('span', 'dz blank'); z.dataset.ans = parts[0]; if (parts[1]) z.dataset.grp = parts[1]; p.appendChild(z); words.push(parts[0]); }
+                else if (part) p.appendChild(document.createTextNode(part));
+              });
+              card.appendChild(p);
+              shuffle(words.concat(it.extra || [])).forEach(function (w) { bank.appendChild(kit.chip(w)); });
+              card.appendChild(bank);
+            } else {
+              shuffle(it.cards).forEach(function (c) { bank.appendChild(kit.chip(c[0], { bin: c[1] })); });
+              card.appendChild(bank);
+              var bins = h('div', 'bins');
+              it.labels.forEach(function (lb, li) {
+                var b = h('div', 'bin'), z = h('div', 'dz binzone');
+                b.appendChild(h('div', 'bin-t', lb));
+                z.dataset.bin = li;
+                b.appendChild(z);
+                bins.appendChild(b);
+              });
+              card.appendChild(bins);
+            }
+            st.bank = bank;
+            card.addEventListener('change', update);
+          } else if (it.type === 'choice' || it.type === 'multi' || it.type === 'pick') {
+            var row = h('div', 'row');
+            it.opts.forEach(function (o, i) {
+              var b = h('button', 'g-btn', o);
+              b.onclick = function () {
+                if (box.classList.contains('done')) return;
+                if (it.type === 'choice') st.pick = [i];
+                else {
+                  var at = st.pick.indexOf(i);
+                  if (at >= 0) st.pick.splice(at, 1);
+                  else if (it.type === 'pick' || st.pick.length < it.a.length) st.pick.push(i);
+                }
+                st.btns.forEach(function (x, j) { x.classList.toggle('picked', st.pick.indexOf(j) >= 0); });
+                update();
+              };
+              st.btns.push(b);
+              row.appendChild(b);
+            });
+            card.appendChild(row);
+          } else if (it.type === 'open') {
+            st.text = h('textarea', 'm-text');
+            st.text.placeholder = '寫下你的想法';
+            st.text.oninput = update;
+            card.appendChild(st.text);
+          }
+          var why = h('div', 'why');
+          why.innerHTML = it.why || '';
+          if (it.why) card.appendChild(why);
+          box.appendChild(card);
+          states.push(st);
+        });
+
+        function answered(st) {
+          var it = st.it;
+          if (it.type === 'fill' || it.type === 'order') return Array.prototype.every.call(st.card.querySelectorAll('.blank'), function (z) { return z.querySelector('.chip-d'); });
+          if (it.type === 'sort') return !st.bank.querySelector('.chip-d');
+          if (it.type === 'open') return st.text.value.trim().length > 0;
+          if (it.type === 'multi') return st.pick.length === it.a.length;
+          return st.pick.length > 0;
+        }
+        var bar = h('div', 'm-bar'), status = h('span', 'm-status'), btn = h('button', 'g-btn g-main', '交卷看答案'), warned = false;
+        bar.appendChild(status); bar.appendChild(btn);
+        box.appendChild(bar);
+        var score = h('div', 'm-score');
+        box.appendChild(score);
+
+        var ans = h('div', 'm-ans');
+        if (answers && answers.length) {
+          ans.appendChild(h('h3', '', '參考答案'));
+          answers.forEach(function (src) {
+            var img = h('img');
+            img.src = src; img.alt = '參考答案'; img.loading = 'lazy';
+            img.onclick = function () { window.open(src, '_blank'); };
+            ans.appendChild(img);
+          });
+          box.appendChild(ans);
+        }
+
+        function update() {
+          var n = states.filter(answered).length;
+          status.textContent = '已完成 ' + n + ' / ' + states.length + ' 題';
+          if (warned && n === states.length) { warned = false; btn.textContent = '交卷看答案'; }
+        }
+        function reveal() {
+          var graded = 0, right = 0;
+          states.forEach(function (st) {
+            var it = st.it, ok = null;
+            st.btns.forEach(function (b) { b.disabled = true; });
+            if (it.type === 'choice' || it.type === 'multi') {
+              st.btns.forEach(function (b, j) {
+                if (it.type === 'choice' ? j === it.a : it.a.indexOf(j) >= 0) b.classList.add('right');
+                else if (st.pick.indexOf(j) >= 0) b.classList.add('wrong');
+              });
+              ok = it.type === 'choice' ? st.pick[0] === it.a : same(st.pick, it.a);
+            } else if (it.type === 'fill' || it.type === 'order') {
+              ok = true;
+              // 同一組（{答案@組名}）的格子順序不限：放進該組任一個還沒用過的答案都算對
+              var blanks = Array.prototype.slice.call(st.card.querySelectorAll('.blank')), pool = {};
+              blanks.forEach(function (z) { if (z.dataset.grp) (pool[z.dataset.grp] = pool[z.dataset.grp] || []).push(z.dataset.ans); });
+              var marks = blanks.map(function (z) {
+                var c = z.querySelector('.chip-d'), t = c && c.textContent;
+                if (!z.dataset.grp) return t === z.dataset.ans;
+                var i = t ? pool[z.dataset.grp].indexOf(t) : -1;
+                if (i >= 0) pool[z.dataset.grp].splice(i, 1);
+                return i >= 0;
+              });
+              blanks.forEach(function (z, k) {
+                var good = marks[k];
+                z.classList.add(good ? 'right' : 'wrong');
+                if (!good) { ok = false; z.appendChild(h('span', 'fix', z.dataset.grp ? pool[z.dataset.grp].shift() : z.dataset.ans)); }
+              });
+            } else if (it.type === 'sort') {
+              ok = !st.bank.querySelector('.chip-d');  // 還有卡片沒分類就不算對
+              st.bank.querySelectorAll('.chip-d').forEach(function (c) { c.classList.add('wrong'); c.appendChild(h('span', 'fix', it.labels[c.dataset.bin])); });
+              st.card.querySelectorAll('.binzone .chip-d').forEach(function (c) {
+                var good = c.dataset.bin === c.parentNode.dataset.bin;
+                c.classList.add(good ? 'right' : 'wrong');
+                if (!good) { ok = false; c.appendChild(h('span', 'fix', it.labels[c.dataset.bin])); }
+              });
+            } else if (it.type === 'open') st.text.readOnly = true;
+            if (ok !== null) { graded++; if (ok) right++; st.card.classList.add(ok ? 'ok' : 'bad'); }
+          });
+          box.classList.add('done');
+          score.textContent = graded ? '答對 ' + right + ' / ' + graded + ' 題' + (right === graded ? '，全部答對！' : '，紅色的地方看看正確答案和解說，再想一想。') : '看看下面的參考答案。';
+          btn.textContent = '重新作答';
+          stampDone(id);
+        }
+        function reset() {
+          box.querySelectorAll('.fix').forEach(function (f) { f.remove(); });
+          states.forEach(function (st) {
+            st.card.classList.remove('ok', 'bad');
+            if (st.bank) {
+              st.card.querySelectorAll('.blank').forEach(function (z) { z.classList.remove('right', 'wrong'); });
+              shuffle(Array.prototype.slice.call(st.card.querySelectorAll('.chip-d'))).forEach(function (c) { c.classList.remove('right', 'wrong', 'sel'); st.bank.appendChild(c); });
+            } else if (st.it.type === 'open') { st.text.readOnly = false; }
+            else { st.pick = []; st.btns.forEach(function (b) { b.disabled = false; b.className = 'g-btn'; }); }
+          });
+          box.classList.remove('done');
+          score.textContent = '';
+          btn.textContent = '交卷看答案';
+          update();
+        }
+        btn.onclick = function () {
+          if (box.classList.contains('done')) return reset();
+          var left = states.length - states.filter(answered).length;
+          if (left && !warned) { warned = true; btn.textContent = '還有 ' + left + ' 題沒完成，確定交卷？'; return; }
+          warned = false;
+          reveal();
+        };
+        update();
+      });
+    }
+
+
+    var MISSIONS = {
+      why: mission('why', [
+        { type: 'choice', q: '1979 年，聯合國通過了哪一份公約，要求各國消除對女性的歧視？', opts: ['兒童權利公約', '消除對婦女一切形式歧視公約（CEDAW）', '巴黎氣候協定', '世界人權宣言'], a: 1, why: 'CEDAW 是保障女性權利的國際公約。臺灣雖然不是聯合國會員，仍在 2012 年施行「CEDAW 施行法」，讓公約在國內也有法律效力。' },
+        { type: 'choice', q: '臺灣在 2004 年通過哪一部法律，保障每個學生都不會因為性別、性別特質而被差別對待？', opts: ['《性別平等教育法》', '《兒童及少年福利法》', '《國民教育法》', '《消費者保護法》'], a: 0, why: '一位國中生因為與眾不同而被欺負，這件事讓大家看見校園裡的性別問題，《性別平等教育法》因此誕生，到現在還在持續修正、保護每個學生。' },
+        { type: 'multi', q: '性別平等教育最核心的兩件事是什麼？', opts: ['瞭解自己', '讓每個人都變得一樣', '尊重他人', '男生女生分開上課'], a: [0, 2], why: '性別平等不是要大家變得一樣，而是瞭解自己是誰，也尊重別人和自己不一樣。' },
+        { type: 'choice', q: '小宇說話很溫柔，常被同學取綽號嘲笑。你在旁邊看到了，最好的做法是？', opts: ['跟著笑，免得自己被排擠', '假裝沒看到', '告訴同學這樣會傷人，陪伴小宇，必要時請老師幫忙', '叫小宇改掉說話的方式'], a: 2, why: '要改變的是嘲笑的人，不是被笑的人。溫柔不是缺點，旁觀者的一句話和陪伴，常常就是最大的保護。' },
+        { type: 'open', q: '葉媽媽說：「我要救像他這樣的小孩子。」如果你是永鋕的同學，或班上有同學因為個性溫柔、興趣不一樣而被嘲笑，你可以怎麼做？', why: '參考方向：不跟著笑，也不轉傳；主動陪伴、邀他一起玩；勇敢說「這樣不好笑」或請老師幫忙；記得「和別人不一樣，不代表不正常」。' }
+      ]),
+
+      detect: mission('detect', [
+        { type: 'sort', q: '偵探出動：這是「刻板印象」、「偏見」，還是「歧視」？把情境拉到對的框框', labels: ['刻板印象（想法）', '偏見（態度）', '歧視（行為）'], cards: [
+          ['童裝區分成「男孩：小小探險家」「女孩：小公主」', 0],
+          ['新聞標題寫「美女工程師」', 0],
+          ['「他很娘，我不想跟他同組。」', 1],
+          ['推選幹部時說「班長要男生才管得動」，就不讓女生參選', 2],
+          ['不讓女生參加籃球校隊選拔', 2]
+        ], why: '刻板印象是「想法」：把一群人想成都一樣（「美女工程師」暗示女生當工程師很稀奇）。偏見是帶著好惡的「態度」。歧視是做出來的「行為」，讓人受到不公平的對待。' },
+        { type: 'choice', q: '「女生比較細心」是一句稱讚，這樣也有問題嗎？', opts: ['沒問題，稱讚別人一定是好事', '有問題：正面的刻板印象一樣會框住人', '只有男生說出來才有問題', '只要大部分女生是這樣，就沒問題'], a: 1, why: '不細心的女生會被批評「不像女生」，細心的男生則容易被忽略。每個人都應該被當成「一個人」來認識，而不是「一種性別」。' },
+        { type: 'choice', q: '影片：哪一個情況，已經從「刻板印象」變成「歧視」了？', opts: ['心裡覺得胖的人可能比較懶', '分組時大家都不願意讓胖胖的同學加入', '看到高個子就猜他會打籃球', '覺得某種顏色比較適合自己'], a: 1, why: '影片 0:31–0:47：刻板印象「進一步變成行動」、造成差別待遇，就是歧視。其他選項都還只是想法。' },
+        { type: 'choice', q: '影片：小明說「我只是開玩笑，又沒有惡意」，哪一個回應最恰當？', opts: ['有沒有惡意才是重點', '對方沒生氣就沒關係', '要看這句話的結果，是不是加深了負面的刻板印象', '只有名人在電視上說才算數'], a: 2, why: '影片 1:11–1:20、1:43–1:51：「開玩笑不是免死金牌」，就算沒有惡意，也可能讓刻板印象更深。' },
+        { type: 'open', q: '在廣告、卡通、偶像劇或遊戲裡，你看過什麼性別刻板印象？它在悄悄告訴觀眾什麼？', why: '參考方向：清潔劑廣告裡打掃的都是媽媽，等於告訴觀眾「家事是女生的事」；卡通裡的英雄多半是男生、需要被救的是女生，等於告訴觀眾「女生比較弱」。' },
+        { type: 'open', q: '有人只因為個性或興趣跟別人不一樣，就被說「不像男生」或「不像女生」。你認為被這樣評論的人可能有什麼感受？這樣的評論公平嗎？', why: '參考方向：可能覺得難過、丟臉、想隱藏真正的自己。「像不像」的標準是社會和文化給的，會隨時代改變；每個人的個性和興趣都應該被尊重，所以這樣的評論並不公平。' }
+      ]),
+
+      traits: mission('traits', [
+        { type: 'sort', q: '憑第一個直覺：這些特質是男生的、女生的，還是都可以？', labels: ['男生', '女生', '都可以'], cards: [
+          ['勇敢', 2], ['細心', 2], ['溫柔', 2], ['有領導力', 2], ['會照顧人', 2], ['負責', 2], ['幽默', 2], ['果斷', 2]
+        ], why: '全部都是「都可以」！看看你一開始放錯的是哪一個？想一想：是什麼讓你有那個直覺？' },
+        { type: 'multi', q: '如果「溫柔」只被當成女生的特質，可能會發生什麼事？', opts: ['溫柔的男生容易被嘲笑', '男生不敢表現出溫柔的一面', '願意當護理師、幼教老師的男生變少', '每個女生都會變得更溫柔', '社會變得更公平'], a: [0, 1, 2], why: '男生會壓抑自己的溫柔，社會也少了願意照顧人的男性。這也可以連結到第一站永鋕的故事。' },
+        { type: 'choice', q: '影片（娃娃選擇開車）：媽媽說「它們不搭吧？」，她覺得哪兩樣東西不搭？', opts: ['娃娃和跑車', '男孩和跑車', '耶誕樹和玩具店', '粉紅色和紅色'], a: 0, why: '影片 2:36–2:46：媽媽覺得娃娃是「女生的玩具」、跑車是「男生的玩具」，男孩最後兩樣都帶走了。' },
+        { type: 'choice', q: '影片最後說：「玩，就像開車一樣，不應該分性別。」這句話想告訴我們什麼？', opts: ['玩具和喜好，不該用性別來分', '女生不可以開車', '男生只能玩車子', '玩具店只應該賣一種玩具'], a: 0, why: '影片 2:48–2:54。想一想：玩具店裡的粉紅色走道和藍色走道，是不是也在悄悄告訴我們「誰該玩什麼」？' },
+        { type: 'open', q: '想一想你認識或知道的人（家人、名人或故事人物，請不要寫班上同學）：誰是溫柔細心的人？誰是有領導能力的人？男生女生各舉一個例子，並說說理由。', why: '參考方向：例如爸爸會細心照顧生病的家人、某位女性運動員擔任隊長帶領球隊。重點是發現這些特質男生女生都可能擁有。' },
+        { type: 'open', q: '如果有一天你變成另一種性別，最想做的三件事是什麼？這三件事，現在的你其實能不能做？卡住你的是什麼？', why: '答案沒有對錯。很多同學會發現，想做的事其實現在就能做，卡住自己的常常是別人的眼光或「應該」的想法。' }
+      ]),
+
+      chores: mission('chores', [
+        { type: 'choice', q: '「女兒是潑出去的水」、「家業只傳兒子」，這些說法當初可能的原因是什麼？', opts: ['過去是農業社會，靠兒子繼承勞力和家產，女兒出嫁後被當成夫家的人', '女兒比較不愛家', '當時的女生都不想工作', '兒子天生比較聰明'], a: 0, why: '這些習俗跟過去的生活方式有關，並不是因為女兒比較不重要。' },
+        { type: 'choice', q: '這些說法放到現在，還合理嗎？', opts: ['合理，傳統一定不能改', '不合理：女兒一樣能照顧家人、繼承家業，法律上兒子女兒的繼承權也相同', '只有在鄉下才合理', '只要家裡有兒子就合理'], a: 1, why: '社會改變了，女兒和兒子一樣可以工作、照顧爸媽、傳承家業。' },
+        { type: 'choice', q: '依照衛福部的調查（2019 年），有配偶的女性每天花在家事和照顧家人的時間，大約是男性的幾倍？', opts: ['差不多一樣', '大約 1.5 倍', '大約 3 倍', '大約 10 倍'], a: 2, why: '女性每天大約 4.4 小時，男性大約 1.5 小時，將近 3 倍。' },
+        { type: 'multi', q: '這個時間差距，可能會影響女性的哪些事？', opts: ['工作機會', '休息和做自己喜歡的事的時間', '在職場上的升遷', '身高'], a: [0, 1, 2], why: '家事和照顧花掉的時間，就少了工作、進修、休息的時間。' },
+        { type: 'choice', q: '影片：除了傳統的性別偏見，家事常由女性主動去做，還有什麼原因？', opts: ['女生天生比較會做家事', '兩個人對髒亂的容忍度不同，受不了髒的人先動手', '男生上班比較累', '家裡的家電不夠多'], a: 1, why: '影片 0:45–0:58：對髒亂的容忍度不同，受不了的人就會先去做，久了就變成「都是他在做」。' },
+        { type: 'choice', q: '影片：「乾淨程度 90 分，就比 80 分好嗎？」這句話最想說明什麼？', opts: ['家裡越髒越輕鬆', '愛乾淨的人要把標準降到最低', '乾淨的標準沒有絕對的對錯，重點是一起溝通出共識', '全部交給清潔公司就好'], a: 2, why: '影片 1:05–1:14：家人一起討論出大家都能接受的標準，才不會只有一個人累。' },
+        { type: 'choice', q: '加分題：影片開頭說「每個人家裡都有個不做家事的男人」，怎麼評價這句話最恰當？', opts: ['完全正確，每一家都是這樣', '這句話本身也是以偏概全的刻板印象，影片用它來開場、吸引注意', '這句話跟性別沒有關係', '只有男生可以評價這句話'], a: 1, why: '影片 0:45 也說「當然也有很多勤勞的男性」。看影片時也要當個偵探，留意誇張的說法。' },
+        { type: 'open', q: '寫一句你聽過的「男孩應該／不可以……」或「女孩應該／不可以……」。這句話限制了誰？', why: '參考方向：「男孩不可以哭」讓男生不敢表達情緒；「女孩要文靜」讓女生不敢大聲發言。' },
+        { type: 'open', q: '請你為家裡設計一張「公平的家事分工表」：你會考慮哪些因素？為什麼「每個人做一樣多」不一定公平？', why: '參考方向：公平不等於平均，要考慮每個人的時間、體力、擅長的事和整潔標準；大家都不喜歡的工作可以輪流；孩子也要依能力分擔；看見別人的付出、記得說謝謝（影片 1:14–1:22）。' }
+      ]),
+
+      careers: mission('careers', [
+        { type: 'choice', q: '影片：吳季剛小時候最喜歡做什麼？', opts: ['踢足球', '幫娃娃縫製衣服', '畫漫畫', '彈鋼琴'], a: 1, why: '影片 1:16–1:22。' },
+        { type: 'choice', q: '影片：有人問他「小男生為什麼要喜歡衣服？你怎麼不去打球？」，他怎麼做？', opts: ['馬上放棄，改去打球', '堅持自己的興趣，沒有因為別人的評論而放棄', '跟對方吵架', '從此不再碰衣服'], a: 1, why: '影片 4:29–4:50。' },
+        { type: 'sort', q: '名人牆：把每位名人的職業和「打破的刻板印象」拉到他的名字下面', labels: ['吳季剛', '林懷民', '黑嘉嘉', '郭婞淳', '居禮夫人', '札哈・哈蒂'], cards: [
+          ['服裝設計師：打破「男生不該玩娃娃、做衣服」', 0],
+          ['舞蹈家：打破「男生不跳舞」', 1],
+          ['圍棋職業棋士：打破「女生不擅長策略」', 2],
+          ['舉重選手：打破「女生力氣小」', 3],
+          ['科學家：打破「女生不適合科學」', 4],
+          ['建築師：打破「建築是男人的工作」', 5]
+        ], why: '林懷民創辦雲門舞集；黑嘉嘉是圍棋職業棋士；郭婞淳拿下奧運舉重金牌；居禮夫人兩度獲得諾貝爾獎；札哈・哈蒂是第一位獲得普立茲克建築獎的女性。' },
+        { type: 'choice', q: '影片（同工不同酬）：兩個小孩做的工作一樣嗎？拿到的糖果呢？', opts: ['女生做得比較多，所以拿比較多', '兩人做一樣的工作，女生拿到的糖果卻比較少', '男生做得比較多，所以拿比較多', '兩人都沒有拿到糖果'], a: 1, why: '影片 0:24–1:30：兩人都把藍球、紅球分好，女生的糖果卻比較少，原因只是「因為妳是女生」。' },
+        { type: 'choice', q: '影片：「同工不同酬」是什麼意思？', opts: ['做不同的工作，拿不同的薪水', '做一樣的工作，卻因為性別拿到不一樣的薪水', '工作越久，薪水越高', '老闆喜歡誰就多給誰'], a: 1, why: '影片 0:12–0:50：很多國家已經規定性別歧視違法，但同工不同酬的問題還是常常發生。' },
+        { type: 'choice', q: '影片：知道原因後，男生怎麼說、怎麼做？', opts: ['覺得自己比較厲害，拿多一點是應該的', '說「她跟我一樣厲害，應該拿一樣多」，把糖果分成一樣多', '什麼都沒說', '把自己的糖果全部吃掉'], a: 1, why: '影片 1:36–2:27：孩子們都覺得「這樣不公平」、「女生沒有理由拿的比男生少」，主動把糖果分成一樣多。' },
+        { type: 'open', q: '吳媽媽說：「我只有一件事做對了，就是沒有去阻止他。」如果媽媽當初阻止了，結果可能會怎樣？為什麼大人的態度這麼重要？', why: '參考方向：他可能會放棄自己的天分，世界就少了一位設計師；大人的支持或反對，會影響孩子敢不敢做自己（影片 4:21–4:29）。' },
+        { type: 'open', q: '我將來想從事什麼職業？這個職業需要哪些特質？有哪些特質，我可以向其他性別的人學習？', why: '參考方向：特質要和職業有關，例如醫師需要細心、耐心、冷靜判斷；理由不寫「因為我是男生／女生」。' }
+      ]),
+
+      respect: mission('respect', [
+        { type: 'sort', q: '聽到同學開「娘娘腔」的玩笑時，哪些做法能幫助被笑的人？', labels: ['能幫助被笑的人', '會讓欺負繼續'], cards: [
+          ['當場溫和地說「這樣不好笑」', 0],
+          ['把話題轉開，不讓玩笑繼續', 0],
+          ['事後陪伴被笑的同學', 0],
+          ['告訴老師', 0],
+          ['什麼都不做', 1],
+          ['跟著一起笑', 1],
+          ['把影片或截圖轉傳', 1]
+        ], why: '旁觀者的沉默和笑聲，都會讓欺負繼續下去。你不一定要很勇敢，選一個你做得到的方式就好。' },
+        { type: 'multi', q: '哪些做法是尊重不同性別的同學？', opts: ['不取綽號、不拿性別開玩笑', '分組時不因為性別排擠人', '尊重別人的身體界線', '聽到嘲笑會出聲，或告訴老師', '女生搬不動，就都不要讓女生搬', '男生哭了就笑他'], a: [0, 1, 2, 3], why: '「女生搬不動」也是刻板印象：力氣大小因人而異，可以問對方需不需要幫忙。' },
+        { type: 'open', q: '和不同性別的同學相處時，哪些言語或行為能讓對方感到被尊重？請寫出兩個你做得到的具體做法。', why: '參考方向：分組時主動邀請沒有組的同學；聽到別人拿性別開玩笑時說「換個話題吧」；借東西、碰到對方之前先問一聲。' },
+        { type: 'open', q: '寫一句你的「尊重宣言」，再寫一個這個星期就做得到的尊重行動。', why: '參考方向：要具體、做得到，例如「我不用性別來決定誰該做什麼。這週分組時，我會主動邀請沒有組的同學。」' }
+      ])
+    };
+
+    Cockpit.renderUnit({
+      title: '不一樣又怎樣：性別平等任務',
+      grade: '六年級資優班',
+      subject: '情意發展・性別平等',
+
+      objectives: [
+        '說出性別平等教育的由來與核心：瞭解自己、尊重他人',
+        '分辨刻板印象、偏見和歧視，察覺生活中的性別框框',
+        '檢視家事分工和職業選擇裡的性別期待',
+        '用具體行動尊重不同性別的人'
+      ],
+
+      intro: {
+        title: '開場：撕下標籤，做我自己',
+        slides: ['assets/cover_text.jpg']
+      },
+
+      sections: [
+        {
+          title: '第一站：為什麼需要性別平等？',
+          text: '1979 年，聯合國通過《消除對婦女一切形式歧視公約》（CEDAW），臺灣也在 2012 年施行 CEDAW 施行法。一位國中生因為與眾不同而被欺負，這件事讓臺灣在 2004 年有了《性別平等教育法》。性別平等教育的核心只有兩件事：<b>瞭解自己、尊重他人</b>。',
+          slides: ['assets/st1_why.jpg'],
+          interactive: MISSIONS.why,
+          teacherTips: [
+            '對應學習單 情2-1 葉永鋕短文和新增題「如果你是他的同學，你可以怎麼做？」。永鋕的故事由影片介紹，網站和學習單都不寫事件細節。',
+            '影片「蔡依林〈不一樣又怎樣〉葉永鋕篇」只播兩段：片段一 0:00–0:50、片段二 3:27–4:35。0:50–3:27 有欺負細節、流血和自殺字眼，網頁已設定片段一播到 0:50 自動停止，請直接點片段二，不要拖曳進度條。',
+            '影片參考答案：1. 很體貼，會幫忙做家事、關心媽媽；媽媽下班晚，他會叫媽媽先去洗澡，自己炒菜準備開飯（0:00–0:27）。2. 心理醫師說永鋕非常正常，覺得他不正常的人才需要反省（0:39–0:50）。3. 要勇敢做自己，不要害怕（4:02–4:35）。',
+            '闖關答案：1. 消除對婦女一切形式歧視公約（CEDAW）；2.《性別平等教育法》；3. 瞭解自己、尊重他人；4. 告訴同學這樣會傷人，陪伴小宇，必要時請老師幫忙；5. 開放題，參考方向：不跟著笑也不轉傳、主動陪伴邀他一起玩、勇敢說「這樣不好笑」或請老師幫忙、和別人不一樣不代表不正常。'
+          ]
+        },
+        {
+          title: '第二站：刻板印象偵探',
+          text: '<b>刻板印象</b>是把同一群人想成都一樣，例如「男生都愛運動」「女生都愛粉紅色」。刻板印象是「想法」，帶著好惡就成了<b>偏見</b>（態度），真的做出不公平的對待，就是<b>歧視</b>（行為）。當個偵探，把藏在生活裡的性別框框找出來！',
+          slides: ['assets/st2_detective.jpg'],
+          interactive: MISSIONS.detect,
+          teacherTips: [
+            '對應學習單 情2-1：刻板印象的定義、「不像男生／不像女生」題、廣告卡通偶像劇表格。',
+            '影片「只是開玩笑有這麼嚴重嗎？」整支播 2:25。影片的說明欄誤貼了別的新聞，播放時不要打開說明欄。',
+            '影片參考答案：1. 刻板印象進一步變成行動、造成差別待遇，就是歧視（0:31–0:47）。2. 開玩笑不是免死金牌，就算沒有惡意，玩笑也可能加深負面的刻板印象（1:11–1:20、1:43–1:51）。3. 被開玩笑的常常是弱勢的一方（1:58–2:04）。4. 有影響力的人說、旁邊的人跟著笑，玩笑就變成群體壓力，被笑的人更難反駁；可以說「這個梗好像在笑他的特質」「我們換個話題」，重點放在影響、不羞辱說話的人，也可以私下提醒或請老師協助。',
+            '闖關答案：1. 刻板印象 童裝區分類、「美女工程師」；偏見「他很娘，我不想跟他同組」；歧視 不讓女生參選班長、不讓女生參加籃球校隊選拔。2. 有問題，正面的刻板印象一樣會框住人。3. 分組時大家都不願意讓胖胖的同學加入。4. 要看這句話的結果，是不是加深了負面的刻板印象。5. 開放題，例如清潔劑廣告都是媽媽在打掃（家事是女生的事）。6. 開放題，參考答案見題目下方解說。'
+          ]
+        },
+        {
+          title: '第三站：男生女生大不同？',
+          text: '勇敢、細心、溫柔、有領導力……這些特質真的分男生女生嗎？先憑直覺分分看，再想一想：那個直覺是從哪裡來的？',
+          slides: ['assets/st3_traits.jpg'],
+          interactive: MISSIONS.traits,
+          teacherTips: [
+            '學習單沒有這一站的題目，口頭討論即可；可以連結 情2-1 第 2 題「不像男生／不像女生」。',
+            '第 1 題答案全部是「都可以」。交卷後可以請學生說說：自己第一個直覺放錯的是哪一個？為什麼會有那個直覺？',
+            '第 4 題可以追問：「這三件事，現在的你其實能不能做？卡住你的是什麼？」答案沒有對錯。',
+            '影片「Audi 西班牙〈娃娃選擇開車〉」整支播 3:10，幾乎沒有對白，結尾三句外文請老師口頭翻譯：2:39 媽媽「親愛的，它們不搭吧？」；2:48「玩，就像開車一樣，不應該分性別」；2:54「這個耶誕節，一起改變遊戲規則」。這是汽車品牌廣告，可以順便提醒學生：廣告也在推銷商品。',
+            '影片參考答案：1. 粉紅色走道是娃娃、嬰兒車、南瓜馬車；藍色走道是汽車、士兵玩偶（0:09–1:00）。2. 男孩把跑車和娃娃一起帶走（2:36–2:54）。3. 男孩有點疑惑，但最後還是兩樣都選，說明喜歡什麼不用看性別。4. 開放題。',
+            '闖關答案：1. 八個特質全部「都可以」；2. 溫柔的男生容易被嘲笑、男生不敢表現溫柔、願意當護理師和幼教老師的男生變少；3. 娃娃和跑車；4. 玩具和喜好，不該用性別來分；5、6. 開放題，參考方向見題目下方解說。'
+          ]
+        },
+        {
+          title: '第四站：「應該」與「不可以」',
+          text: '「男生不能哭」「女生要文靜」「女兒是潑出去的水」……這些「應該」和「不可以」是從哪裡來的？依照衛福部的調查（2019 年），有配偶的女性每天花在家事和照顧家人的時間大約 4.4 小時，男性大約 1.5 小時，將近 3 倍。家是大家的，家事也是。',
+          slides: ['assets/st4_chores.jpg'],
+          interactive: MISSIONS.chores,
+          teacherTips: [
+            '對應學習單 情2-2 第一題「這些話你聽過嗎？」（勾選聽過的話、圈出最不認同的一句、這句話限制了誰）和第二題「家事小表」（煮飯或買飯、洗碗等五項：現在誰在做、我可以幫忙、我發現）。',
+            '數據出處：衛生福利部「婦女生活狀況調查」（2019 年，行政院性別圖像引用）：有配偶女性每日無酬家務及照顧時間 4.41 小時，男性 1.48 小時，約 3 倍。這是四年一次的調查，之後有新數字可以更新。',
+            '影片「臺灣吧×旭立〈家務共好〉」整支播 1:56。0:26–0:29 有一句較口語的抱怨，介意的話可以從 0:30 開始播；1:26 以後的「另一半」上課可以改說「家人」。',
+            '影片參考答案：1. 兩個人對髒亂的容忍度不同，受不了髒的人就先動手（0:45–0:58）。2. 乾淨的標準沒有絕對的對錯，重點是一起溝通出共識（1:05–1:14）。3. 開頭那句話本身也是以偏概全，影片也說「當然也有很多勤勞的男性」（0:00、0:45）。4. 公平不等於平均：要考慮時間、體力、擅長的事和整潔標準，大家都不喜歡的工作可以輪流，孩子也要依能力分擔，看見彼此的付出、說謝謝（1:14–1:22）。',
+            '闖關答案：1. 過去是農業社會，靠兒子繼承勞力和家產；2. 不合理，女兒一樣能照顧家人、繼承家業，兒女繼承權相同；3. 大約 3 倍；4. 工作機會、休息時間、職場升遷；5. 對髒亂的容忍度不同；6. 一起溝通出共識；7. 也是以偏概全的刻板印象；8、9. 開放題，參考方向見題目下方解說。'
+          ]
+        },
+        {
+          title: '第五站：職業沒有性別',
+          text: '男生可以縫衣服、設計服裝，女生可以拿螺絲起子、設計大樓。從小幫娃娃做衣服的吳季剛，後來成為國際知名的服裝設計師。職業看的是興趣、能力和努力，不是性別。',
+          slides: ['assets/st5_careers.jpg'],
+          interactive: MISSIONS.careers,
+          teacherTips: [
+            '學習單沒有這一站的題目（職業會在之後的單元再談），口頭討論即可。',
+            '影片「TVBS《看板人物》吳季剛」播兩段：片段一 0:56–2:41、片段二 3:42–5:47（約 4 分鐘）。時間夠可以再播 6:50–7:06 媽媽的結語。',
+            '影片參考答案：1. 幫娃娃縫製衣服（1:16–1:22）。2. 他堅持自己的興趣，沒有因為負面評論而放棄（4:29–4:50）。3.「我只有一件事做對了，就是沒有去阻止他」（4:21–4:29）。',
+            '影片「三立新聞：因為是女孩！面對同工不同酬」播 0:00–2:35（後面是三立 APP 廣告，網頁會自動停）。原片是挪威金融工會為國際婦女節拍的實驗。影片裡「全球男女工資差別要消失還得等 170 年」是當時世界經濟論壇報告的估計，之後每年的報告數字會更新。',
+            '影片參考答案：1. 一樣的工作（把藍球、紅球分開放），女生拿到的糖果卻比較少（0:24–1:30）。2. 男生說「她跟我一樣厲害，所以她應該拿到一樣多的獎賞」「不然這樣就不公平啦」（1:48–1:59）。3. 開放題：小孩一眼就看出不公平，大人卻常常習以為常（2:12–2:35）。',
+            '闖關答案：1. 幫娃娃縫製衣服；2. 堅持自己的興趣；3. 吳季剛 服裝設計師、林懷民 舞蹈家、黑嘉嘉 圍棋職業棋士、郭婞淳 舉重選手、居禮夫人 科學家、札哈・哈蒂 建築師；4. 兩人做一樣的工作，女生拿到的糖果卻比較少；5. 做一樣的工作，卻因為性別拿到不一樣的薪水；6. 說「她跟我一樣厲害，應該拿一樣多」，把糖果分成一樣多；7. 開放題，他可能放棄天分，世界少了一位設計師，大人的支持會影響孩子敢不敢做自己；8. 開放題，特質要和職業有關。'
+          ]
+        },
+        {
+          title: '終點站：尊重從我開始',
+          text: '撕下標籤之後，每個人都能自在地做自己。聽到嘲笑時出聲、分組時不排擠人、尊重別人的身體界線……尊重，從我做起。聽完片尾曲，寫下你的尊重宣言！',
+          slides: ['assets/end.jpg'],
+          interactive: MISSIONS.respect,
+          teacherTips: [
+            '對應學習單 情2-2 第三題「尊重小偵探」（尊重的打○、不尊重的打✕）和第四題「我的尊重宣言」。',
+            '第 1 題可以延伸討論：能幫助被笑的四種做法，哪一個最容易做到？哪一個最有效？序位沒有標準答案，但「什麼都不做」一定會讓欺負繼續。',
+            '闖關答案：1. 能幫助 當場溫和地說「這樣不好笑」、把話題轉開、事後陪伴、告訴老師；會讓欺負繼續 什麼都不做、跟著笑、轉傳影片截圖。2. 不取綽號、分組不排擠、尊重身體界線、聽到嘲笑會出聲或告訴老師。3、4. 開放題，要具體、做得到。'
+          ]
+        }
+      ],
+
+      summary: [
+        '性別平等教育的核心是<b>瞭解自己、尊重他人</b>；和別人不一樣，不代表不正常。',
+        '刻板印象是想法，偏見是態度，歧視是行為；「只是開玩笑」也可能傷人。',
+        '勇敢、細心、溫柔、有領導力，男生女生都可以擁有。',
+        '家事是全家人的事，公平分工要一起溝通；職業看興趣和能力，不看性別。',
+        '尊重從我開始：不拿性別開玩笑，聽到嘲笑時出聲。'
+      ],
+
+      teacher: {
+        mistakes: [
+          '以為性別平等就是「男生女生都一樣」：重點是不用性別限制一個人，並尊重差異。',
+          '以為正面的刻板印象（女生細心、男生勇敢）沒關係：它一樣會框住人。',
+          '把「開玩笑」當成擋箭牌：要看話語造成的影響，而不只是有沒有惡意。',
+          '談家事分工時追問學生的家庭組成：家事小表只問「男性家人／女性家人／我」，不問家裡有誰。'
+        ],
+        links: [
+          { label: '教育部性別平等教育全球資訊網', url: 'https://www.gender.edu.tw/' },
+          { label: '影片：〈不一樣又怎樣〉葉永鋕篇（只播 0:00–0:50、3:27–4:35）', url: 'https://www.youtube.com/watch?v=V_M9ZId2QAY' },
+          { label: '影片：《青春發言人》只是開玩笑有這麼嚴重嗎？', url: 'https://www.youtube.com/watch?v=CfV4oR9hCSE' },
+          { label: '影片：臺灣吧×旭立〈家務共好〉', url: 'https://www.youtube.com/watch?v=oFWR9XKwrNA' },
+          { label: '影片：TVBS《看板人物》吳季剛', url: 'https://www.youtube.com/watch?v=F6r9ODYINkU' },
+          { label: '影片：Audi 西班牙〈娃娃選擇開車〉（La muñeca que eligió conducir）', url: 'https://www.youtube.com/watch?v=V-siux-rWQM' },
+          { label: '影片：三立新聞〈因為是女孩！面對同工不同酬〉（只播 0:00–2:35）', url: 'https://www.youtube.com/watch?v=esv9SJL3uX8' }
+        ]
+      }
+    });
+
+    /* 本單元沒有最後的延伸影片：拿掉框架的「影片」區塊 */
+    (function () { var v = document.getElementById('video'); if (v) v.remove(); document.querySelectorAll('.pills .pill').forEach(function (p) { if (p.getAttribute('href') === '#video') p.remove(); }); })();
+    /* 標題已經有「第幾站」，拿掉框架自動加的 1. 2. 編號 */
+    document.querySelectorAll('.cp-section h2, .pills .pill').forEach(function (n) { n.textContent = n.textContent.replace(/^\d+\.\s*/, ''); });
+
+    /* 各站影片：放在簡報後面、闖關任務前面。segs 是要播放的片段 [開始秒, 結束秒]，
+       每段各一個播放器，播到結束秒會自動停，不必手動跳過不播的部分。 */
+    function mmss(t) { return Math.floor(t / 60) + ':' + ('0' + t % 60).slice(-2); }
+    function addVideo(secId, ytId, segs, title, questions) {
+      var sec = document.getElementById(secId), task = sec && Array.prototype.filter.call(sec.querySelectorAll('h3'), function (t) { return t.textContent === '動手操作'; })[0];
+      if (!task) return;
+      var names = ['片段一', '片段二', '片段三'], html = '<h3>影片時間：' + title + '</h3>';
+      segs.forEach(function (s, i) {
+        if (segs.length > 1 || s[0] || s[1]) html += '<div class="seg-label">' + (segs.length > 1 ? names[i] + '：' : '') + '播放 ' + mmss(s[0]) + '–' + mmss(s[1]) + '</div>';
+        html += '<div class="video-wrap"><iframe src="https://www.youtube-nocookie.com/embed/' + ytId + '?rel=0&start=' + s[0] + '&end=' + s[1] + '" title="' + title + '" loading="lazy" allowfullscreen></iframe></div>';
+      });
+      if (questions) html += '<div class="m-item" style="margin-top:10px"><div class="m-q">邊看邊想</div><div>' + questions.map(function (q, i) { return (i + 1) + '. ' + q; }).join('<br>') + '</div></div>';
+      var wrap = document.createElement('div'); wrap.innerHTML = html;
+      while (wrap.firstChild) sec.insertBefore(wrap.firstChild, task);
+    }
+    addVideo('sec1', 'V_M9ZId2QAY', [[0, 50], [207, 275]], '〈不一樣又怎樣〉葉永鋕篇：葉媽媽的話', ['葉媽媽說，永鋕在家是一個怎樣的孩子？', '心理醫師怎麼說永鋕？', '葉媽媽最後想對年輕人說什麼？']);
+    addVideo('sec2', 'CfV4oR9hCSE', [[0, 145]], '只是開玩笑有這麼嚴重嗎？（公視《青春發言人》）', ['刻板印象在什麼時候會變成「歧視」？', '為什麼影片說「開玩笑不是免死金牌」？', '被開玩笑的，常常是哪一方的人？', '同一句玩笑，由班上人緣最好的同學說，和由常被欺負的同學說，效果為什麼不一樣？可以怎麼溫柔地提出來？']);
+    addVideo('sec4', 'oFWR9XKwrNA', [[0, 116]], '家務共好（臺灣吧×旭立）', ['除了傳統的性別偏見，為什麼家事常常是女性先去做？', '「乾淨程度 90 分，就比 80 分好嗎？」想說明什麼？', '影片開頭那句「每個人家裡都有個不做家事的男人」，你同意嗎？', '要讓家事分工更公平，影片建議家人怎麼做？']);
+    addVideo('sec5', 'F6r9ODYINkU', [[56, 161], [222, 347]], '服裝設計師吳季剛（TVBS《看板人物》）', ['吳季剛小時候最喜歡做什麼？', '有人問他「小男生為什麼要喜歡衣服？」，他怎麼回應？', '吳媽媽說，她只有哪一件事做對了？']);
+    addVideo('sec5', 'esv9SJL3uX8', [[0, 155]], '因為是女孩！同工不同酬的小實驗（三立新聞）', ['兩個小孩做的工作一樣嗎？拿到的糖果一樣多嗎？', '知道原因後，男生說了什麼？', '影片最後問：「為什麼這些小孩都能理解，你的老闆卻不會？」你怎麼想？']);
+    addVideo('sec3', 'V-siux-rWQM', [[0, 190]], '娃娃選擇開車（Audi 西班牙廣告）', ['玩具店裡，粉紅色走道和藍色走道各放了哪些玩具？', '娃娃一路開著跑車闖關，最後是誰把她和跑車一起帶走？', '媽媽說「它們不搭吧？」，男孩最後怎麼選？', '影片最後說：「玩，就像開車一樣，不應該分性別。」你同意嗎？']);
+
+    /* 闖關任務不用框架的「動手操作」標題；沒有資訊圖表的段落把佔位框拿掉 */
+    document.querySelectorAll('section[id^="sec"] h3').forEach(function (t) {
+      if (t.textContent === '動手操作') t.textContent = '闖關任務';
+      if (t.textContent === '資訊圖表' && t.nextElementSibling && t.nextElementSibling.classList.contains('placeholder')) { t.nextElementSibling.remove(); t.remove(); }
+    });
+
+    /* ── 片頭曲／片尾曲：按播放才開始（不自動播放），歌詞照時間逐句淡入 ── */
+    var LYRICS_OPEN = [{"t": 9.8, "end": 13.3, "text": "有人說男孩不能掉眼淚"}, {"t": 14.0, "end": 17.8, "text": "有人說女孩不必太勇敢"}, {"t": 17.8, "end": 21.9, "text": "標籤一張一張 貼在我身上"}, {"t": 21.9, "end": 25.8, "text": "遮住了我本來的模樣"}, {"t": 25.8, "end": 30.0, "text": "如果顏色 沒有性別"}, {"t": 30.0, "end": 34.0, "text": "如果夢想 不分你我"}, {"t": 34.6, "end": 38.0, "text": "撕下標籤 我就是我"}, {"t": 38.8, "end": 43.1, "text": "溫柔或勇敢 由我選擇"}, {"t": 43.1, "end": 47.3, "text": "不必像誰 不被誰定義"}, {"t": 47.3, "end": 50.6, "text": "我的樣子 我自己說"}, {"t": 50.6, "end": 53.0, "text": "我自己說"}, {"t": 69.8, "end": 74.2, "text": "喜歡縫紉的男孩 拿起針線"}, {"t": 74.2, "end": 78.6, "text": "想蓋大樓的女孩 畫著藍圖"}, {"t": 78.6, "end": 83.0, "text": "每一種不一樣 都值得被看見"}, {"t": 83.0, "end": 87.6, "text": "不是誰的例外 是我們的日常"}, {"t": 87.6, "end": 91.0, "text": "如果顏色 沒有性別"}, {"t": 91.0, "end": 95.6, "text": "如果夢想 不分你我"}, {"t": 95.6, "end": 99.8, "text": "撕下標籤 我就是我"}, {"t": 99.8, "end": 103.7, "text": "溫柔或勇敢 由我選擇"}, {"t": 104.1, "end": 108.2, "text": "不必像誰 不被誰定義"}, {"t": 108.2, "end": 111.6, "text": "我的樣子 我自己說"}, {"t": 111.6, "end": 114.1, "text": "我自己說"}, {"t": 116.9, "end": 120.2, "text": "我的樣子 我自己說"}];
+    var LYRICS_END = [{"t": 14.6, "end": 18.9, "text": "當玩笑變成一根刺"}, {"t": 18.9, "end": 21.7, "text": "我選擇不跟著笑"}, {"t": 21.7, "end": 25.8, "text": "當有人被留在角落"}, {"t": 25.8, "end": 28.5, "text": "我把手伸過去"}, {"t": 28.5, "end": 32.5, "text": "家有很多種樣子"}, {"t": 32.5, "end": 35.5, "text": "愛是同一種語言"}, {"t": 35.5, "end": 37.3, "text": "工作沒有性別"}, {"t": 37.4, "end": 41.5, "text": "只有熱情和努力"}, {"t": 42.1, "end": 46.0, "text": "向著陽光 我們不害怕"}, {"t": 46.0, "end": 49.6, "text": "做自己 也讓別人做自己"}, {"t": 49.6, "end": 53.0, "text": "一句尊重 一個行動"}, {"t": 53.0, "end": 55.6, "text": "世界就會不一樣"}, {"t": 55.6, "end": 60.0, "text": "你是你 我是我"}, {"t": 60.0, "end": 64.0, "text": "我們都一樣重要"}, {"t": 84.6, "end": 88.6, "text": "向著陽光 我們不害怕"}, {"t": 88.6, "end": 92.1, "text": "做自己 也讓別人做自己"}, {"t": 92.1, "end": 95.7, "text": "一句尊重 一個行動"}, {"t": 95.7, "end": 100.3, "text": "世界就會不一樣"}, {"t": 102.2, "end": 106.1, "text": "向著陽光"}];
+    function songStage(o) {
+      var box = h('div', 'song'), stage = h('div', 'song-stage');
+      // scenes：[開始秒, 圖檔]，唱到那個時間就換成那張圖
+      var scenes = (o.scenes || [[0, o.img]]).map(function (s, i) {
+        var im = h('img', 'scene'); im.src = s[1]; im.alt = o.title; im.dataset.kb = i % 4;
+        stage.appendChild(im); return { t: s[0], el: im };
+      });
+      var curScene = -1;
+      function showScene(t, move) {
+        var k = 0;
+        scenes.forEach(function (s, i) { if (t >= s.t) k = i; });
+        if (k === curScene) return;
+        curScene = k;
+        scenes.forEach(function (s, i) {
+          if (i !== k) { s.el.classList.remove('on'); return; }
+          s.el.classList.remove('kb'); void s.el.offsetWidth;  // 重新開始鏡頭推移
+          s.el.classList.add('on');
+          if (move) s.el.classList.add('kb');
+        });
+      }
+      showScene(0, false);
+      var stickers = (o.stickers || []).map(function (s) {
+        var t = h('div', 'tag-sticker', s[0]);
+        t.style.left = s[1] + '%'; t.style.top = s[2] + '%';
+        t.style.setProperty('--r', s[3] + 'deg'); t.style.setProperty('--fx', (s[1] < 50 ? -60 : 60) + 'px');
+        stage.appendChild(t); return t;
+      });
+      stage.appendChild(h('div', 'song-shade'));
+      var title = h('div', 'song-title'); title.innerHTML = o.title + '<small>' + o.sub + '</small>'; stage.appendChild(title);
+      var lyric = h('div', 'song-lyric'); stage.appendChild(lyric);
+      var pledge = h('div', 'end-pledge', o.after || ''); stage.appendChild(pledge);
+      var btn = h('button', 'song-play', '▶ 播放' + o.label); btn.type = 'button'; stage.appendChild(btn);
+      var audio = new Audio(o.src); audio.preload = 'none';
+      var lines = o.lyrics || [], cur = -1, torn = false;
+      btn.onclick = function () {
+        if (audio.paused) { audio.play(); } else { audio.pause(); }
+      };
+      audio.onplay = function () {
+        stage.classList.add('playing'); stage.classList.remove('paused'); pledge.classList.remove('show'); btn.textContent = '❚❚ 暫停';
+        var s = scenes[Math.max(curScene, 0)]; if (s && !s.el.classList.contains('kb')) s.el.classList.add('kb');
+      };
+      audio.onpause = function () { if (!audio.ended) { stage.classList.add('paused'); btn.textContent = '▶ 繼續播放'; } };
+      audio.onended = function () {
+        stage.classList.remove('playing', 'paused'); btn.textContent = '↻ 再聽一次'; lyric.classList.remove('show'); cur = -1;
+        curScene = -1; showScene(0, false);
+        if (o.after) pledge.classList.add('show');
+      };
+      audio.ontimeupdate = function () {
+        var t = audio.currentTime, k = -1;
+        showScene(t, true);
+        for (var i = 0; i < lines.length; i++) if (t >= lines[i].t && t < lines[i].end) { k = i; break; }
+        if (k !== cur) {
+          cur = k;
+          lyric.classList.remove('show');
+          if (k >= 0) setTimeout(function () { lyric.textContent = lines[k].text; lyric.classList.add('show'); }, 250);
+        }
+        // 標籤：唱到「標籤一張一張貼在我身上」時一張張貼上來，唱到「撕下標籤」時撕掉；重新播放會再貼回來
+        if (stickers.length) {
+          var tearAt = o.tearAt || audio.duration / 2;
+          lines.some(function (l) { if (/撕/.test(l.text)) { tearAt = l.t; return true; } return false; });
+          stickers.forEach(function (s, i) {
+            var pop = (o.popAt || 1) + i * 1.0, on = t >= pop && t < tearAt + i * 0.3;
+            s.classList.toggle('on', on);
+            s.classList.toggle('off', t >= tearAt + i * 0.3);
+          });
+        }
+      };
+      box.appendChild(stage);
+      box.appendChild(h('div', 'song-credit', '音樂：Suno AI 生成'));
+      return box;
+    }
+    (function () {
+      var intro = document.getElementById('intro');
+      if (intro) {
+        intro.appendChild(h('h3', null, '片頭曲〈我的樣子〉'));
+        intro.appendChild(songStage({ img: 'assets/cover.jpg', src: 'assets/opening_song.mp3', lyrics: LYRICS_OPEN, title: '不一樣又怎樣', sub: '性別平等任務', label: '片頭曲〈我的樣子〉',
+          popAt: 17.8,
+          // 換圖時間對照歌詞：標籤段落停在封面；「溫柔或勇敢」特質；「縫紉的男孩／蓋大樓的女孩」職業；「每一種不一樣」走廊陪伴；第二次「撕下標籤」回到封面
+          scenes: [[0, 'assets/cover.jpg'], [38.8, 'assets/st3_traits.jpg'], [47.3, 'assets/st1_why.jpg'], [55, 'assets/st2_detective.jpg'],
+                   [69.8, 'assets/st5_careers.jpg'], [78.6, 'assets/st1_why.jpg'], [87.6, 'assets/st4_chores.jpg'],
+                   [95.6, 'assets/cover_text.jpg'], [104.1, 'assets/st3_traits.jpg'], [111.6, 'assets/cover.jpg']],
+          stickers: [['男生不能哭', 3, 6, -6], ['女生要文靜', 76, 5, 5], ['女生要可愛', 2, 24, -4], ['男生要強壯', 78, 22, 4]] }));
+      }
+      var end = document.getElementById('sec6'), task = end && Array.prototype.filter.call(end.querySelectorAll('h3'), function (t) { return t.textContent === '闖關任務'; })[0];
+      if (task) {
+        // 片尾曲畫面就是終點站插畫，拿掉上面重複的簡報圖
+        var car = end.querySelector('.carousel'); if (car) { var pt = car.previousElementSibling; if (pt && pt.textContent === '簡報') pt.remove(); car.remove(); }
+        var t = h('h3', null, '片尾曲〈向著陽光〉');
+        end.insertBefore(t, task);
+        end.insertBefore(songStage({ img: 'assets/end.jpg', src: 'assets/ending_song.mp3', lyrics: LYRICS_END, title: '向著陽光', sub: '尊重，從我開始', label: '片尾曲〈向著陽光〉', after: '寫下你的尊重宣言',
+          // 「當玩笑變成一根刺」走廊陪伴；「家有很多種樣子」家事（全家一起做）；「工作沒有性別」職業；「向著陽光」終點站；「一句尊重一個行動」特質；「你是你我是我」封面
+          scenes: [[0, 'assets/end.jpg'], [14.6, 'assets/st1_why.jpg'], [28.5, 'assets/st4_chores.jpg'], [35.5, 'assets/st5_careers.jpg'],
+                   [42.1, 'assets/end.jpg'], [49.6, 'assets/st3_traits.jpg'], [55.6, 'assets/cover.jpg'], [66, 'assets/st2_detective.jpg'],
+                   [75, 'assets/st1_why.jpg'], [84.6, 'assets/end.jpg']] }), task);
+      }
+    })();
+
+    /* ── 任務護照：每一站交卷後蓋一個章 ──
+     * 只存在這台平板的瀏覽器裡（localStorage），不會傳到任何地方，也不記錄姓名。 */
+    var KEY = 'g6-gender-equality', passport = { done: {} };
+    try { passport = Object.assign(passport, JSON.parse(localStorage.getItem(KEY) || '{}')); } catch (e) {}
+    var STOPS = [['why', '為什麼'], ['detect', '偵探'], ['traits', '特質'], ['chores', '家事'], ['careers', '職業'], ['respect', '尊重']];
+    var panel = document.createElement('section');
+    panel.className = 'cp-section'; panel.id = 'passport';
+    panel.innerHTML = '<h2>我的任務護照</h2><p class="hint" style="color:var(--chalk-dim)">每一站的闖關任務交卷後，就會蓋一個章。護照只存在這台平板上。</p><div class="stamps" id="stampList"></div><p class="grad" id="grad">六個章都蓋滿了！你是性別平等任務的完成者，記得帶著你的尊重宣言出發。</p>';
+    var anchor = document.getElementById('intro') || document.getElementById('top');
+    anchor.parentNode.insertBefore(panel, anchor.nextSibling);
+    var stampEls = STOPS.map(function (s, i) {
+      var a = document.createElement('a');
+      a.className = 'stamp'; a.href = '#sec' + (i + 1);
+      a.innerHTML = '<span class="c">' + (i < STOPS.length - 1 ? i + 1 : '終') + '</span><span>' + s[1] + '</span>';
+      panel.querySelector('#stampList').appendChild(a);
+      return a;
+    });
+    function refreshStamps() {
+      var all = true;
+      STOPS.forEach(function (s, i) { var on = !!passport.done[s[0]]; stampEls[i].classList.toggle('on', on); if (!on) all = false; });
+      panel.querySelector('#grad').classList.toggle('show', all);
+    }
+    function stampDone(id) {
+      passport.done[id] = 1;
+      try { localStorage.setItem(KEY, JSON.stringify(passport)); } catch (e) {}
+      refreshStamps();
+    }
+    refreshStamps();
+  </script>
+</body>
+</html>
