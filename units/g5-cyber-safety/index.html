@@ -207,10 +207,10 @@
       // 案件 3：密碼破解計時器
       password: dom(function (box) {
         box.appendChild(h('label', '', '輸入一個「範例」密碼，看電腦猜中要多久'));
-        var inp = h('input', 'g-input'); inp.type = 'text'; inp.autocomplete = 'off'; inp.value = 'Abc12345!'; inp.id = 'pwDemo';
+        var inp = h('input', 'g-input'); inp.type = 'text'; inp.autocomplete = 'off'; inp.value = 'Abc12345!'; inp.id = 'pwDemo'; inp.maxLength = 24;
         var meter = h('div', 'meter'), bar = h('i'); meter.appendChild(bar);
         var res = h('p', 'big'), row = h('div', 'row');
-        [['最常見密碼', '123456'], ['舊規則的 8 碼密碼', 'Abc12345!'], ['四個詞的密語', '小狗 喜歡 藍色 雨傘']].forEach(function (p) {
+        [['最常見密碼', '123456'], ['舊規則的 8 碼密碼', 'Abc12345!'], ['四個英文單字的長密語', 'tiger jump green tea']].forEach(function (p) {
           var b = h('button', 'g-btn', p[0]); b.onclick = function () { inp.value = p[1]; upd(); }; row.appendChild(b);
         });
         box.appendChild(inp); box.appendChild(meter); box.appendChild(res); box.appendChild(row);
@@ -220,8 +220,7 @@
           if (sec < 1) return '不到 1 秒';
           var u = [['秒', 60], ['分鐘', 60], ['小時', 24], ['天', 365]], v = sec;
           for (var i = 0; i < u.length; i++) { if (v < u[i][1]) return '約 ' + Math.round(v) + ' ' + u[i][0]; v /= u[i][1]; }
-          if (v >= 1e8) return '超過 1 億年';
-          if (v >= 1e4) return '約 ' + Math.round(v / 1e4) + ' 萬年';
+          if (v >= 100) return '超過 100 年';
           return '約 ' + Math.round(v) + ' 年';
         }
         function upd() {
@@ -229,15 +228,11 @@
           if (!len) { res.textContent = '請輸入範例密碼'; bar.style.width = '0'; return; }
           if (common.indexOf(s.toLowerCase()) > -1) sec = 0;
           else {
-            var words = s.trim().split(/\s+/);
-            if (words.length >= 3) sec = Math.pow(5000, words.length) / 1e10;
-            else {
-              var pool = 0;
-              if (/[a-z]/.test(s)) pool += 26; if (/[A-Z]/.test(s)) pool += 26; if (/[0-9]/.test(s)) pool += 10;
-              if (/[^\x00-\x7F]/.test(s)) pool += 3000; else if (/[^a-zA-Z0-9]/.test(s)) pool += 32;
-              sec = Math.pow(pool, len) / 1e10;
-              if (/^[A-Z]?[a-z]+\d+[^a-zA-Z0-9]?$/.test(s)) sec /= 1e4;   // 「字母＋數字＋符號」是常見套路，猜得更快
-            }
+            var pool = 0;
+            if (/[a-z]/.test(s)) pool += 26; if (/[A-Z]/.test(s)) pool += 26; if (/[0-9]/.test(s)) pool += 10;
+            if (/[^\x00-\x7F]/.test(s)) pool += 3000; else if (/[^a-zA-Z0-9]/.test(s)) pool += 32;
+            sec = Math.pow(pool, len) / 1e10;
+            if (/^[A-Z]?[a-z]+\d+[^a-zA-Z0-9]?$/.test(s)) sec /= 1e4;   // 「字母＋數字＋符號」是常見套路，猜得更快
           }
           var lg = sec < 1 ? 0 : Math.log10(sec);
           bar.style.width = Math.min(100, 4 + lg * 7) + '%';
@@ -460,21 +455,21 @@
           interactive: GAMES.password,
           quizzes: [
             {
-              q: '現代資安密碼學中，為什麼「由四個無關中文詞組成的 16 字密語（如：雨傘 企鵝 彈跳 綠茶）」，防禦電腦暴力破解（Brute Force）的能力遠大於「符合複雜大小寫符號規則的 8 碼密碼（如：P@s1#w9!）」？',
-              options: ['因為短密碼容易被鍵盤卡住', '因為密碼長度是指數級擴增搜尋空間（Entropy 熵），現代 GPU 算力窮舉 16 碼所需時間遠超 8 碼', '因為電腦看不懂中文字', '因為長密語不需開啟雙重驗證'],
-              answer: 1,
-              feedback: '暴力破解所需的時間取決於字元池與長度形成的指數級排列組合（熵）。長度是指數增長的核心，8 碼短密碼已能被現代算力在極短時間內窮舉破譯。'
+              q: '小明想設一個好記又難猜的密碼。A 是「tiger jump green tea」（四個不相關的英文單字），B 是「P@s1#w9!」（8 碼，有大小寫和符號）。哪一個比較難被電腦猜中？',
+              options: ['A，因為比較長，電腦要試的組合多很多', 'B，因為有符號，看起來比較複雜', '一樣難猜，因為兩個都有英文字母', 'B，因為比較短，不容易打錯'],
+              answer: 0,
+              feedback: '電腦猜密碼是一組一組試。密碼每多一個字，要試的組合就多好幾十倍，所以「夠長」比「看起來複雜」更重要。四個不相關的英文單字又長又好記，可以用上面的密碼計時器比比看！'
             },
             {
-              q: '雙重驗證（2FA）的核心精神是結合不同維度的防護。下列哪一組登入防線「沒有」達到真正的雙重因素驗證效果？',
+              q: '雙重驗證就是登入要過兩關，而且兩關要是不同種類：記在腦中的（密碼）、拿在手上的（手機、卡片）、身體本身的（指紋、臉）。下面哪一組「不算」真正的雙重驗證？',
               options: [
-                '第一道：帳號密碼（你知道的）＋ 第二道：手機 App 動態授權碼（你持有的）',
-                '第一道：帳號密碼（你知道的）＋ 第二道：指紋辨識（你本身的生物特徵）',
-                '第一道：自訂密碼（你知道的）＋ 第二道：媽媽的生日密碼（你知道的）',
-                '第一道：實體 FIDO 金鑰（你持有的）＋ 第二道：臉部掃描（你本身的生物特徵）'
+                '密碼＋手機收到的驗證碼',
+                '密碼＋指紋',
+                '密碼＋再輸入一次媽媽的生日',
+                '刷學生卡＋臉部辨識'
               ],
               answer: 2,
-              feedback: '多因素驗證（MFA）必須跨越「知識、持有物、生物特徵」不同維度。兩道都是「記憶中的文字密碼」只是雙重密碼，一旦被鍵盤側錄或釣魚就會同時失守。'
+              feedback: '密碼和媽媽的生日都是「記在腦中的」，壞人只要偷看到或騙到，兩關就一起被破。第二關要用手機、指紋這種不同種類的東西才安全。'
             }
           ],
           infographic: 'assets/i3_privacy_v3.jpg?v=20261025_v8_pixar_story_perfect',
