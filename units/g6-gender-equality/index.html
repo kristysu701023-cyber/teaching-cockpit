@@ -32,7 +32,7 @@
     .done .why { display: block; }
     .why .fame { margin: 4px 0 8px; padding-left: 1.2em; }
     .why .fame li { margin: 4px 0; }
-    .why .works { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin-top: 8px; }
+    .why .works { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 8px; max-width: 760px; }
     .why .works figure { margin: 0; }
     .why .works img { width: 100%; border-radius: 8px; display: block; }
     .why .works figcaption { font-size: .85rem; color: var(--chalk-dim); margin-top: 2px; }
@@ -517,7 +517,11 @@
           '<li><b>郭婞淳</b>：舉重選手。在東京奧運拿下女子舉重金牌。打破「女生力氣小」。</li>' +
           '<li><b>居禮夫人</b>：科學家。研究放射性，是第一位得到諾貝爾獎的女性，也是第一個得兩次諾貝爾獎的人。打破「女生不適合科學」。</li>' +
           '<li><b>札哈・哈蒂</b>：建築師。設計了很多造型特別的大樓，是第一位得到「普立茲克建築獎」（建築界最重要的獎）的女性。打破「建築是男人的工作」。' +
-          '<!--ZAHA_PHOTOS--></li>' +
+          '<br>臺灣新北的「淡江大橋」，也是札哈・哈蒂建築師事務所設計的。' +
+          '<div class="works">' +
+          '<figure><img src="assets/zaha_danjiang_day.jpg" alt="白天的淡江大橋，背景是觀音山" loading="lazy"><figcaption>淡江大橋（白天）｜攝影：4300streetcar，CC BY 4.0，Wikimedia Commons</figcaption></figure>' +
+          '<figure><img src="assets/zaha_danjiang_night.jpg" alt="夜晚打上燈光的淡江大橋" loading="lazy"><figcaption>淡江大橋（夜景）｜攝影：brian25_tw，CC BY-SA 4.0，Wikimedia Commons</figcaption></figure>' +
+          '</div></li>' +
           '</ul>職業看的是興趣、能力和努力，不是性別。' },
         { type: 'choice', q: '影片（同工不同酬）：兩個小孩做的工作一樣嗎？拿到的糖果呢？', opts: ['女生做得比較多，所以拿比較多', '兩人做一樣的工作，女生拿到的糖果卻比較少', '男生做得比較多，所以拿比較多', '兩人都沒有拿到糖果'], a: 1, why: '影片 0:24–1:30：兩人都把藍球、紅球分好，女生的糖果卻比較少，原因只是「因為妳是女生」。' },
         { type: 'choice', q: '影片：「同工不同酬」是什麼意思？', opts: ['做不同的工作，拿不同的薪水', '做一樣的工作，卻因為性別拿到不一樣的薪水', '工作越久，薪水越高', '老闆喜歡誰就多給誰'], a: 1, why: '影片 0:12–0:50：很多國家已經規定性別歧視違法，但同工不同酬的問題還是常常發生。' },
