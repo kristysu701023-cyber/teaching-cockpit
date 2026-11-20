@@ -378,12 +378,14 @@ def build(template, teacher):
         washi = os.path.join(os.path.dirname(os.path.abspath(__file__)), "border_washi.jpg")
         wrid, _ = doc.part.get_or_add_image(washi)
         ww, wh = Image.open(washi).size
+        # Kristy 2026-11-20 第二次手動調整：花邊對齊左邊界（各頁 left, top，單位 pt）
+        WASHI_POS = {1: (0, 776.5), 2: (0, 775.5), 3: (-5.5, 775.5)}
         for g in list(title_p.iter("{urn:schemas-microsoft-com:vml}group")):
             wpt = 445.0
             new = parse_xml(
                 f'<v:shape xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" '
                 f'xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" '
-                f'id="washi_p{n}" type="#_x0000_t75" style="position:absolute;margin-left:-20pt;margin-top:776pt;'
+                f'id="washi_p{n}" type="#_x0000_t75" style="position:absolute;margin-left:{WASHI_POS[n][0]}pt;margin-top:{WASHI_POS[n][1]}pt;'
                 f'width:{wpt:.1f}pt;height:{wpt * wh / ww:.1f}pt;z-index:-251654656;'
                 f'mso-position-vertical-relative:page;mso-position-horizontal-relative:margin">'
                 f'<v:imagedata r:id="{wrid}" o:title=""/></v:shape>')
