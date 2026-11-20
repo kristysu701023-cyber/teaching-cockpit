@@ -16,3 +16,4 @@ __pycache__/
 *.pptx
 preview_review/
 .claude/
+scripts/worksheets/_cache/
