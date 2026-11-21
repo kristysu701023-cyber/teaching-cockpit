@@ -151,9 +151,76 @@
             box-shadow: 3px 3px 0 var(--pen); opacity: 0; pointer-events: none; transition: opacity .2s; }
   .to-top.on { opacity: 1; pointer-events: auto; }
   html { scroll-behavior: smooth; }
+  .ch { display: inline-block; width: 64px; height: 77px; flex: none; }
+  .ch .eyes { transform-box: fill-box; transform-origin: center; animation: blink 4.5s infinite; }
+  @keyframes blink { 0%, 94%, 100% { transform: scaleY(1); } 97% { transform: scaleY(.1); } }
+  .hero .ch-l, .hero .ch-r { position: absolute; bottom: 4px; width: 104px; height: 125px; }
+  .hero .ch-l { left: 8%; animation: bob 3s ease-in-out infinite; }
+  .hero .ch-r { right: 8%; animation: bob 3s ease-in-out 1.5s infinite; }
+  @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+  .names { margin: 6px 0 0; font-size: .85rem; color: var(--muted); font-weight: 700; }
+  .names b { color: var(--red-ink); } .names b + b { color: var(--blue-ink); }
+  .talk { display: flex; align-items: flex-end; gap: 6px; margin: 4px 0 8px; }
+  .talk .ch, .ending .ch { width: 62px; height: 74px; }
+  .talk .bubble { margin: 0 0 18px 10px; font-family: var(--hand); font-size: .95rem; font-weight: 900; color: var(--ink); }
+  .ending { display: flex; align-items: flex-end; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+  .ending .bubble { margin: 0 0 18px 10px; font-family: var(--hand); font-weight: 900; }
+  footer .duo { display: flex; justify-content: center; gap: 4px; margin-bottom: 4px; }
+  footer .duo .ch { width: 56px; height: 67px; }
+  @media (max-width: 640px) { .hero .ch-l, .hero .ch-r { width: 50px; height: 60px; bottom: auto; top: -50px; }
+    .hero .ch-l { left: auto; right: 52px; } .hero .ch-r { right: 0; } }
+  @media (prefers-reduced-motion: reduce) { .ch .eyes, .hero .ch-l, .hero .ch-r { animation: none; } }
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="ch-mi" viewBox="0 0 200 240">
+      <path d="M150 58 Q196 70 186 128 Q180 152 166 160 Q176 120 152 92 Z" fill="#7A4A2E" stroke="#3A3A3A" stroke-width="3.5" stroke-linejoin="round"/>
+      <path d="M58 176 Q100 156 142 176 L154 238 L46 238 Z" fill="#FF9EB5" stroke="#3A3A3A" stroke-width="3.5" stroke-linejoin="round"/>
+      <path d="M80 168 Q100 186 120 168" fill="none" stroke="#3A3A3A" stroke-width="3"/>
+      <circle cx="86" cy="200" r="3.5" fill="#3A3A3A"/><circle cx="114" cy="200" r="3.5" fill="#3A3A3A"/>
+      <circle cx="100" cy="104" r="62" fill="#FFE6D2" stroke="#3A3A3A" stroke-width="3.5"/>
+      <path d="M37 112 Q30 38 100 36 Q170 38 163 112 Q156 78 134 70 Q124 90 104 76 Q88 94 72 74 Q48 84 37 112 Z" fill="#7A4A2E" stroke="#3A3A3A" stroke-width="3.5" stroke-linejoin="round"/>
+      <circle cx="154" cy="62" r="9" fill="#FFD84D" stroke="#3A3A3A" stroke-width="3"/>
+      <g class="eyes">
+        <ellipse cx="78" cy="114" rx="9.5" ry="12.5" fill="#2B2B33"/><ellipse cx="122" cy="114" rx="9.5" ry="12.5" fill="#2B2B33"/>
+        <circle cx="81.5" cy="109" r="3.8" fill="#fff"/><circle cx="125.5" cy="109" r="3.8" fill="#fff"/>
+        <circle cx="75" cy="119" r="1.8" fill="#fff"/><circle cx="119" cy="119" r="1.8" fill="#fff"/>
+      </g>
+      <ellipse cx="62" cy="134" rx="11" ry="6.5" fill="#FF8FA8" opacity=".55"/><ellipse cx="138" cy="134" rx="11" ry="6.5" fill="#FF8FA8" opacity=".55"/>
+      <path d="M89 133 Q100 148 111 133 Z" fill="#E8506A" stroke="#3A3A3A" stroke-width="3" stroke-linejoin="round"/>
+      <line x1="146" y1="196" x2="128" y2="218" stroke="#8A5A3B" stroke-width="8" stroke-linecap="round"/>
+      <circle cx="162" cy="178" r="21" fill="#DFF1FF" stroke="#3A3A3A" stroke-width="4"/>
+      <path d="M152 170 Q156 164 164 164" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="130" cy="214" r="10" fill="#FFE6D2" stroke="#3A3A3A" stroke-width="3"/>
+    </symbol>
+    <symbol id="ch-suan" viewBox="0 0 200 240">
+      <path d="M56 176 Q100 158 144 176 L156 238 L44 238 Z" fill="#7DB8F2" stroke="#3A3A3A" stroke-width="3.5" stroke-linejoin="round"/>
+      <path d="M82 170 L100 190 L118 170" fill="#fff" stroke="#3A3A3A" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M100 190 L100 236" stroke="#3A3A3A" stroke-width="2.5"/>
+      <circle cx="100" cy="104" r="62" fill="#FFE6D2" stroke="#3A3A3A" stroke-width="3.5"/>
+      <path d="M38 110 Q34 40 100 38 Q166 40 162 110 Q158 84 146 70 L138 84 L126 64 L114 82 L102 60 L90 80 L78 62 L70 82 Q50 84 38 110 Z" fill="#3B2A20" stroke="#3A3A3A" stroke-width="3.5" stroke-linejoin="round"/>
+      <path d="M98 40 Q104 22 118 24 Q108 30 106 42" fill="#3B2A20" stroke="#3A3A3A" stroke-width="3" stroke-linejoin="round"/>
+      <g class="eyes">
+        <ellipse cx="78" cy="116" rx="7.5" ry="10" fill="#2B2B33"/><ellipse cx="122" cy="116" rx="7.5" ry="10" fill="#2B2B33"/>
+        <circle cx="81" cy="112" r="3" fill="#fff"/><circle cx="125" cy="112" r="3" fill="#fff"/>
+      </g>
+      <circle cx="78" cy="116" r="18" fill="#fff" fill-opacity=".25" stroke="#3A3A3A" stroke-width="4"/>
+      <circle cx="122" cy="116" r="18" fill="#fff" fill-opacity=".25" stroke="#3A3A3A" stroke-width="4"/>
+      <path d="M96 114 Q100 110 104 114" fill="none" stroke="#3A3A3A" stroke-width="3.5"/>
+      <ellipse cx="60" cy="140" rx="10" ry="6" fill="#FF8FA8" opacity=".45"/><ellipse cx="140" cy="140" rx="10" ry="6" fill="#FF8FA8" opacity=".45"/>
+      <path d="M86 140 Q100 154 114 140" fill="none" stroke="#3A3A3A" stroke-width="3.5" stroke-linecap="round"/>
+      <g transform="rotate(28 166 150)">
+        <rect x="160" y="96" width="13" height="58" fill="#FFD84D" stroke="#3A3A3A" stroke-width="3"/>
+        <path d="M160 96 L166.5 80 L173 96 Z" fill="#FFE6D2" stroke="#3A3A3A" stroke-width="3" stroke-linejoin="round"/>
+        <path d="M164 86 L166.5 80 L169 86 Z" fill="#3A3A3A"/>
+        <rect x="160" y="150" width="13" height="10" fill="#FF9EB5" stroke="#3A3A3A" stroke-width="3"/>
+      </g>
+      <circle cx="160" cy="166" r="11" fill="#FFE6D2" stroke="#3A3A3A" stroke-width="3"/>
+    </symbol>
+  </defs>
+</svg>
 <header>
   <a class="home" href="../../index.html">← 教學駕駛艙</a>
   <div class="hero">
@@ -163,7 +230,9 @@
     <p class="badge">六年級<br>數學難題</p>
     <h1 class="title"><span class="t1">數</span><span class="t2">學</span><span class="t3">解</span><span class="t4">謎</span><span class="t5">室</span></h1>
     <p class="ribbon">六年級｜先自己想・再看提示・最後看動畫</p>
-    <p class="say">一起把<br>難題<br>解開！</p>
+    <p class="names">解謎搭檔：<b>名偵探 X</b>和<b>助手 Y</b></p>
+    <svg class="ch ch-l" role="img" aria-label="名偵探 X"><use href="#ch-mi"/></svg>
+    <svg class="ch ch-r" role="img" aria-label="助手 Y"><use href="#ch-suan"/></svg>
   </div>
   <nav class="toc" id="toc" aria-label="目錄"></nav>
 </header>
@@ -177,13 +246,14 @@
     <div class="row">
       <button type="button" class="btn" data-toggle="prob-1" aria-pressed="false">顯示答案</button>
     </div>
-    <h3 class="sec"><span class="snum">1</span>先想一想<span class="bubble">卡住了嗎？一次只看一個提示！</span></h3>
+    <h3 class="sec"><span class="snum">1</span>先想一想</h3>
+    <div class="talk"><svg class="ch" aria-hidden="true"><use href="#ch-mi"/></svg><span class="bubble">名偵探 X：線索一次看一個，自己推理看看！</span></div>
     <details class="hint"><summary><span class="bulb">💡</span>提示 1</summary><p>先把時刻想成「10 時整」：這時分針在 12、時針在 10，時針領先分針 30° × 10 ＝ 300°。</p></details><details class="hint"><summary><span class="bulb">💡</span>提示 2</summary><p>分針每分鐘走 6°、時針每分鐘走 0.5°，所以分針每分鐘會追近 6° − 0.5° ＝ 5.5°。從相差 300° 追到還差 69°，一共追近了幾度？</p></details>
     <h3 class="sec"><span class="snum">2</span>解題影片</h3>
     <div class="yt"><iframe src="https://www.youtube-nocookie.com/embed/y1YIPcJ98Z4?rel=0" title="數8-6 精熟11｜看鐘面夾角 69° 求時刻 解題影片" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe></div>
     <h3 class="sec"><span class="snum">3</span>文字詳解</h3>
     <details class="steps"><summary>打開一步一步的算法</summary><ol><li>時針在 10～11 之間，兩針夾角 69°</li><li>先回到「10 時整」作為起點</li><li>10 時整：時針在分針前方 30° × 10 ＝ 300°</li><li>分針每分走 6°，時針每分走 0.5°</li><li>每分鐘分針追近：6° − 0.5° ＝ 5.5°</li><li>從 300° 追到還差 69°，共追近幾度？</li><li>一共追近：300° − 69° ＝ 231°</li><li>經過時間：231° ÷ 5.5° ＝ 42（分）</li><li>答案：10 時 42 分 ✓</li></ol>
-      <p class="final">答案：10 時 42 分</p></details>
+      <div class="ending"><p class="final">答案：10 時 42 分</p><svg class="ch" aria-hidden="true"><use href="#ch-suan"/></svg><span class="bubble">助手 Y：驗算通過，才算破案！</span></div></details>
   </section>
   <section class="card c-blue" id="q2">
     <div class="card-head"><span class="qno">第 2 題</span><h3 class="ct">時針轉動的角度</h3><span class="code">數8-6 精熟12</span></div>
@@ -192,13 +262,14 @@
     <div class="row">
       <button type="button" class="btn" data-toggle="prob-2" aria-pressed="false">顯示答案</button>
     </div>
-    <h3 class="sec"><span class="snum">1</span>先想一想<span class="bubble">卡住了嗎？一次只看一個提示！</span></h3>
+    <h3 class="sec"><span class="snum">1</span>先想一想</h3>
+    <div class="talk"><svg class="ch" aria-hidden="true"><use href="#ch-mi"/></svg><span class="bubble">名偵探 X：線索一次看一個，自己推理看看！</span></div>
     <details class="hint"><summary><span class="bulb">💡</span>提示 1</summary><p>先算經過幾分鐘：從 7 時 50 分到 12 時 2 分，一共是 4 小時 12 分 ＝ 252 分鐘。</p></details><details class="hint"><summary><span class="bulb">💡</span>提示 2</summary><p>時針 1 小時（60 分鐘）走一大格 30°，所以時針每分鐘走 30° ÷ 60 ＝ 0.5°。</p></details>
     <h3 class="sec"><span class="snum">2</span>解題影片</h3>
     <div class="yt"><iframe src="https://www.youtube-nocookie.com/embed/S8LAczeO5wA?rel=0" title="數8-6 精熟12｜時針轉動的角度 解題影片" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe></div>
     <h3 class="sec"><span class="snum">3</span>文字詳解</h3>
     <details class="steps"><summary>打開一步一步的算法</summary><ol><li>時針從 7 時 50 分走到 0 時 2 分，共轉幾度？</li><li>第一步：先算經過時間（0 時 2 分 ＝ 12 時 2 分）</li><li>12 時 2 分 − 7 時 50 分 ＝ 4 小時 12 分</li><li>換成分鐘：60 × 4 ＋ 12 ＝ 252（分）</li><li>第二步：時針 1 小時（60 分）走一大格 30°</li><li>時針每分鐘走：30° ÷ 60 ＝ 0.5°</li><li>時針連續走 252 分鐘的轉動扇形</li><li>0.5° × 252 ＝ 126°</li><li>答案：126 度 ✓</li></ol>
-      <p class="final">答案：126 度</p></details>
+      <div class="ending"><p class="final">答案：126 度</p><svg class="ch" aria-hidden="true"><use href="#ch-suan"/></svg><span class="bubble">助手 Y：驗算通過，才算破案！</span></div></details>
   </section>
   <section class="card c-purple" id="q3">
     <div class="card-head"><span class="qno">第 3 題</span><h3 class="ct">時針與分針重疊的時刻</h3><span class="code">數8-7 資優4</span></div>
@@ -207,13 +278,14 @@
     <div class="row">
       <button type="button" class="btn" data-toggle="prob-3" aria-pressed="false">顯示答案</button>
     </div>
-    <h3 class="sec"><span class="snum">1</span>先想一想<span class="bubble">卡住了嗎？一次只看一個提示！</span></h3>
+    <h3 class="sec"><span class="snum">1</span>先想一想</h3>
+    <div class="talk"><svg class="ch" aria-hidden="true"><use href="#ch-mi"/></svg><span class="bubble">名偵探 X：線索一次看一個，自己推理看看！</span></div>
     <details class="hint"><summary><span class="bulb">💡</span>提示 1</summary><p>先回到「4 時整」：分針落後時針 4 大格，也就是 30° × 4 ＝ 120°。</p></details><details class="hint"><summary><span class="bulb">💡</span>提示 2</summary><p>兩針重疊代表分針要把落後的 120° 全部追完。分針每分鐘比時針多走 5.5°，用 120 ÷ 5.5 換成分數是多少？</p></details>
     <h3 class="sec"><span class="snum">2</span>解題影片</h3>
     <div class="yt"><iframe src="https://www.youtube-nocookie.com/embed/rUOlp7weFeQ?rel=0" title="數8-7 資優4｜時針與分針重疊的時刻 解題影片" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe></div>
     <h3 class="sec"><span class="snum">3</span>文字詳解</h3>
     <details class="steps"><summary>打開一步一步的算法</summary><ol><li>兩針恰好重疊在 4 和 5 之間，求正確時刻</li><li>先回到「4 時整」作為追趕起點</li><li>4 時整：時針領先分針 4 大格</li><li>4 時整相差：30° × 4 ＝ 120°</li><li>分針每分走 6°，時針每分走 0.5°</li><li>每分鐘追趕速率差：6° − 0.5° ＝ 5.5°</li><li>兩針重疊 ＝ 分針把 120° 差距全部追完</li><li>120 ÷ 5.5 ＝ 240/11 ＝ 21 又 9/11（分）</li><li>答案：4 時 21 又 9/11 分 ✓</li></ol>
-      <p class="final">答案：4 時 <span>21</span><span class="frac"><span class="num">9</span><span class="den">11</span></span> 分</p></details>
+      <div class="ending"><p class="final">答案：4 時 <span>21</span><span class="frac"><span class="num">9</span><span class="den">11</span></span> 分</p><svg class="ch" aria-hidden="true"><use href="#ch-suan"/></svg><span class="bubble">助手 Y：驗算通過，才算破案！</span></div></details>
   </section>
   <section class="card c-green" id="q4">
     <div class="card-head"><span class="qno">第 4 題</span><h3 class="ct">兩船兩岸折返兩次相遇求河寬</h3><span class="code">數8-8 資優9</span></div>
@@ -236,13 +308,14 @@
     <div class="row">
       <button type="button" class="btn" data-toggle="prob-4" aria-pressed="false">顯示答案</button>
     </div>
-    <h3 class="sec"><span class="snum">1</span>先想一想<span class="bubble">卡住了嗎？一次只看一個提示！</span></h3>
+    <h3 class="sec"><span class="snum">1</span>先想一想</h3>
+    <div class="talk"><svg class="ch" aria-hidden="true"><use href="#ch-mi"/></svg><span class="bubble">名偵探 X：線索一次看一個，自己推理看看！</span></div>
     <details class="hint"><summary><span class="bulb">💡</span>提示 1</summary><p>第一次相遇時，兩艘船合起來剛好走了「1 個河寬」，此時藍船走了 500 m。</p></details><details class="hint"><summary><span class="bulb">💡</span>提示 2</summary><p>各自到對岸折返後第二次相遇時，兩船合起來共走了「3 個河寬」！所以藍船總共走了 500 × 3 ＝ 1500 m，而這 1500 m 剛好是「1 個河寬 ＋ 折返的 300 m」。</p></details>
     <h3 class="sec"><span class="snum">2</span>解題影片</h3>
     <div class="yt"><iframe src="https://www.youtube-nocookie.com/embed/yGZzmc24bhA?rel=0" title="數8-8 資優9｜兩船兩岸折返兩次相遇求河寬 解題影片" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe></div>
     <h3 class="sec"><span class="snum">3</span>文字詳解</h3>
     <details class="steps"><summary>打開一步一步的算法</summary><ol><li>兩艘船從河的左、右兩岸同時相向出發</li><li>第一次相遇：兩船合走 1 個河寬（藍船走 500 m）</li><li>每合走 1 個河寬 → 藍船就走 500 m</li><li>開到對岸馬上折返，在離右岸 300 m 處第二次相遇</li><li>從出發到第二次相遇：兩船一共合走 3 個河寬！</li><li>合走 3 個河寬 → 藍船共走 500 × 3 ＝ 1500 m</li><li>藍船路線 ＝ 1 個河寬 ＋ 折返 300 m ＝ 1500 m</li><li>河寬 ＝ 1500 − 300 ＝ 1200（m）</li><li>答案：河寬 1200 m ✓</li></ol>
-      <p class="final">答案：1200 m</p></details>
+      <div class="ending"><p class="final">答案：1200 m</p><svg class="ch" aria-hidden="true"><use href="#ch-suan"/></svg><span class="bubble">助手 Y：驗算通過，才算破案！</span></div></details>
   </section>
   <section class="card c-red" id="q5">
     <div class="card-head"><span class="qno">第 5 題</span><h3 class="ct">圓周機器螞蟻奇數秒折返相遇</h3><span class="code">數8-8 ★素養新試界</span></div>
@@ -263,16 +336,17 @@
     <div class="row">
       <button type="button" class="btn" data-toggle="prob-5" aria-pressed="false">顯示答案</button>
     </div>
-    <h3 class="sec"><span class="snum">1</span>先想一想<span class="bubble">卡住了嗎？一次只看一個提示！</span></h3>
+    <h3 class="sec"><span class="snum">1</span>先想一想</h3>
+    <div class="talk"><svg class="ch" aria-hidden="true"><use href="#ch-mi"/></svg><span class="bubble">名偵探 X：線索一次看一個，自己推理看看！</span></div>
     <details class="hint"><summary><span class="bulb">💡</span>提示 1</summary><p>(1) 直徑把圓周平分成兩半，相向爬行的距離是半個圓周。(2) 用半圓距離除以兩隻螞蟻的速率和（4.2 ＋ 2.8 ＝ 7 cm/s），可知需要「淨前進 7 秒」才會相遇。</p></details><details class="hint"><summary><span class="bulb">💡</span>提示 2</summary><p>(3) 記錄每段結束時的「淨前進秒數」：＋1 → −2 → ＋3 → −4 → ＋5 → −6 → ＋7！在第 7 段（爬 13 秒）結束時剛好累積滿 ＋7 秒相遇，把前 7 個奇數加起來就是總時間。</p></details>
     <h3 class="sec"><span class="snum">2</span>解題影片</h3>
     <div class="yt"><video controls preload="metadata" src="數8-8_素養題_機器螞蟻奇數秒折返.mp4"></video></div>
     <h3 class="sec"><span class="snum">3</span>文字詳解</h3>
     <details class="steps"><summary>打開一步一步的算法</summary><ol><li>圓周長 98 cm，兩隻機器螞蟻從直徑兩端相向出發</li><li>第 (1) 題：直徑平分圓周 → 半圓路徑 ＝ 98 ÷ 2 ＝ 49 cm</li><li>第 (2) 題：速率和 ＝ 4.2 ＋ 2.8 ＝ 7（cm／秒）</li><li>不折返相遇時間：49 ÷ 7 ＝ 7 秒（需淨前進 7 秒）</li><li>第 (3) 題：走 1、3、5、7… 奇數秒就折返，何時累積滿 ＋7 秒？</li><li>爬 1 秒 → 淨 ＋1 秒；折返 3 秒 → 淨 −2 秒</li><li>爬 5 秒 → 淨 ＋3 秒；折返 7 秒 → 淨 −4 秒</li><li>爬 9 秒 → 淨 ＋5 秒；折返 11 秒 → 淨 −6 秒（下半圓差 1 秒未相遇）</li><li>第 7 段爬 13 秒：−6 ＋ 13 ＝ ＋7 秒（剛好相遇！）</li><li>總時間：1＋3＋5＋7＋9＋11＋13 ＝ 49（秒）✓</li></ol>
-      <p class="final">答案：(1) 49 公分　(2) 7 秒　(3) 49 秒</p></details>
+      <div class="ending"><p class="final">答案：(1) 49 公分　(2) 7 秒　(3) 49 秒</p><svg class="ch" aria-hidden="true"><use href="#ch-suan"/></svg><span class="bubble">助手 Y：驗算通過，才算破案！</span></div></details>
   </section>
 </main>
-<footer><div class="tips"><b>解題提醒</b>｜先畫圖找關係・一步一步列式・算完要驗算</div><p>數學解謎室・六年級</p></footer>
+<footer><div class="duo" aria-hidden="true"><svg class="ch"><use href="#ch-mi"/></svg><svg class="ch"><use href="#ch-suan"/></svg></div><div class="tips"><b>解題提醒</b>｜先畫圖找關係・一步一步列式・算完要驗算</div><p>數學解謎室・六年級</p></footer>
 <script>
   (function () {
     var toc = document.getElementById("toc");
