@@ -1,6 +1,7 @@
 # 交接檔（handoff.md）
 
 ## ⏯️ 目前做到哪
+- 2026-11-21（claude.ai 網頁版）：數學解謎室五、六年級改手繪筆記風＋自動目錄，已上線（7e2c8bb）。角色「名偵探 X／助手 Y」做到一半，在分支 `mascot-xy`（未上線）。
 - 四個單元都已上線：《資安偵探學院》、《世界的角落》、《做壓力的主人》、《不一樣又怎樣：性別平等任務》。
 - 2026-11-17 這次：
   - 清空本機與 G 槽 `待刪除/`、刪 `preview_review/`（約 1.1 GB）。
@@ -12,6 +13,14 @@
 - 本機與 GitHub 同步（見下方 push 狀態）。
 
 ## ➡️ 下一步
+0. **【優先】數學解謎室角色圖（用 Kristy 的 Gemini 生圖）**
+   - 先 `git fetch` 再切到分支 `mascot-xy`：兩頁已有角色位置與文字，暫用 SVG 角色（`#ch-mi`、`#ch-suan`），要換成 Gemini 圖。
+   - 角色：**名偵探 X**＝11 歲台灣女生，棕色高馬尾＋黃髮圈、短瀏海，粉紅連帽上衣、深藍裙、白球鞋，拿大放大鏡，**沒有帽子披風**。**助手 Y**＝11 歲台灣男生，深棕刺刺短髮（頭頂一撮呆毛）、黑色圓眼鏡，淺藍 polo 衫、卡其短褲，棕色斜背包（**蓋子蓋好、沒有書插在外面**），抱大黃鉛筆。
+   - 畫風：Q 版約 2.5 頭身、手繪塗鴉筆記風、深灰粗描邊、柔和粉彩平塗、大眼、臉頰紅暈；給 11–12 歲，不要太幼稚。打樣（Kristy 已同意）：Canva `MAHbjOGja9E`，請 Kristy 下載給你當參考圖。
+   - 5 張圖（每張附打樣當參考；1:1、純白背景、無文字、無地面陰影、全身留邊）：`x_hello` 揮手＋放大鏡、`y_hello` 食指指上＋抱鉛筆、`x_think` 拿放大鏡看＋一指托下巴、`y_check` 比讚＋拿鉛筆、`duo_cheer` 兩人舉手歡呼。前三張 Canva 已畫好（`MAHbjKwMDnY`、`MAHbjGzcGao`、`MAHbjMFOLts`），Kristy 下載原圖就能用，只需用 Gemini 補後兩張。
+   - 處理：去背、裁白邊，存透明 WebP（寬約 400px、q80、單張 < 60KB）到 `assets/mascot/`（png 被 .gitignore 排除）。檢查手腳臉沒被裁、長相與打樣一致。
+   - 換進 `units/g5-math-puzzles/index.html` 與 `units/g6-math-puzzles/index.html`：標題左 `.ch-l`→x_hello、右 `.ch-r`→y_hello；`.talk`→x_think；`.ending`→y_check；頁尾 `.duo`→一張 duo_cheer。用 `<img src="../../assets/mascot/….webp" alt="…">` 保留 class，`.ch` 改適合正方形圖（object-fit: contain），拿掉 `.eyes` 眨眼動畫、保留 bob 飄動，刪掉頁首 `<svg>` symbol 定義。
+   - 電腦版與手機版（390px）截圖自查：不壓標題、不擋對話框。給 Kristy 看，她說「推」才合併進 main 推上。
 1. ~~清空 `待刪除/`~~：本機＋G 槽已清空（2026-11-19）。下載資料夾裡兩張淡江大橋原圖可自行刪。
 2. Kristy 上課前自己看一遍資安單元〈末日2.0〉。
 
@@ -24,6 +33,6 @@
 - 教師密碼維持 `0000`；不選粵語影片。
 
 ## 🕐 最後更新
-- 時間：2026-11-17 19:48
-- 更新者：Claude Code (Opus 5.5) @ LAPTOP-IUMJF2MM
-- Git push：✅ 已推 (35879b7)
+- 時間：2026-11-21 20:10
+- 更新者：Claude（claude.ai 網頁版）
+- Git push：✅ main 已推；角色進行中在分支 `mascot-xy`
