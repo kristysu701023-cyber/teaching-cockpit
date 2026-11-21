@@ -31,6 +31,7 @@
 | 2026-11-12 | 資安第二單元《資訊安全知多少》學習單（情2-1至2-2）兩頁版定稿：依性平兩頁版 v3 重新排版製作，字級 12pt 標楷體、華康少女文字鏤空大標題、去除愛心插圖，剛好整整 2 頁雙面列印，學生版與教師解答版同步產出（桌面＋G 槽備份） |
 | 2026-11-17 | 性平單元網站題目對應學習單 v4（★題改成永鋕優點題）、各站題目修訂、家事小表改成勾選表、名人牆加答案說明與淡江大橋照片（CC，Wikimedia）（31b89da＋本次）；《世界的角落》孟加拉站加國家地理拆船工人（跳過死亡段落）、遠見 2019 尤努斯專訪，拿掉舊 TVBS 銀行影片，選項與參考答案圖改具體（6fff716、1f37381、41e19bd） |
 | 2026-11-21 | 數學解謎室五、六年級改成手繪筆記風（373b4d4、afbcb9c），加入自動目錄與「回目錄」按鈕 |
+| 2026-11-21 | 數學解謎室加入名偵探 X／助手 Y 角色圖（Canva＋Gemini，透明 WebP，9afa864）；電腦版每題改左右兩欄 5:7（66d169a） |
 
 ## 🎯 目標與路線圖
 
@@ -54,6 +55,8 @@
 - [x] 性平網站題目對應學習單 v4、名人牆答案說明＋淡江大橋照片（2026-11-17）
 - [x] 《世界的角落》孟加拉站換新影片（拆船工人、尤努斯 2019），拿掉舊銀行影片（2026-11-17）
 - [x] 清除暫存：`待刪除/g6-world-corners_舊圖_20261117`、`待刪除/學習單舊版_20261117`、`待刪除/danjiang_candidates.html`（本機＋G 槽，Kristy 確認，2026-11-19）
+- [x] 數學解謎室角色圖：名偵探 X／助手 Y 5 張透明 WebP 換進五、六年級兩頁（2026-11-21）
+- [x] 數學解謎室電腦版改左右兩欄（2026-11-21）
 
 ## 📁 資料夾結構
 
@@ -63,6 +66,7 @@
 ├── .gitignore                排除 mp4、pdf、png、pptx、.env 等
 ├── index.html                首頁：單元卡片＋學生掃描 QR code
 ├── assets/
+│   ├── mascot/               數學解謎室角色圖（x_hello、y_hello、x_think、y_check、duo_cheer，透明 WebP）
 │   ├── cockpit.css           共用黑板風格樣式
 │   ├── cockpit.js            共用程式：依 UNIT 設定長出整個單元頁＋課堂工具
 │   ├── config.js             全站設定：教師密碼、抽籤座號範圍
@@ -101,6 +105,8 @@
   - 單元標題：`<h2 class="unit" id="u數字"><span class="utab">第<b>數字</b>單元</span><span class="utitle">單元名</span><span class="usem">五上</span></h2>`
   - 題目卡：緊接在單元標題後面，`<section class="card c-red|c-blue|c-purple|c-green" id="q編號">`，第一行是 `<div class="card-head"><span class="qno">第 N 題</span><h3 class="ct">題名</h3><span class="code">課本編號</span></div>`
   - 題目卡的 id 整頁不可重複（跨單元也是），例如 q1、q2…一路往下編。
+  - 題目卡內容包兩欄：`card-head` 之後是 `<div class="qbody"><div class="qa">`（題目、題圖、顯示答案、①先想一想）`</div><div class="qb">`（②解題影片、③文字詳解）`</div></div>`。螢幕 ≥1100px 左右 5:7 並排，手機照順序往下排。
+- 角色：名偵探 X（`.talk` 用 x_think）、助手 Y（`.ending` 用 y_check），標題左右 x_hello／y_hello，頁尾 duo_cheer；圖放 `assets/mascot/`，一律透明 WebP（png 被 .gitignore 排除）。
 
 ## 🤝 工作約定
 
