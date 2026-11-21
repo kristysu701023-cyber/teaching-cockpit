@@ -4,96 +4,186 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>數學解謎室・五年級</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Huninn&family=Noto+Sans+TC:wght@500;700;900&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #FBF8F1; --card: #FFFFFF; --ink: #1F2A44; --muted: #5B6475; --line: #E4DCCB;
-    --accent: #D7263D; --hl: #FFE07A; --box: #9AA3B2; --btn: #1F2A44; --btn-ink: #FFFFFF;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root { --bg: #14171F; --card: #1D212B; --ink: #ECEAE4; --muted: #A3A9B6; --line: #2E3442;
-             --accent: #FF5A6E; --box: #6B7385; --btn: #ECEAE4; --btn-ink: #14171F; }
+    --paper: #FFFDF6; --ink: #2B2B33; --muted: #5E6270; --pen: #3A3A3A;
+    --hl: #FFE45C; --hl-soft: #FFF4B8; --ans: #E23B4E;
+    --red: #EF6B7B;    --red-bg: #FFF1F2;    --red-ink: #C8323F;
+    --blue: #5B9BE8;   --blue-bg: #EEF6FF;   --blue-ink: #1E5FB3;
+    --purple: #A77BE0; --purple-bg: #F6F0FF; --purple-ink: #6A3DB0;
+    --green: #5DBE7E;  --green-bg: #EEFAF1;  --green-ink: #23804A;
+    --hand: "Huninn", "jf-openhuninn-2.0", "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", sans-serif;
   }
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--bg); color: var(--ink);
-         font-family: "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", sans-serif; line-height: 1.6; }
-  header, main { max-width: 860px; margin: 0 auto; padding: 0 16px; }
-  header { padding-top: 32px; padding-bottom: 8px; }
-  h1 { font-size: 1.7rem; margin: 0 0 4px; }
-  .sub { color: var(--muted); margin: 0; }
-  nav { display: flex; gap: 8px; margin: 16px 0 0; flex-wrap: wrap; }
-  nav a { color: var(--ink); border: 2px solid var(--line); border-radius: 999px; padding: 4px 14px; text-decoration: none; font-weight: 700; }
-  .card { background: var(--card); border: 2px solid var(--line); border-radius: 20px; padding: 20px; margin: 20px 0; }
-  h2.unit { font-size: 1.25rem; margin: 32px 0 0; padding-left: 12px; border-left: 6px solid var(--accent); }
-  h3.ct { font-size: 1.35rem; margin: 0 0 4px; color: var(--ink); }
-  h3 { font-size: 1.05rem; margin: 22px 0 8px; color: var(--muted); }
-  .ask { margin: 0 0 12px; }
-  .prob-wrap { display: flex; justify-content: center; }
-  .prob { width: 100%; max-width: 420px; height: auto; }
-  .prob .dg { font: 700 76px "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", sans-serif; fill: var(--ink); text-anchor: middle; }
-  .prob .ans { fill: var(--accent); opacity: 0; transition: opacity .3s; }
+  body { margin: 0; color: var(--ink); line-height: 1.7;
+         font-family: "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", sans-serif;
+         background-color: var(--paper);
+         background-image: radial-gradient(#E9E2CF 1.2px, transparent 1.2px);
+         background-size: 22px 22px; }
+  header, main { max-width: 900px; margin: 0 auto; padding: 0 16px; }
+  header { padding-top: 22px; }
+  .home { display: inline-block; color: var(--muted); text-decoration: none; font-weight: 700;
+          background: #fff; border: 2px solid var(--pen); border-radius: 999px; padding: 2px 14px; }
+  .home:hover { background: var(--hl-soft); }
+
+  .hero { position: relative; text-align: center; padding: 26px 8px 8px; }
+  .title { margin: 0; font-family: var(--hand); font-weight: 900; line-height: 1.15;
+           font-size: clamp(2.6rem, 9vw, 4.6rem); letter-spacing: .04em; }
+  .title span { display: inline-block; -webkit-text-stroke: 2px var(--pen); paint-order: stroke fill;
+                text-shadow: 3px 4px 0 rgba(0,0,0,.12); }
+  .t1 { color: #3D8BE0; transform: rotate(-4deg); } .t2 { color: #E8506A; transform: translateY(-4px); }
+  .t3 { color: #FFC21A; transform: rotate(3deg); } .t4 { color: #4CAF6E; transform: translateY(-2px) rotate(-2deg); }
+  .t5 { color: #8E5BD6; transform: rotate(4deg); }
+  .ribbon { display: inline-block; margin: 10px 0 0; padding: 6px 22px; font-weight: 900; font-size: 1.05rem;
+            background: var(--hl); border: 2.5px solid var(--pen); border-radius: 12px;
+            box-shadow: 3px 3px 0 var(--pen); transform: rotate(-1deg); }
+  .badge { position: absolute; left: 4px; top: 18px; margin: 0; padding: 8px 14px; font-family: var(--hand);
+           font-weight: 900; line-height: 1.3; color: var(--red-ink); background: #FFE3E8;
+           border: 2.5px solid var(--pen); border-radius: 50% 46% 52% 44% / 52% 50% 48% 46%; transform: rotate(-8deg); }
+  .say { position: absolute; right: 4px; top: 14px; margin: 0; font-family: var(--hand); font-weight: 900;
+         line-height: 1.35; font-size: .95rem; transform: rotate(6deg); }
+  .floaty { position: absolute; right: 16%; top: 2px; font-family: var(--hand); font-weight: 900; font-size: 1.7rem;
+            -webkit-text-stroke: 1.5px var(--pen); paint-order: stroke fill; }
+  .floaty span { display: inline-block; margin: 0 2px; } .floaty span:nth-child(odd) { transform: translateY(8px) rotate(-8deg); }
+  .doodle { position: absolute; width: 34px; height: 34px; }
+  .d1 { left: 22%; top: 4px; transform: rotate(-12deg); } .d2 { right: 2px; bottom: 6px; width: 26px; height: 26px; }
+  @media (max-width: 640px) { .badge, .say, .floaty { display: none; } .d1 { left: 4px; }
+    .title { font-size: 3.1rem; } .ribbon { font-size: .88rem; padding: 5px 12px; } }
+
+  nav { display: flex; gap: 8px; justify-content: center; margin: 14px 0 0; flex-wrap: wrap; }
+  nav a { color: var(--ink); background: #fff; border: 2px solid var(--pen); border-radius: 999px;
+          padding: 3px 16px; text-decoration: none; font-weight: 700; box-shadow: 2px 2px 0 var(--pen); }
+  nav a:hover { background: var(--hl-soft); }
+
+  h2.unit { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 34px 0 4px; font-size: 1.6rem;
+            font-family: var(--hand); font-weight: 900; }
+  .utab { background: var(--red); color: #fff; padding: 2px 16px 2px 14px; border: 2.5px solid var(--pen);
+          border-radius: 14px 26px 26px 14px; font-size: 1.15rem; }
+  .utab b { font-size: 1.6rem; color: #FFE45C; margin: 0 2px; -webkit-text-stroke: 1px var(--pen); paint-order: stroke fill; }
+  .usem { font-size: .9rem; font-weight: 700; color: var(--muted); background: #fff; border: 2px dashed #C9C2AE;
+          border-radius: 999px; padding: 0 10px; }
+
+  .card { --c: var(--red); --cbg: var(--red-bg); --cink: var(--red-ink);
+          background: var(--cbg); border: 3px solid var(--c); border-radius: 26px; padding: 22px 22px 18px;
+          margin: 22px 0; box-shadow: 0 6px 0 color-mix(in srgb, var(--c) 30%, transparent); }
+  .c-blue { --c: var(--blue); --cbg: var(--blue-bg); --cink: var(--blue-ink); }
+  .c-purple { --c: var(--purple); --cbg: var(--purple-bg); --cink: var(--purple-ink); }
+  .c-green { --c: var(--green); --cbg: var(--green-bg); --cink: var(--green-ink); }
+  .card-head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 6px; }
+  .qno { background: var(--c); color: #fff; font-weight: 900; font-family: var(--hand); padding: 2px 14px;
+         border-radius: 14px; border: 2.5px solid var(--pen); font-size: 1.05rem; }
+  h3.ct { margin: 0; font-family: var(--hand); font-weight: 900; font-size: 1.7rem; color: var(--ink); }
+  .code { margin-left: auto; font-size: .85rem; font-weight: 700; color: var(--cink); background: #fff;
+          border: 1.5px solid var(--c); border-radius: 999px; padding: 0 10px; }
+  .ask { margin: 4px 0 12px; font-weight: 700; }
+
+  .prob-wrap { display: flex; justify-content: center; background: #fff; border: 2.5px solid var(--pen);
+               border-radius: 18px; padding: 10px; background-image:
+               linear-gradient(#EEF3FA 1px, transparent 1px), linear-gradient(90deg, #EEF3FA 1px, transparent 1px);
+               background-size: 20px 20px; }
+  .prob { width: 100%; max-width: 400px; height: auto; }
+  .prob .dg { font: 700 76px "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", sans-serif; fill: var(--ink); text-anchor: middle; }
+  .prob .ans { fill: var(--ans); opacity: 0; transition: opacity .3s; }
   .prob.show .ans { opacity: 1; }
-  .prob .box { fill: none; stroke: var(--box); stroke-width: 5; }
-  .prob .ink { fill: var(--ink); }
-  .prob .inkline { stroke: var(--ink); }
-  .row { display: flex; justify-content: center; margin-top: 8px; }
-  .btn { font: inherit; font-weight: 700; background: var(--btn); color: var(--btn-ink); border: 0; border-radius: 999px;
-         padding: 8px 22px; cursor: pointer; }
-  details { border: 2px solid var(--line); border-radius: 14px; padding: 8px 14px; margin: 8px 0; }
-  details[open] { background: color-mix(in srgb, var(--hl) 22%, transparent); }
-  summary { cursor: pointer; font-weight: 700; }
+  .prob .box { fill: #FFFBE0; stroke: var(--c); stroke-width: 5; stroke-dasharray: 14 7; }
+  .prob.show .box { stroke-dasharray: none; }
+  .prob .ink { fill: var(--ink); } .prob .inkline { stroke: var(--ink); }
+  .row { display: flex; justify-content: center; margin-top: 14px; }
+  .btn { font: inherit; font-weight: 900; font-size: 1.05rem; background: var(--hl); color: var(--ink);
+         border: 2.5px solid var(--pen); border-radius: 999px; padding: 8px 28px; cursor: pointer;
+         box-shadow: 3px 3px 0 var(--pen); transition: transform .1s, box-shadow .1s; }
+  .btn:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--pen); }
+  .btn:active, .btn[aria-pressed="true"] { transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--pen); }
+  .btn[aria-pressed="true"] { background: #fff; }
+
+  h3.sec { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 24px 0 8px;
+           font-family: var(--hand); font-weight: 900; font-size: 1.3rem; color: var(--cink); }
+  .num { display: inline-grid; place-items: center; width: 1.7em; height: 1.7em; border-radius: 50%;
+         background: var(--c); color: #fff; font-size: .95rem; line-height: 1; border: 2px solid var(--pen); }
+  .bubble { position: relative; font-size: .85rem; color: var(--ink); background: #fff; border: 2px solid var(--pen);
+            border-radius: 16px; padding: 2px 12px; margin-left: 8px; font-weight: 700; }
+  .bubble::before { content: ""; position: absolute; left: -9px; top: 50%; margin-top: -6px; border: 6px solid transparent;
+                    border-right: 8px solid var(--pen); border-left: 0; }
+
+  details { background: #fff; border: 2px solid color-mix(in srgb, var(--c) 55%, #fff); border-radius: 16px;
+            padding: 8px 16px; margin: 8px 0; }
+  details[open] { border-color: var(--c); }
+  details.hint[open] { background: var(--hl-soft); }
+  summary { cursor: pointer; font-weight: 900; }
+  .bulb { margin-right: 6px; }
   details p { margin: 8px 0 4px; }
-  .yt { position: relative; aspect-ratio: 16 / 9; border-radius: 14px; overflow: hidden; background: #000; }
+  .yt { position: relative; aspect-ratio: 16 / 9; border-radius: 18px; overflow: hidden; background: #000;
+        border: 3px solid var(--pen); box-shadow: 4px 4px 0 color-mix(in srgb, var(--c) 45%, transparent); }
   .yt iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-  .home { display: inline-block; margin-bottom: 12px; color: var(--muted); text-decoration: none; font-weight: 700; }
-  .steps ol { margin: 8px 0; padding-left: 1.4em; }
-  .steps li { margin: 4px 0; }
-  .final { color: var(--accent); font-weight: 700; font-size: 1.15rem; }
+  .steps ol { list-style: none; counter-reset: st; margin: 10px 0; padding: 0; }
+  .steps li { counter-increment: st; position: relative; padding: 3px 0 3px 2.3em; margin: 4px 0; }
+  .steps li::before { content: counter(st); position: absolute; left: 0; top: 4px; width: 1.6em; height: 1.6em;
+                      display: grid; place-items: center; border-radius: 50%; font-size: .85rem; font-weight: 900;
+                      color: var(--cink); background: var(--cbg); border: 2px solid var(--c); line-height: 1; }
+  .final { display: inline-block; color: var(--ans); font-weight: 900; font-size: 1.2rem; margin: 6px 0 4px;
+           padding: 2px 14px; background: linear-gradient(transparent 45%, var(--hl) 45%); }
   .sq { display: inline-block; width: .7em; height: .8em; border: 2px solid currentColor; border-radius: 2px;
         vertical-align: -.1em; margin: 0 .08em; opacity: .75; }
-  footer { text-align: center; color: var(--muted); font-size: .9rem; padding: 8px 16px 32px; }
+  footer { text-align: center; color: var(--muted); font-size: .9rem; padding: 12px 16px 36px; }
+  footer .tips { display: inline-block; color: var(--ink); font-size: 1.05rem; background: #fff; border: 2.5px solid var(--pen);
+                 border-radius: 14px; padding: 6px 20px; box-shadow: 3px 3px 0 var(--pen); }
+  footer .tips b { color: var(--red-ink); font-family: var(--hand); font-size: 1.2rem; }
+  footer p { margin: 14px 0 0; }
 </style>
 </head>
 <body>
 <header>
   <a class="home" href="../../index.html">← 教學駕駛艙</a>
-  <h1>數學解謎室・五年級</h1>
-  <p class="sub">五年級數學難題：先自己想，卡住再看提示，最後看影片一步一步解開。</p>
-  <nav><a href="#u4">五上第四單元</a></nav>
+  <div class="hero">
+    <svg class="doodle d1" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 3l4.6 10.4L36 15l-8.6 7.6L30 34l-10-5.8L10 34l2.6-11.4L4 15l11.4-1.6z" fill="#FFD84D" stroke="#3A3A3A" stroke-width="2" stroke-linejoin="round"/></svg>
+    <svg class="doodle d2" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 3l4.6 10.4L36 15l-8.6 7.6L30 34l-10-5.8L10 34l2.6-11.4L4 15l11.4-1.6z" fill="#FFB3C1" stroke="#3A3A3A" stroke-width="2" stroke-linejoin="round"/></svg>
+    <div class="floaty" aria-hidden="true"><span style="color:#E8506A">2</span><span style="color:#3D8BE0">×</span><span style="color:#F2A81D">7</span><span style="color:#4CAF6E">÷</span><span style="color:#8E5BD6">5</span></div>
+    <p class="badge">五年級<br>數學難題</p>
+    <h1 class="title"><span class="t1">數</span><span class="t2">學</span><span class="t3">解</span><span class="t4">謎</span><span class="t5">室</span></h1>
+    <p class="ribbon">五年級｜先自己想・再看提示・最後看影片</p>
+    <p class="say">一起把<br>數字謎<br>解開！</p>
+  </div>
+  <nav><a href="#u4">五上第 4 單元</a></nav>
 </header>
+
 <main>
-  <h2 class="unit" id="u4">五上第四單元　整數四則運算</h2>
-  <section class="card" id="q1">
-    <h3 class="ct">數4-6（1）乘法數字謎</h3>
+  <h2 class="unit" id="u4"><span class="utab">第<b>4</b>單元</span><span class="utitle">整數四則運算</span><span class="usem">五上</span></h2>
+  <section class="card c-red" id="q1">
+    <div class="card-head"><span class="qno">第 1 題</span><h3 class="ct">乘法數字謎</h3><span class="code">數4-6（1）</span></div>
     <p class="ask">在<i class="sq"></i>裡填入適當的數字，使乘法直式成立。</p>
     <div class="prob-wrap"><svg class="prob" id="prob-1" viewBox="400 110 600 690" role="img" aria-label="直式題目"><rect x="440" y="378" width="540" height="6" rx="3" class="ink"/><rect x="440" y="648" width="540" height="6" rx="3" class="ink"/><text x="710.0" y="217.0" class="dg">4</text><text x="810.0" y="217.0" class="dg">2</text><rect x="874" y="150" width="72" height="80" rx="6" class="box"/><text x="910.0" y="217.0" class="dg ans">8</text><text x="510.0" y="337.0" class="dg">×</text><rect x="774" y="270" width="72" height="80" rx="6" class="box"/><text x="810.0" y="337.0" class="dg ans">5</text><text x="910.0" y="337.0" class="dg">7</text><text x="610.0" y="487.0" class="dg">2</text><rect x="674" y="420" width="72" height="80" rx="6" class="box"/><text x="710.0" y="487.0" class="dg ans">9</text><rect x="774" y="420" width="72" height="80" rx="6" class="box"/><text x="810.0" y="487.0" class="dg ans">9</text><text x="910.0" y="487.0" class="dg">6</text><rect x="474" y="540" width="72" height="80" rx="6" class="box"/><text x="510.0" y="607.0" class="dg ans">2</text><rect x="574" y="540" width="72" height="80" rx="6" class="box"/><text x="610.0" y="607.0" class="dg ans">1</text><text x="710.0" y="607.0" class="dg">4</text><text x="810.0" y="607.0" class="dg">0</text><text x="510.0" y="757.0" class="dg">2</text><text x="610.0" y="757.0" class="dg">4</text><text x="710.0" y="757.0" class="dg">3</text><rect x="774" y="690" width="72" height="80" rx="6" class="box"/><text x="810.0" y="757.0" class="dg ans">9</text><text x="910.0" y="757.0" class="dg">6</text></svg></div>
     <div class="row">
       <button type="button" class="btn" data-toggle="prob-1" aria-pressed="false">顯示答案</button>
     </div>
-    <h3>先想一想</h3>
-    <details class="hint"><summary>提示 1</summary><p>先看個位：<i class="sq"></i> × 7 的個位要是 6。7 的乘法表裡，哪一個個位是 6？</p></details><details class="hint"><summary>提示 2</summary><p>再找乘數的十位：積是 243<i class="sq"></i>6，試著算算 428 × 50 和 428 × 60，哪一個比較接近？</p></details>
-    <h3>解題影片</h3>
+    <h3 class="sec"><span class="num">1</span>先想一想<span class="bubble">卡住了嗎？一次只看一個提示！</span></h3>
+    <details class="hint"><summary><span class="bulb">💡</span>提示 1</summary><p>先看個位：<i class="sq"></i> × 7 的個位要是 6。7 的乘法表裡，哪一個個位是 6？</p></details><details class="hint"><summary><span class="bulb">💡</span>提示 2</summary><p>再找乘數的十位：積是 243<i class="sq"></i>6，試著算算 428 × 50 和 428 × 60，哪一個比較接近？</p></details>
+    <h3 class="sec"><span class="num">2</span>解題影片</h3>
     <div class="yt"><iframe src="https://www.youtube-nocookie.com/embed/zf_VzO5O-Nk?rel=0" title="數4-6（1）乘法數字謎 解題影片"
       allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe></div>
-    <details class="steps"><summary>文字詳解</summary><ol><li>乘法數字謎：先從個位下手</li><li><i class="sq"></i> × 7 的個位是 6</li><li>只有 7 × 8 ＝ 56 → <i class="sq"></i> 是 8</li><li>428 × 7 ＝ 2996（第一行部分積）</li><li>積是 243<i class="sq"></i>6，大約兩萬四千三百多</li><li>428 × 50 ＝ 21400；428 × 60 ＝ 25680 太大</li><li>十位是 5 → 428 × 57</li><li>428 × 5 ＝ 2140（往左移一格寫）</li><li>2996 ＋ 21400 ＝ 24396</li><li>答案：428 × 57 ＝ 24396 ✓</li></ol>
+    <h3 class="sec"><span class="num">3</span>文字詳解</h3>
+    <details class="steps"><summary>打開一步一步的算法</summary><ol><li>乘法數字謎：先從個位下手</li><li><i class="sq"></i> × 7 的個位是 6</li><li>只有 7 × 8 ＝ 56 → <i class="sq"></i> 是 8</li><li>428 × 7 ＝ 2996（第一行部分積）</li><li>積是 243<i class="sq"></i>6，大約兩萬四千三百多</li><li>428 × 50 ＝ 21400；428 × 60 ＝ 25680 太大</li><li>十位是 5 → 428 × 57</li><li>428 × 5 ＝ 2140（往左移一格寫）</li><li>2996 ＋ 21400 ＝ 24396</li><li>答案：428 × 57 ＝ 24396 ✓</li></ol>
       <p class="final">答案：428 × 57 ＝ 24396</p></details>
   </section>
-  <section class="card" id="q2">
-    <h3 class="ct">數4-6（2）除法數字謎</h3>
+  <section class="card c-blue" id="q2">
+    <div class="card-head"><span class="qno">第 2 題</span><h3 class="ct">除法數字謎</h3><span class="code">數4-6（2）</span></div>
     <p class="ask">在<i class="sq"></i>裡填入適當的數字，使除法直式成立。</p>
     <div class="prob-wrap"><svg class="prob" id="prob-2" viewBox="190 90 810 790" role="img" aria-label="直式題目"><rect x="500" y="234" width="480" height="6" rx="3" class="ink"/><rect x="550" y="472" width="430" height="6" rx="3" class="ink"/><rect x="650" y="732" width="330" height="6" rx="3" class="ink"/><path d="M500 236 Q538 296 490 364" fill="none" stroke-width="6" stroke-linecap="round" class="inkline"/><rect x="774" y="130" width="72" height="80" rx="6" class="box"/><text x="810.0" y="197.0" class="dg ans">6</text><text x="910.0" y="197.0" class="dg">7</text><text x="300.0" y="317.0" class="dg">4</text><rect x="364" y="250" width="72" height="80" rx="6" class="box"/><text x="400.0" y="317.0" class="dg ans">7</text><rect x="574" y="250" width="72" height="80" rx="6" class="box"/><text x="610.0" y="317.0" class="dg ans">3</text><rect x="674" y="250" width="72" height="80" rx="6" class="box"/><text x="710.0" y="317.0" class="dg ans">1</text><text x="810.0" y="317.0" class="dg">4</text><rect x="874" y="250" width="72" height="80" rx="6" class="box"/><text x="910.0" y="317.0" class="dg ans">9</text><rect x="574" y="370" width="72" height="80" rx="6" class="box"/><text x="610.0" y="437.0" class="dg ans">2</text><text x="710.0" y="437.0" class="dg">8</text><rect x="774" y="370" width="72" height="80" rx="6" class="box"/><text x="810.0" y="437.0" class="dg ans">2</text><rect x="674" y="510" width="72" height="80" rx="6" class="box"/><text x="710.0" y="577.0" class="dg ans">3</text><text x="810.0" y="577.0" class="dg">2</text><rect x="874" y="510" width="72" height="80" rx="6" class="box"/><text x="910.0" y="577.0" class="dg ans">9</text><rect x="674" y="630" width="72" height="80" rx="6" class="box"/><text x="710.0" y="697.0" class="dg ans">3</text><rect x="774" y="630" width="72" height="80" rx="6" class="box"/><text x="810.0" y="697.0" class="dg ans">2</text><text x="910.0" y="697.0" class="dg">9</text><text x="910.0" y="837.0" class="dg">0</text></svg></div>
     <div class="row">
       <button type="button" class="btn" data-toggle="prob-2" aria-pressed="false">顯示答案</button>
     </div>
-    <h3>先想一想</h3>
-    <details class="hint"><summary>提示 1</summary><p>從最後一步往回推：最後相減等於 0，表示上下兩個數完全一樣。</p></details><details class="hint"><summary>提示 2</summary><p><i class="sq"></i>29 是「除數 4<i class="sq"></i> × 7」算出來的。7 × <i class="sq"></i> 的個位是 9，<i class="sq"></i> 會是多少？</p></details>
-    <h3>解題影片</h3>
+    <h3 class="sec"><span class="num">1</span>先想一想<span class="bubble">卡住了嗎？一次只看一個提示！</span></h3>
+    <details class="hint"><summary><span class="bulb">💡</span>提示 1</summary><p>從最後一步往回推：最後相減等於 0，表示上下兩個數完全一樣。</p></details><details class="hint"><summary><span class="bulb">💡</span>提示 2</summary><p><i class="sq"></i>29 是「除數 4<i class="sq"></i> × 7」算出來的。7 × <i class="sq"></i> 的個位是 9，<i class="sq"></i> 會是多少？</p></details>
+    <h3 class="sec"><span class="num">2</span>解題影片</h3>
     <div class="yt"><iframe src="https://www.youtube-nocookie.com/embed/3mHTLOTfP4I?rel=0" title="數4-6（2）除法數字謎 解題影片"
       allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe></div>
-    <details class="steps"><summary>文字詳解</summary><ol><li>除法數字謎：從最後一步往回推</li><li>最後相減等於 0 → 上下兩個數一樣</li><li>十位是 2、個位是 9 → 兩個數都是 <i class="sq"></i>29</li><li><i class="sq"></i>29 是「除數 × 7」算出來的</li><li>7 × <i class="sq"></i> 的個位是 9 → 只有 7 × 7 ＝ 49</li><li>除數是 47，47 × 7 ＝ 329</li><li>9 是移下來的 → 被除數個位是 9</li><li>前面的 32 是第一次相減的餘數</li><li>個位：4 − <i class="sq"></i> ＝ 2 → <i class="sq"></i> 是 2</li><li>47 的倍數中，只有 47 × 6 ＝ 282 合格</li><li>商是 67；282 ＋ 32 ＝ 314</li><li>被除數是 3149</li><li>驗算：47 × 67 ＝ 3149 ✓</li></ol>
+    <h3 class="sec"><span class="num">3</span>文字詳解</h3>
+    <details class="steps"><summary>打開一步一步的算法</summary><ol><li>除法數字謎：從最後一步往回推</li><li>最後相減等於 0 → 上下兩個數一樣</li><li>十位是 2、個位是 9 → 兩個數都是 <i class="sq"></i>29</li><li><i class="sq"></i>29 是「除數 × 7」算出來的</li><li>7 × <i class="sq"></i> 的個位是 9 → 只有 7 × 7 ＝ 49</li><li>除數是 47，47 × 7 ＝ 329</li><li>9 是移下來的 → 被除數個位是 9</li><li>前面的 32 是第一次相減的餘數</li><li>個位：4 − <i class="sq"></i> ＝ 2 → <i class="sq"></i> 是 2</li><li>47 的倍數中，只有 47 × 6 ＝ 282 合格</li><li>商是 67；282 ＋ 32 ＝ 314</li><li>被除數是 3149</li><li>驗算：47 × 67 ＝ 3149 ✓</li></ol>
       <p class="final">答案：3149 ÷ 47 ＝ 67</p></details>
   </section>
 </main>
-<footer>數學解謎室・五年級</footer>
+<footer><div class="tips"><b>解題提醒</b>｜從個位下手・從最後一步往回推・算完要驗算</div><p>數學解謎室・五年級</p></footer>
 <script>
   document.querySelectorAll("[data-toggle]").forEach(function (b) {
     b.addEventListener("click", function () {
