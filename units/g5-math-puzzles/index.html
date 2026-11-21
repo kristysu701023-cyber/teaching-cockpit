@@ -155,11 +155,11 @@
   .talk .bubble { margin: 0 0 18px 10px; font-family: var(--hand); font-size: .95rem; font-weight: 900; color: var(--ink); }
   .ending { display: flex; align-items: flex-end; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
   .ending .bubble { margin: 0 0 18px 10px; font-family: var(--hand); font-weight: 900; }
-  footer .duo { display: flex; justify-content: center; gap: 4px; margin-bottom: 4px; }
-  footer .duo .ch { width: 130px; height: 150px; }
+  footer { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px 12px; } footer p { flex-basis: 100%; } footer .duo { display: flex; }
+  footer .duo .ch { width: 100px; height: 115px; }
   @media (max-width: 640px) { .hero .ch-l, .hero .ch-r { width: 44px; height: 72px; bottom: auto; top: -54px; }
     .hero .ch-l { left: auto; right: 52px; } .hero .ch-r { right: 0; } }
-  @media (max-width: 640px) { .talk .ch, .ending .ch { width: 44px; height: 72px; } .talk .bubble, .ending .bubble { flex: 1 1 0; max-width: max-content; min-width: 0; margin-bottom: 10px; } footer .duo .ch { width: 96px; height: 110px; } }
+  @media (max-width: 640px) { .talk .ch, .ending .ch { width: 44px; height: 72px; } .talk .bubble, .ending .bubble { flex: 1 1 0; max-width: max-content; min-width: 0; margin-bottom: 10px; } footer .duo .ch { width: 70px; height: 80px; } footer .tips { flex: 1 1 0; min-width: 0; } }
   @media (prefers-reduced-motion: reduce) { .hero .ch-l, .hero .ch-r { animation: none; } }
 </style>
 </head>
