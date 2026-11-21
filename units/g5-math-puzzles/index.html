@@ -52,10 +52,6 @@
   @media (max-width: 640px) { .badge, .say, .floaty { display: none; } .d1 { left: 4px; }
     .title { font-size: 3.1rem; } .ribbon { font-size: .88rem; padding: 5px 12px; } }
 
-  nav { display: flex; gap: 8px; justify-content: center; margin: 14px 0 0; flex-wrap: wrap; }
-  nav a { color: var(--ink); background: #fff; border: 2px solid var(--pen); border-radius: 999px;
-          padding: 3px 16px; text-decoration: none; font-weight: 700; box-shadow: 2px 2px 0 var(--pen); }
-  nav a:hover { background: var(--hl-soft); }
 
   h2.unit { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 34px 0 4px; font-size: 1.6rem;
             font-family: var(--hand); font-weight: 900; }
@@ -68,6 +64,7 @@
   .card { --c: var(--red); --cbg: var(--red-bg); --cink: var(--red-ink);
           background: var(--cbg); border: 3px solid var(--c); border-radius: 26px; padding: 22px 22px 18px;
           margin: 22px 0; box-shadow: 0 6px 0 color-mix(in srgb, var(--c) 30%, transparent); }
+  .c-red { --c: var(--red); --cbg: var(--red-bg); --cink: var(--red-ink); }
   .c-blue { --c: var(--blue); --cbg: var(--blue-bg); --cink: var(--blue-ink); }
   .c-purple { --c: var(--purple); --cbg: var(--purple-bg); --cink: var(--purple-ink); }
   .c-green { --c: var(--green); --cbg: var(--green-bg); --cink: var(--green-ink); }
@@ -131,6 +128,24 @@
                  border-radius: 14px; padding: 6px 20px; box-shadow: 3px 3px 0 var(--pen); }
   footer .tips b { color: var(--red-ink); font-family: var(--hand); font-size: 1.2rem; }
   footer p { margin: 14px 0 0; }
+  .toc { margin: 18px auto 0; max-width: 760px; background: #fff; border: 2.5px solid var(--pen); border-radius: 20px;
+         padding: 12px 18px 14px; box-shadow: 4px 4px 0 var(--pen); text-align: left; }
+  .toc-h { margin: 0 0 6px; font-family: var(--hand); font-weight: 900; font-size: 1.2rem; }
+  .toc-h::before { content: "📖 "; }
+  .toc-unit { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 8px 0; border-top: 2px dashed #E4DCCB; }
+  .toc-unit:first-of-type { border-top: 0; }
+  .toc-u { flex-basis: 100%; color: var(--ink); text-decoration: none; font-weight: 900; font-size: 1.05rem; }
+  .toc-u .utab { font-size: .85rem; padding: 1px 10px; margin-right: 6px; }
+  .toc-u .utab b { font-size: 1.05rem; }
+  .toc-q { color: var(--ink); text-decoration: none; font-size: .92rem; font-weight: 700; background: var(--cbg);
+           border: 2px solid var(--c); border-radius: 999px; padding: 1px 12px; }
+  .toc-q:hover, .toc-u:hover { background: var(--hl-soft); }
+  .toc-q b { color: var(--cink); margin-right: 4px; }
+  .to-top { position: fixed; right: 14px; bottom: 16px; z-index: 10; font-weight: 900; text-decoration: none; color: var(--ink);
+            background: var(--hl); border: 2.5px solid var(--pen); border-radius: 999px; padding: 6px 14px;
+            box-shadow: 3px 3px 0 var(--pen); opacity: 0; pointer-events: none; transition: opacity .2s; }
+  .to-top.on { opacity: 1; pointer-events: auto; }
+  html { scroll-behavior: smooth; }
 </style>
 </head>
 <body>
@@ -145,7 +160,7 @@
     <p class="ribbon">五年級｜先自己想・再看提示・最後看影片</p>
     <p class="say">一起把<br>數字謎<br>解開！</p>
   </div>
-  <nav><a href="#u4">五上第 4 單元</a></nav>
+  <nav class="toc" id="toc" aria-label="目錄"></nav>
 </header>
 
 <main>
@@ -185,6 +200,29 @@
 </main>
 <footer><div class="tips"><b>解題提醒</b>｜從個位下手・從最後一步往回推・算完要驗算</div><p>數學解謎室・五年級</p></footer>
 <script>
+  (function () {
+    var toc = document.getElementById("toc");
+    if (!toc) return;
+    var html = '<p class="toc-h">目錄</p>';
+    document.querySelectorAll("h2.unit").forEach(function (h) {
+      var tab = h.querySelector(".utab"), t = h.querySelector(".utitle");
+      html += '<div class="toc-unit"><a class="toc-u" href="#' + h.id + '">' + (tab ? tab.outerHTML : "") + (t ? t.textContent : h.textContent) + '</a>';
+      var el = h.nextElementSibling;
+      while (el && !(el.matches && el.matches("h2.unit"))) {
+        if (el.matches && el.matches("section.card")) {
+          var no = el.querySelector(".qno"), ct = el.querySelector(".ct");
+          html += '<a class="toc-q ' + el.className.replace("card", "").trim() + '" href="#' + el.id + '"><b>' + (no ? no.textContent : "") + '</b>' + (ct ? ct.textContent : "") + '</a>';
+        }
+        el = el.nextElementSibling;
+      }
+      html += '</div>';
+    });
+    toc.innerHTML = html;
+    var top = document.createElement("a");
+    top.className = "to-top"; top.href = "#toc"; top.textContent = "↑ 回目錄";
+    document.body.appendChild(top);
+    window.addEventListener("scroll", function () { top.classList.toggle("on", window.scrollY > toc.offsetTop + toc.offsetHeight); }, { passive: true });
+  })();
   document.querySelectorAll("[data-toggle]").forEach(function (b) {
     b.addEventListener("click", function () {
       var svg = document.getElementById(b.dataset.toggle);
