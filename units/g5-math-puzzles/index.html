@@ -100,8 +100,8 @@
 
   h3.sec { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 24px 0 8px;
            font-family: var(--hand); font-weight: 900; font-size: 1.3rem; color: var(--cink); }
-  .num { display: inline-grid; place-items: center; width: 1.7em; height: 1.7em; border-radius: 50%;
-         background: var(--c); color: #fff; font-size: .95rem; line-height: 1; border: 2px solid var(--pen); }
+  .snum { display: inline-grid; place-items: center; width: 1.7em; height: 1.7em; border-radius: 50%;
+         background: var(--c); color: #fff; font-size: .95rem; line-height: 1; padding-bottom: .14em; border: 2px solid var(--pen); }
   .bubble { position: relative; font-size: .85rem; color: var(--ink); background: #fff; border: 2px solid var(--pen);
             border-radius: 16px; padding: 2px 12px; margin-left: 8px; font-weight: 700; }
   .bubble::before { content: ""; position: absolute; left: -9px; top: 50%; margin-top: -6px; border: 6px solid transparent;
@@ -121,7 +121,7 @@
   .steps li { counter-increment: st; position: relative; padding: 3px 0 3px 2.3em; margin: 4px 0; }
   .steps li::before { content: counter(st); position: absolute; left: 0; top: 4px; width: 1.6em; height: 1.6em;
                       display: grid; place-items: center; border-radius: 50%; font-size: .85rem; font-weight: 900;
-                      color: var(--cink); background: var(--cbg); border: 2px solid var(--c); line-height: 1; }
+                      color: var(--cink); background: var(--cbg); border: 2px solid var(--c); line-height: 1; padding-bottom: .1em; }
   .final { display: inline-block; color: var(--ans); font-weight: 900; font-size: 1.2rem; margin: 6px 0 4px;
            padding: 2px 14px; background: linear-gradient(transparent 45%, var(--hl) 45%); }
   .sq { display: inline-block; width: .7em; height: .8em; border: 2px solid currentColor; border-radius: 2px;
@@ -157,12 +157,12 @@
     <div class="row">
       <button type="button" class="btn" data-toggle="prob-1" aria-pressed="false">顯示答案</button>
     </div>
-    <h3 class="sec"><span class="num">1</span>先想一想<span class="bubble">卡住了嗎？一次只看一個提示！</span></h3>
+    <h3 class="sec"><span class="snum">1</span>先想一想<span class="bubble">卡住了嗎？一次只看一個提示！</span></h3>
     <details class="hint"><summary><span class="bulb">💡</span>提示 1</summary><p>先看個位：<i class="sq"></i> × 7 的個位要是 6。7 的乘法表裡，哪一個個位是 6？</p></details><details class="hint"><summary><span class="bulb">💡</span>提示 2</summary><p>再找乘數的十位：積是 243<i class="sq"></i>6，試著算算 428 × 50 和 428 × 60，哪一個比較接近？</p></details>
-    <h3 class="sec"><span class="num">2</span>解題影片</h3>
+    <h3 class="sec"><span class="snum">2</span>解題影片</h3>
     <div class="yt"><iframe src="https://www.youtube-nocookie.com/embed/zf_VzO5O-Nk?rel=0" title="數4-6（1）乘法數字謎 解題影片"
       allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe></div>
-    <h3 class="sec"><span class="num">3</span>文字詳解</h3>
+    <h3 class="sec"><span class="snum">3</span>文字詳解</h3>
     <details class="steps"><summary>打開一步一步的算法</summary><ol><li>乘法數字謎：先從個位下手</li><li><i class="sq"></i> × 7 的個位是 6</li><li>只有 7 × 8 ＝ 56 → <i class="sq"></i> 是 8</li><li>428 × 7 ＝ 2996（第一行部分積）</li><li>積是 243<i class="sq"></i>6，大約兩萬四千三百多</li><li>428 × 50 ＝ 21400；428 × 60 ＝ 25680 太大</li><li>十位是 5 → 428 × 57</li><li>428 × 5 ＝ 2140（往左移一格寫）</li><li>2996 ＋ 21400 ＝ 24396</li><li>答案：428 × 57 ＝ 24396 ✓</li></ol>
       <p class="final">答案：428 × 57 ＝ 24396</p></details>
   </section>
@@ -173,12 +173,12 @@
     <div class="row">
       <button type="button" class="btn" data-toggle="prob-2" aria-pressed="false">顯示答案</button>
     </div>
-    <h3 class="sec"><span class="num">1</span>先想一想<span class="bubble">卡住了嗎？一次只看一個提示！</span></h3>
+    <h3 class="sec"><span class="snum">1</span>先想一想<span class="bubble">卡住了嗎？一次只看一個提示！</span></h3>
     <details class="hint"><summary><span class="bulb">💡</span>提示 1</summary><p>從最後一步往回推：最後相減等於 0，表示上下兩個數完全一樣。</p></details><details class="hint"><summary><span class="bulb">💡</span>提示 2</summary><p><i class="sq"></i>29 是「除數 4<i class="sq"></i> × 7」算出來的。7 × <i class="sq"></i> 的個位是 9，<i class="sq"></i> 會是多少？</p></details>
-    <h3 class="sec"><span class="num">2</span>解題影片</h3>
+    <h3 class="sec"><span class="snum">2</span>解題影片</h3>
     <div class="yt"><iframe src="https://www.youtube-nocookie.com/embed/3mHTLOTfP4I?rel=0" title="數4-6（2）除法數字謎 解題影片"
       allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe></div>
-    <h3 class="sec"><span class="num">3</span>文字詳解</h3>
+    <h3 class="sec"><span class="snum">3</span>文字詳解</h3>
     <details class="steps"><summary>打開一步一步的算法</summary><ol><li>除法數字謎：從最後一步往回推</li><li>最後相減等於 0 → 上下兩個數一樣</li><li>十位是 2、個位是 9 → 兩個數都是 <i class="sq"></i>29</li><li><i class="sq"></i>29 是「除數 × 7」算出來的</li><li>7 × <i class="sq"></i> 的個位是 9 → 只有 7 × 7 ＝ 49</li><li>除數是 47，47 × 7 ＝ 329</li><li>9 是移下來的 → 被除數個位是 9</li><li>前面的 32 是第一次相減的餘數</li><li>個位：4 − <i class="sq"></i> ＝ 2 → <i class="sq"></i> 是 2</li><li>47 的倍數中，只有 47 × 6 ＝ 282 合格</li><li>商是 67；282 ＋ 32 ＝ 314</li><li>被除數是 3149</li><li>驗算：47 × 67 ＝ 3149 ✓</li></ol>
       <p class="final">答案：3149 ÷ 47 ＝ 67</p></details>
   </section>
