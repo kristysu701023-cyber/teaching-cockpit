@@ -160,6 +160,13 @@
   @media (max-width: 640px) { .hero .ch-l, .hero .ch-r { width: 44px; height: 72px; bottom: auto; top: -54px; }
     .hero .ch-l { left: auto; right: 52px; } .hero .ch-r { right: 0; } }
   @media (max-width: 640px) { .talk .ch, .ending .ch { width: 44px; height: 72px; } .talk .bubble, .ending .bubble { flex: 1 1 0; max-width: max-content; min-width: 0; margin-bottom: 10px; } footer .duo .ch { width: 70px; height: 80px; } footer .tips { flex: 1 1 0; min-width: 0; font-size: 1.05rem; } footer .tips b { font-size: 1.2rem; } }
+  @media (min-width: 1100px) {
+    main { max-width: 1320px; }
+    .qbody { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 32px; align-items: start; }
+    .qa { position: sticky; top: 16px; }
+    .qb > h3.sec:first-child { margin-top: 4px; }
+    .prob { max-width: 100%; }
+  }
   @media (prefers-reduced-motion: reduce) { .hero .ch-l, .hero .ch-r { animation: none; } }
 </style>
 </head>
@@ -183,11 +190,13 @@
   <h2 class="unit" id="u4"><span class="utab">第<b>4</b>單元</span><span class="utitle">整數四則運算</span><span class="usem">五上</span></h2>
   <section class="card c-red" id="q1">
     <div class="card-head"><span class="qno">第 1 題</span><h3 class="ct">乘法數字謎</h3><span class="code">數4-6（1）</span></div>
+    <div class="qbody"><div class="qa">
     <p class="ask">在<i class="sq"></i>裡填入適當的數字，使乘法直式成立。</p>
     <div class="prob-wrap"><svg class="prob" id="prob-1" viewBox="400 110 600 690" role="img" aria-label="直式題目"><rect x="440" y="378" width="540" height="6" rx="3" class="ink"/><rect x="440" y="648" width="540" height="6" rx="3" class="ink"/><text x="710.0" y="217.0" class="dg">4</text><text x="810.0" y="217.0" class="dg">2</text><rect x="874" y="150" width="72" height="80" rx="6" class="box"/><text x="910.0" y="217.0" class="dg ans">8</text><text x="510.0" y="337.0" class="dg">×</text><rect x="774" y="270" width="72" height="80" rx="6" class="box"/><text x="810.0" y="337.0" class="dg ans">5</text><text x="910.0" y="337.0" class="dg">7</text><text x="610.0" y="487.0" class="dg">2</text><rect x="674" y="420" width="72" height="80" rx="6" class="box"/><text x="710.0" y="487.0" class="dg ans">9</text><rect x="774" y="420" width="72" height="80" rx="6" class="box"/><text x="810.0" y="487.0" class="dg ans">9</text><text x="910.0" y="487.0" class="dg">6</text><rect x="474" y="540" width="72" height="80" rx="6" class="box"/><text x="510.0" y="607.0" class="dg ans">2</text><rect x="574" y="540" width="72" height="80" rx="6" class="box"/><text x="610.0" y="607.0" class="dg ans">1</text><text x="710.0" y="607.0" class="dg">4</text><text x="810.0" y="607.0" class="dg">0</text><text x="510.0" y="757.0" class="dg">2</text><text x="610.0" y="757.0" class="dg">4</text><text x="710.0" y="757.0" class="dg">3</text><rect x="774" y="690" width="72" height="80" rx="6" class="box"/><text x="810.0" y="757.0" class="dg ans">9</text><text x="910.0" y="757.0" class="dg">6</text></svg></div>
     <div class="row">
       <button type="button" class="btn" data-toggle="prob-1" aria-pressed="false">顯示答案</button>
     </div>
+    </div><div class="qb">
     <h3 class="sec"><span class="snum">1</span>先想一想</h3>
     <div class="talk"><img class="ch" src="../../assets/mascot/x_think.webp" alt="" loading="lazy"><span class="bubble">名偵探 X：線索一次看一個，自己推理看看！</span></div>
     <details class="hint"><summary><span class="bulb">💡</span>提示 1</summary><p>先看個位：<i class="sq"></i> × 7 的個位要是 6。7 的乘法表裡，哪一個個位是 6？</p></details><details class="hint"><summary><span class="bulb">💡</span>提示 2</summary><p>再找乘數的十位：積是 243<i class="sq"></i>6，試著算算 428 × 50 和 428 × 60，哪一個比較接近？</p></details>
@@ -197,14 +206,17 @@
     <h3 class="sec"><span class="snum">3</span>文字詳解</h3>
     <details class="steps"><summary>打開一步一步的算法</summary><ol><li>乘法數字謎：先從個位下手</li><li><i class="sq"></i> × 7 的個位是 6</li><li>只有 7 × 8 ＝ 56 → <i class="sq"></i> 是 8</li><li>428 × 7 ＝ 2996（第一行部分積）</li><li>積是 243<i class="sq"></i>6，大約兩萬四千三百多</li><li>428 × 50 ＝ 21400；428 × 60 ＝ 25680 太大</li><li>十位是 5 → 428 × 57</li><li>428 × 5 ＝ 2140（往左移一格寫）</li><li>2996 ＋ 21400 ＝ 24396</li><li>答案：428 × 57 ＝ 24396 ✓</li></ol>
       <div class="ending"><p class="final">答案：428 × 57 ＝ 24396</p><img class="ch" src="../../assets/mascot/y_check.webp" alt="" loading="lazy"><span class="bubble">助手 Y：驗算通過，才算破案！</span></div></details>
+      </div></div>
   </section>
   <section class="card c-blue" id="q2">
     <div class="card-head"><span class="qno">第 2 題</span><h3 class="ct">除法數字謎</h3><span class="code">數4-6（2）</span></div>
+    <div class="qbody"><div class="qa">
     <p class="ask">在<i class="sq"></i>裡填入適當的數字，使除法直式成立。</p>
     <div class="prob-wrap"><svg class="prob" id="prob-2" viewBox="190 90 810 790" role="img" aria-label="直式題目"><rect x="500" y="234" width="480" height="6" rx="3" class="ink"/><rect x="550" y="472" width="430" height="6" rx="3" class="ink"/><rect x="650" y="732" width="330" height="6" rx="3" class="ink"/><path d="M500 236 Q538 296 490 364" fill="none" stroke-width="6" stroke-linecap="round" class="inkline"/><rect x="774" y="130" width="72" height="80" rx="6" class="box"/><text x="810.0" y="197.0" class="dg ans">6</text><text x="910.0" y="197.0" class="dg">7</text><text x="300.0" y="317.0" class="dg">4</text><rect x="364" y="250" width="72" height="80" rx="6" class="box"/><text x="400.0" y="317.0" class="dg ans">7</text><rect x="574" y="250" width="72" height="80" rx="6" class="box"/><text x="610.0" y="317.0" class="dg ans">3</text><rect x="674" y="250" width="72" height="80" rx="6" class="box"/><text x="710.0" y="317.0" class="dg ans">1</text><text x="810.0" y="317.0" class="dg">4</text><rect x="874" y="250" width="72" height="80" rx="6" class="box"/><text x="910.0" y="317.0" class="dg ans">9</text><rect x="574" y="370" width="72" height="80" rx="6" class="box"/><text x="610.0" y="437.0" class="dg ans">2</text><text x="710.0" y="437.0" class="dg">8</text><rect x="774" y="370" width="72" height="80" rx="6" class="box"/><text x="810.0" y="437.0" class="dg ans">2</text><rect x="674" y="510" width="72" height="80" rx="6" class="box"/><text x="710.0" y="577.0" class="dg ans">3</text><text x="810.0" y="577.0" class="dg">2</text><rect x="874" y="510" width="72" height="80" rx="6" class="box"/><text x="910.0" y="577.0" class="dg ans">9</text><rect x="674" y="630" width="72" height="80" rx="6" class="box"/><text x="710.0" y="697.0" class="dg ans">3</text><rect x="774" y="630" width="72" height="80" rx="6" class="box"/><text x="810.0" y="697.0" class="dg ans">2</text><text x="910.0" y="697.0" class="dg">9</text><text x="910.0" y="837.0" class="dg">0</text></svg></div>
     <div class="row">
       <button type="button" class="btn" data-toggle="prob-2" aria-pressed="false">顯示答案</button>
     </div>
+    </div><div class="qb">
     <h3 class="sec"><span class="snum">1</span>先想一想</h3>
     <div class="talk"><img class="ch" src="../../assets/mascot/x_think.webp" alt="" loading="lazy"><span class="bubble">名偵探 X：線索一次看一個，自己推理看看！</span></div>
     <details class="hint"><summary><span class="bulb">💡</span>提示 1</summary><p>從最後一步往回推：最後相減等於 0，表示上下兩個數完全一樣。</p></details><details class="hint"><summary><span class="bulb">💡</span>提示 2</summary><p><i class="sq"></i>29 是「除數 4<i class="sq"></i> × 7」算出來的。7 × <i class="sq"></i> 的個位是 9，<i class="sq"></i> 會是多少？</p></details>
@@ -214,6 +226,7 @@
     <h3 class="sec"><span class="snum">3</span>文字詳解</h3>
     <details class="steps"><summary>打開一步一步的算法</summary><ol><li>除法數字謎：從最後一步往回推</li><li>最後相減等於 0 → 上下兩個數一樣</li><li>十位是 2、個位是 9 → 兩個數都是 <i class="sq"></i>29</li><li><i class="sq"></i>29 是「除數 × 7」算出來的</li><li>7 × <i class="sq"></i> 的個位是 9 → 只有 7 × 7 ＝ 49</li><li>除數是 47，47 × 7 ＝ 329</li><li>9 是移下來的 → 被除數個位是 9</li><li>前面的 32 是第一次相減的餘數</li><li>個位：4 − <i class="sq"></i> ＝ 2 → <i class="sq"></i> 是 2</li><li>47 的倍數中，只有 47 × 6 ＝ 282 合格</li><li>商是 67；282 ＋ 32 ＝ 314</li><li>被除數是 3149</li><li>驗算：47 × 67 ＝ 3149 ✓</li></ol>
       <div class="ending"><p class="final">答案：3149 ÷ 47 ＝ 67</p><img class="ch" src="../../assets/mascot/y_check.webp" alt="" loading="lazy"><span class="bubble">助手 Y：驗算通過，才算破案！</span></div></details>
+      </div></div>
   </section>
 </main>
 <footer><div class="duo"><img class="ch" src="../../assets/mascot/duo_cheer.webp" alt="名偵探 X 和助手 Y" loading="lazy"></div><div class="tips"><b>解題提醒</b>｜從個位下手・從最後一步往回推・算完要驗算</div><p>數學解謎室・五年級</p></footer>
