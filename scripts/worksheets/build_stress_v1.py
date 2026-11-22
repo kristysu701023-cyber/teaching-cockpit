@@ -305,9 +305,9 @@ def build(template, teacher):
         grp_run = fl.find(qn("w:r"))
         title_p = blocks[n][1]
         title_p.append(grp_run)
-        # 標題字體：Kristy 選華康海報體W12（2026-11-19）
+        # 標題字體：Kristy 選華康海報體W9(P)（2026-11-20）
         # 舊式文字藝術師抓不到個人資料夾的華康字型 → 改成「文字方塊＋鏤空字效果」，字可以直接改
-        TF = "華康海報體W12(P)"
+        TF = "華康海報體W9(P)"
         for tp in list(title_p.iter("{urn:schemas-microsoft-com:vml}textpath")):
             text = (tp.get("string") or "").strip()
             if not text:
@@ -321,14 +321,21 @@ def build(template, teacher):
             st = re.sub(r"margin-top:([\d.]+)pt", lambda m: "margin-top:%.2fpt" % (float(m.group(1)) + 51 - 10), st)
             st = st.replace("mso-position-vertical-relative:text", "mso-position-vertical-relative:page")
             W = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+            extra_w14 = (
+                '<w14:shadow w14:blurRad="0" w14:dist="35941" w14:dir="2700000" w14:sx="100000" w14:sy="100000" w14:kx="0" w14:ky="0" w14:algn="ctr">'
+                '<w14:srgbClr w14:val="808080"><w14:alpha w14:val="25000"/></w14:srgbClr></w14:shadow>'
+                '<w14:textOutline w14:w="15875" w14:cap="flat" w14:cmpd="sng" w14:algn="ctr">'
+                '<w14:solidFill><w14:srgbClr w14:val="000000"/></w14:solidFill><w14:prstDash w14:val="solid"/><w14:round/></w14:textOutline>'
+                '<w14:textFill><w14:solidFill><w14:srgbClr w14:val="FFFFFF"/></w14:solidFill></w14:textFill>'
+            )
             new = parse_xml(
                 f'<v:rect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="{W}" '
                 f'xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" '
                 f'id="{shp.get("id")}_tb" style="{st}" filled="f" stroked="f">'
                 f'<v:textbox inset="0,0,0,0"><w:txbxContent><w:p><w:pPr><w:spacing w:after="0" w:line="240" w:lineRule="auto"/>'
                 f'<w:snapToGrid w:val="0"/></w:pPr><w:r><w:rPr>'
-                f'<w:rFonts w:ascii="{TF}" w:eastAsia="{TF}" w:hAnsi="{TF}"/><w:outline/><w:spacing w:val="-10"/><w:sz w:val="88"/><w:szCs w:val="88"/>'
-                
+                f'<w:rFonts w:ascii="{TF}" w:eastAsia="{TF}" w:hAnsi="{TF}"/><w:outline/><w:color w:val="000000"/><w:spacing w:val="-10"/><w:sz w:val="88"/><w:szCs w:val="88"/>'
+                f'{extra_w14}'
                 f'</w:rPr><w:t>{text}</w:t></w:r></w:p></w:txbxContent></v:textbox></v:rect>')
             shp.addprevious(new)
             shp.getparent().remove(shp)
