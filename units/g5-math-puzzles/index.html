@@ -73,6 +73,19 @@
           border: 1.5px solid var(--c); border-radius: 999px; padding: 0 10px; }
   .ask { margin: 4px 0 12px; font-weight: 700; }
 
+  /* 觀念教導單欄滿版卡片 */
+  .cgrid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 12px; }
+  .cbox { background: #fff; border: 2.5px solid var(--pen); border-radius: 18px; padding: 16px 20px; }
+  .cbox h4 { margin: 0 0 8px; font-family: var(--hand); font-size: 1.3rem; color: var(--cink); }
+  .clist { margin: 0; padding-left: 1.3em; font-size: 1.05rem; line-height: 1.85; }
+  .clist li { margin: 6px 0; }
+  .formula { display: inline-block; background: var(--cbg); border: 2px solid var(--c); border-radius: 10px;
+             padding: 2px 12px; font-weight: 900; color: var(--ink); margin: 3px 4px 3px 0; }
+  .ex-line { margin: 4px 0 4px 1.2em; color: var(--ink); font-size: 1.02rem; }
+  .ans-val { color: var(--ans); font-weight: 900; }
+  .warn-box { margin-top: 10px; padding: 10px 14px; background: #FFF1F2; border: 2px dashed var(--red);
+              border-radius: 12px; color: var(--red-ink); font-weight: 700; font-size: 1rem; }
+
   .prob-wrap { display: flex; justify-content: center; background: #fff; border: 2.5px solid var(--pen);
                border-radius: 18px; padding: 10px; background-image:
                linear-gradient(#EEF3FA 1px, transparent 1px), linear-gradient(90deg, #EEF3FA 1px, transparent 1px);
@@ -181,6 +194,85 @@
 
 <main>
   <h2 class="unit" id="u4"><span class="utab">第<b>4</b>單元</span><span class="utitle">整數四則運算</span><span class="usem">五上</span></h2>
+  <section class="card c-green" id="c4-1">
+    <div class="card-head"><span class="qno">觀念 1</span><h3 class="ct">交換律、結合律與分配律</h3><span class="code">數4-1 觀念教導（一）</span></div>
+    <p class="ask">善用運算規則調整順序或拆合數字，就能讓複雜的四則運算變簡單！</p>
+    <div class="cgrid">
+      <div class="cbox">
+        <h4>【一、交換律與結合律】</h4>
+        <ul class="clist">
+          <li><strong>1. 交換律</strong>：<span class="formula">甲 ＋ 乙 ＝ 乙 ＋ 甲</span> <span class="formula">甲 × 乙 ＝ 乙 × 甲</span>
+            <div class="ex-line">例 (1) 12 ＋ 35 ＝ 35 ＋ 12 ＝ <span class="ans-val">47</span></div>
+            <div class="ex-line">例 (2) 25 × 46 ＝ 46 × 25 ＝ <span class="ans-val">1150</span></div>
+          </li>
+          <li><strong>2. 結合律</strong>：<span class="formula">甲 ＋ 乙 ＋ 丙 ＝ 甲 ＋ (乙 ＋ 丙)</span> <span class="formula">甲 × 乙 × 丙 ＝ 甲 × (乙 × 丙)</span>
+            <div class="ex-line">例 (1) 257 ＋ 924 ＋ 76 ＝ 257 ＋ (924 ＋ 76) ＝ 257 ＋ 1000 ＝ <span class="ans-val">1257</span></div>
+            <div class="ex-line">例 (2) 734 × 25 × 4 ＝ 734 × (25 × 4) ＝ 734 × 100 ＝ <span class="ans-val">73400</span></div>
+          </li>
+        </ul>
+      </div>
+      <div class="cbox">
+        <h4>【二、乘法對加（減）法的分配律】</h4>
+        <ul class="clist">
+          <li><span class="formula">甲 × (乙 ± 丙) ＝ 甲 × 乙 ± 甲 × 丙</span> <span class="formula">(乙 ± 丙) × 甲 ＝ 乙 × 甲 ± 丙 × 甲</span>
+            <div class="ex-line">例 (1) 25 × 42 ＝ 25 × (40 ＋ 2) ＝ 25 × 40 ＋ 25 × 2 ＝ 1000 ＋ 50 ＝ <span class="ans-val">1050</span></div>
+            <div class="ex-line">例 (2) 243 × 372 − 243 × 172 ＝ 243 × (372 − 172) ＝ 243 × 200 ＝ <span class="ans-val">48600</span></div>
+          </li>
+        </ul>
+      </div>
+      <div class="cbox">
+        <h4>【三、除法對加（減）法的分配律】</h4>
+        <ul class="clist">
+          <li><strong>1. 除數相同可合併</strong>：<span class="formula">甲 ÷ 丙 ± 乙 ÷ 丙 ＝ (甲 ± 乙) ÷ 丙</span>
+            <div class="ex-line">例：456 ÷ 19 ＋ 304 ÷ 19 ＝ (456 ＋ 304) ÷ 19 ＝ 760 ÷ 19 ＝ <span class="ans-val">40</span></div>
+          </li>
+          <li><strong>2. 被除數相同、除數不同「不能」合併</strong>：<span class="formula">甲 ÷ 乙 ± 甲 ÷ 丙 ≠ 甲 ÷ (乙 ± 丙)</span></li>
+        </ul>
+        <div class="warn-box">⚠ 陷阱提醒：30 ÷ 3 ＋ 30 ÷ 2 <strong>≠</strong> 30 ÷ (3 ＋ 2)（左邊是 10 ＋ 15 ＝ 25，右邊是 30 ÷ 5 ＝ 6，兩邊不相等！）</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card c-purple" id="c4-2">
+    <div class="card-head"><span class="qno">觀念 2</span><h3 class="ct">四則運算法則與加／去括號</h3><span class="code">數4-1 觀念教導（二）</span></div>
+    <p class="ask">記住「括號前面是減號或除號，括號裡面要變號」，就不怕算錯！</p>
+    <div class="cgrid">
+      <div class="cbox">
+        <h4>【一、基本運算順序】</h4>
+        <ul class="clist">
+          <li><strong>1. 先乘除，後加減。</strong></li>
+          <li><strong>2. 有括號時</strong>：先計算 <strong>（ ）</strong> 中的數，再算 <strong>〔 〕</strong> 中的數，最後算 <strong>｛ ｝</strong> 中的數。</li>
+        </ul>
+      </div>
+      <div class="cbox">
+        <h4>【二、加減混合：加括號與去括號】</h4>
+        <ul class="clist">
+          <li>一般先求括號內的結果，但有時也可<strong>先去括號</strong>，再進行運算。</li>
+          <li>括號前為「<strong>−</strong>」時，括號內的運算符號<strong>要變號</strong>（<strong>＋ 變 −，− 變 ＋</strong>）。</li>
+          <li>括號前為「<strong>＋</strong>」時，括號內的運算符號<strong>不用變號</strong>。
+            <div class="ex-line">例 (1) 9752 − (3752 ＋ 4500) ＝ 9752 − 3752 − 4500 ＝ 6000 − 4500 ＝ <span class="ans-val">1500</span></div>
+            <div class="ex-line">例 (2) 846 ＋ 479 − 425 ＝ 846 ＋ (479 − 425) ＝ 846 ＋ 54 ＝ <span class="ans-val">900</span></div>
+          </li>
+        </ul>
+      </div>
+      <div class="cbox">
+        <h4>【三、乘除混合：加括號與去括號】</h4>
+        <ul class="clist">
+          <li>「<strong>×</strong>」後面加上 <strong>（ ）</strong> 時，括號內的運算符號<strong>不變</strong>；「<strong>÷</strong>」後面加上 <strong>（ ）</strong> 時，括號內的運算符號<strong>要變號</strong>（× 變 ÷，÷ 變 ×）。</li>
+          <li>(1) <span class="formula">甲 ÷ 乙 ÷ 丙 ＝ 甲 ÷ (乙 × 丙)</span>
+            <div class="ex-line">例：9500 ÷ 25 ÷ 4 ＝ 9500 ÷ (25 × 4) ＝ 9500 ÷ 100 ＝ <span class="ans-val">95</span></div>
+          </li>
+          <li>(2) <span class="formula">甲 × 乙 ÷ 丙 ＝ 甲 × (乙 ÷ 丙)</span>
+            <div class="ex-line">例：665 × 84 ÷ 42 ＝ 665 × (84 ÷ 42) ＝ 665 × 2 ＝ <span class="ans-val">1330</span></div>
+          </li>
+          <li>(3) <span class="formula">甲 ÷ 乙 × 丙 ＝ 甲 ÷ (乙 ÷ 丙)</span>
+            <div class="ex-line">例：2838 ÷ 66 × 33 ＝ 2838 ÷ (66 ÷ 33) ＝ 2838 ÷ 2 ＝ <span class="ans-val">1419</span></div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
   <section class="card c-red" id="q1">
     <div class="card-head"><span class="qno">第 1 題</span><h3 class="ct">乘法數字謎</h3><span class="code">數4-6（1）</span></div>
     <div class="qbody"><div class="qa">
