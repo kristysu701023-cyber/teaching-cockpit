@@ -111,7 +111,7 @@
   - 單元標題：`<h2 class="unit" id="u數字"><span class="utab">第<b>數字</b>單元</span><span class="utitle">單元名</span><span class="usem">五上</span></h2>`
   - 題目卡：緊接在單元標題後面，`<section class="card c-red|c-blue|c-purple|c-green" id="q編號">`，第一行是 `<div class="card-head"><span class="qno">第 N 題</span><h3 class="ct">題名</h3><span class="code">課本編號</span></div>`
   - 題目卡的 id 整頁不可重複（跨單元也是），例如 q1、q2…一路往下編。
-  - 題目卡內容包兩欄：`card-head` 之後是 `<div class="qbody"><div class="qa">`（題目、題圖、顯示答案、①先想一想）`</div><div class="qb">`（②解題影片、③文字詳解）`</div></div>`。螢幕 ≥1100px 左右 5:7 並排，手機照順序往下排。
+  - 題目卡版面：全面採單欄滿版（最大寬度 `1100px`，與情意單元一致，不分左右欄）；`card-head` 之後依序為 `.qa`（題目、題圖、顯示答案、①先想一想）與 `.qb`（②解題影片、③文字詳解），觀念卡片 `.cgrid` 亦維持單欄滿版。
 - 角色：名偵探 X（`.talk` 用 x_think）、助手 Y（`.ending` 用 y_check），標題左右 x_hello／y_hello，頁尾 duo_cheer；圖放 `assets/mascot/`，一律透明 WebP（png 被 .gitignore 排除）。
 
 ## 🤝 工作約定

@@ -22,7 +22,7 @@
          background-color: var(--paper);
          background-image: radial-gradient(#E9E2CF 1.2px, transparent 1.2px);
          background-size: 22px 22px; }
-  header, main { max-width: 900px; margin: 0 auto; padding: 0 16px; }
+  header, main { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
   header { padding-top: 22px; }
   .home { display: inline-block; color: var(--muted); text-decoration: none; font-weight: 700;
           background: #fff; border: 2px solid var(--pen); border-radius: 999px; padding: 2px 14px; }
@@ -77,7 +77,7 @@
                border-radius: 18px; padding: 10px; background-image:
                linear-gradient(#EEF3FA 1px, transparent 1px), linear-gradient(90deg, #EEF3FA 1px, transparent 1px);
                background-size: 20px 20px; }
-  .prob { width: 100%; max-width: 400px; height: auto; }
+  .prob { width: 100%; max-width: 480px; height: auto; }
   .prob .dg { font: 700 76px "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", sans-serif; fill: var(--ink); text-anchor: middle; }
   .prob .ans { fill: var(--ans); opacity: 0; transition: opacity .3s; }
   .prob.show .ans { opacity: 1; }
@@ -125,7 +125,7 @@
                  border-radius: 14px; padding: 6px 20px; box-shadow: 3px 3px 0 var(--pen); }
   footer .tips b { color: var(--red-ink); font-family: var(--hand); font-size: 1.5rem; }
   footer p { margin: 14px 0 0; }
-  .toc { margin: 18px auto 0; max-width: 760px; background: #fff; border: 2.5px solid var(--pen); border-radius: 20px;
+  .toc { margin: 18px auto 0; background: #fff; border: 2.5px solid var(--pen); border-radius: 20px;
          padding: 12px 18px 14px; box-shadow: 4px 4px 0 var(--pen); text-align: left; }
   .toc-h { margin: 0 0 6px; font-family: var(--hand); font-weight: 900; font-size: 1.2rem; }
   .toc-h::before { content: "📖 "; }
@@ -160,12 +160,6 @@
   @media (max-width: 640px) { .hero .ch-l, .hero .ch-r { width: 44px; height: 72px; bottom: auto; top: -54px; }
     .hero .ch-l { left: auto; right: 52px; } .hero .ch-r { right: 0; } }
   @media (max-width: 640px) { .talk .ch, .ending .ch { width: 44px; height: 72px; } .talk .bubble, .ending .bubble { flex: 1 1 0; max-width: max-content; min-width: 0; margin-bottom: 10px; } footer .duo .ch { width: 70px; height: 80px; } footer .tips { flex: 1 1 0; min-width: 0; font-size: 1.05rem; } footer .tips b { font-size: 1.2rem; } }
-  @media (min-width: 1100px) {
-    main { max-width: 1320px; }
-    .qbody { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 0 32px; align-items: start; }
-    .qb > h3.sec:first-child { margin-top: 4px; }
-    .prob { max-width: 100%; }
-  }
   @media (prefers-reduced-motion: reduce) { .hero .ch-l, .hero .ch-r { animation: none; } }
 </style>
 </head>
