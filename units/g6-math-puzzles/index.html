@@ -30,13 +30,13 @@
 
   .hero { position: relative; text-align: center; padding: 26px 8px 8px; }
   .title { margin: 0; font-family: var(--hand); font-weight: 900; line-height: 1.15;
-           font-size: clamp(2.6rem, 9vw, 4.6rem); letter-spacing: .04em; }
+           font-size: clamp(2.6rem, 11vw, 6.6rem); letter-spacing: .04em; }
   .title span { display: inline-block; -webkit-text-stroke: 2px var(--pen); paint-order: stroke fill;
                 text-shadow: 3px 4px 0 rgba(0,0,0,.12); }
   .t1 { color: #3D8BE0; transform: rotate(-4deg); } .t2 { color: #E8506A; transform: translateY(-4px); }
   .t3 { color: #FFC21A; transform: rotate(3deg); } .t4 { color: #4CAF6E; transform: translateY(-2px) rotate(-2deg); }
   .t5 { color: #8E5BD6; transform: rotate(4deg); }
-  .ribbon { display: inline-block; margin: 10px 0 0; padding: 6px 22px; font-weight: 900; font-size: 1.05rem;
+  .ribbon { display: inline-block; margin: 12px 0 0; padding: 8px 26px; font-weight: 900; font-size: 1.35rem;
             background: var(--hl); border: 2.5px solid var(--pen); border-radius: 12px;
             box-shadow: 3px 3px 0 var(--pen); transform: rotate(-1deg); }
   .badge { position: absolute; left: 4px; top: 18px; margin: 0; padding: 8px 14px; font-family: var(--hand);
@@ -153,11 +153,11 @@
   .to-top.on { opacity: 1; pointer-events: auto; }
   html { scroll-behavior: smooth; }
   .ch { display: inline-block; width: 64px; height: 96px; flex: none; object-fit: contain; }
-  .hero .ch-l, .hero .ch-r { position: absolute; bottom: 4px; width: 96px; height: 150px; }
-  .hero .ch-l { left: calc(8% + 40px); animation: bob 3s ease-in-out infinite; }
-  .hero .ch-r { right: 8%; animation: bob 3s ease-in-out 1.5s infinite; }
+  .hero .ch-l, .hero .ch-r { position: absolute; bottom: 0; width: 150px; height: 235px; }
+  .hero .ch-l { left: 9%; animation: bob 3s ease-in-out infinite; }
+  .hero .ch-r { right: 6%; animation: bob 3s ease-in-out 1.5s infinite; }
   @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-  .names { margin: 6px 0 0; font-size: .85rem; color: var(--muted); font-weight: 700; }
+  .names { margin: 8px 0 0; font-size: 1.05rem; color: var(--muted); font-weight: 700; }
   .names b { color: var(--red-ink); } .names b + b { color: var(--blue-ink); }
   .talk { display: flex; align-items: flex-end; gap: 6px; margin: 4px 0 8px; }
   .talk .ch, .ending .ch { width: 58px; height: 96px; }
