@@ -39,12 +39,12 @@
   .ribbon { display: inline-block; margin: 12px 0 0; padding: 8px 26px; font-weight: 900; font-size: 1.35rem;
             background: var(--hl); border: 2.5px solid var(--pen); border-radius: 12px;
             box-shadow: 3px 3px 0 var(--pen); }
-  .badge { position: absolute; left: 4px; top: 18px; margin: 0; padding: 8px 14px; font-family: var(--hand);
+  .badge { position: absolute; left: -10px; top: 14px; margin: 0; padding: 12px 20px; font-family: var(--hand); font-size: 1.45rem;
            font-weight: 900; line-height: 1.3; color: var(--red-ink); background: #FFE3E8;
            border: 2.5px solid var(--pen); border-radius: 50% 46% 52% 44% / 52% 50% 48% 46%; transform: rotate(-8deg); }
-  .doodle { position: absolute; width: 34px; height: 34px; }
-  .d1 { left: 22%; top: 4px; transform: rotate(-12deg); } .d2 { right: 2px; bottom: 6px; width: 26px; height: 26px; }
-  @media (max-width: 640px) { .badge { display: none; } .d1 { left: 4px; } }
+  .doodle { position: absolute; width: 58px; height: 58px; }
+  .d1 { left: 18.5%; top: -4px; transform: rotate(-12deg); } .d2 { right: -6px; bottom: 6px; width: 46px; height: 46px; }
+  @media (max-width: 640px) { .badge { display: none; } .doodle { width: 34px; height: 34px; } .d1 { left: 4px; top: 4px; } .d2 { right: 2px; width: 26px; height: 26px; } }
 
   h2.unit { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 38px 0 6px; font-size: 1.6rem;
             font-family: var(--hand); font-weight: 900; }
@@ -158,7 +158,8 @@
   .hero .ch-l { left: 9%; animation: bob 3s ease-in-out infinite; }
   .hero .ch-r { right: 6%; animation: bob 3s ease-in-out 1.5s infinite; }
   @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-  .names { margin: 8px 0 0; font-size: 1.05rem; color: var(--muted); font-weight: 700; }
+  .names { margin: 10px 0 0; font-size: 1.55rem; color: var(--muted); font-weight: 700; }
+  @media (max-width: 640px) { .names { font-size: 1.15rem; } }
   .names b { color: var(--red-ink); } .names b + b { color: var(--blue-ink); }
   .talk { display: flex; align-items: flex-end; gap: 10px; margin: 6px 0 12px; }
   .talk .ch, .ending .ch { width: 96px; height: 152px; }
