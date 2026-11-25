@@ -24,9 +24,10 @@
 - **內容不能牽涉台灣政治**；**家庭題材要小心**，不強調多元成家、不追問家庭組成；教師密碼維持 `0000`；不選粵語影片。
 - **數學解謎室版面**：已定案為單欄滿版 `1100px`（不分左右欄），勿再改回左右兩欄。
 - **解題影片發音品管**：Edge-TTS（`zh-TW-HsiaoChenNeural`）講稿一律用「兩百／兩千」，避開多音字（得、差、長、數、倒數），算圖後用 contact sheet 檢視防壓框。
-- **GitHub Pages 快取**：推送後約 1 分鐘生效，但同台電腦點書籤可能因瀏覽器 10 分鐘快取看到舊畫面，按 `Ctrl + Shift + R` 即可強制刷新。
+- **GitHub Pages 快取**：推送後約 1 分鐘生效，但同台電腦點書籤可能因瀏覽器 10 分鐘快取看到舊畫面，按 `Ctrl + Shift + R` 即可強制刷新。另外數學解謎室視窗寬度 < 640px 會套用手機版（人物與標題變小），反映「沒變大」時也要確認視窗夠寬。
+- **頁首放大（7985e61，Claude Code）**：標題 `clamp(2.6rem, 11vw, 6.6rem)`、`.hero .ch-l/.ch-r` 150×235（左 9%、右 6%），五、六年級兩頁 CSS 同步改。本機預覽用 `.claude/launch.json` 的 `cockpit`（http.server 8123），直接開 file:// 圖片載不出來。
 
 ## 🕐 最後更新
-- 時間：2026-11-25 08:06
-- 更新者：Antigravity @ LAPTOP-IUMJF2MM
-- Git push：✅ 已推 (b680f4e)
+- 時間：2026-11-25 08:12（Antigravity 08:06 收工後，Claude Code 補記頁首放大）
+- 更新者：Claude Code @ LAPTOP-IUMJF2MM
+- Git push：待推
