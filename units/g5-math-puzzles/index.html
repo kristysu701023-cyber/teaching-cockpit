@@ -39,7 +39,7 @@
   .ribbon { display: inline-block; margin: 12px 0 0; padding: 8px 26px; font-weight: 900; font-size: 1.35rem;
             background: var(--hl); border: 2.5px solid var(--pen); border-radius: 12px;
             box-shadow: 3px 3px 0 var(--pen); }
-  .badge { position: absolute; left: -14px; top: 10px; z-index: 2; margin: 0; padding: 12px 20px; font-family: var(--hand); font-size: 1.45rem;
+  .badge { position: absolute; right: -24px; top: -26px; z-index: 2; margin: 0; padding: 12px 20px; font-family: var(--hand); font-size: 1.45rem;
            font-weight: 900; line-height: 1.3; color: var(--red-ink); background: #FFE3E8;
            border: 2.5px solid var(--pen); border-radius: 50% 46% 52% 44% / 52% 50% 48% 46%; transform: rotate(-8deg); }
   .say { position: absolute; right: 4px; top: 14px; margin: 0; font-family: var(--hand); font-weight: 900;
@@ -159,8 +159,8 @@
   html { scroll-behavior: smooth; }
   .ch { display: inline-block; width: 64px; height: 96px; flex: none; object-fit: contain; }
   .hero .ch-l, .hero .ch-r { position: absolute; bottom: 0; width: 150px; height: 235px; }
-  .hero .ch-l { left: clamp(145px, 14%, 165px); animation: bob 3s ease-in-out infinite; }
-  .hero .ch-r { right: 6%; animation: bob 3s ease-in-out 1.5s infinite; }
+  .hero .ch-l { left: calc(50% - 440px); animation: bob 3s ease-in-out infinite; }
+  .hero .ch-r { right: calc(50% - 440px); animation: bob 3s ease-in-out 1.5s infinite; }
   @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
   .names { margin: 10px 0 0; font-size: 1.55rem; color: var(--muted); font-weight: 700; }
   @media (max-width: 640px) { .names { font-size: 1.15rem; } }
@@ -172,7 +172,7 @@
   .ending .bubble { margin: 0 0 36px 12px; font-family: var(--hand); font-size: 1.3rem; font-weight: 900; }
   footer { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px 18px; } footer p { flex-basis: 100%; } footer .duo { display: flex; }
   footer .duo .ch { width: 165px; height: 190px; }
-  @media (max-width: 960px) { .hero .ch-l, .hero .ch-r { width: 115px; height: 180px; } .hero .ch-l { left: 135px; } .hero .ch-r { right: 2%; } }
+  @media (max-width: 960px) { .hero .ch-l, .hero .ch-r { width: 115px; height: 180px; } .hero .ch-l { left: calc(50% - 400px); } .hero .ch-r { right: calc(50% - 400px); } .badge { display: none; } .d1 { left: calc(50% - 345px); top: 8px; } }
   @media (max-width: 640px) { .hero .ch-l, .hero .ch-r { width: 44px; height: 72px; bottom: auto; top: -54px; }
     .hero .ch-l { left: auto; right: 52px; } .hero .ch-r { right: 0; } }
   @media (max-width: 640px) { h3.sec { font-size: 1.3rem; } .snum { font-size: .95rem; } summary { font-size: 1.05rem; } details p, .steps li { font-size: 1rem; } .talk .ch, .ending .ch { width: 52px; height: 84px; } .talk .bubble, .ending .bubble { flex: 1 1 0; max-width: max-content; min-width: 0; font-size: 1rem; padding: 4px 12px; margin-bottom: 14px; } footer .duo .ch { width: 88px; height: 100px; } footer .tips { flex: 1 1 0; min-width: 0; font-size: 1.1rem; padding: 8px 14px; } footer .tips b { font-size: 1.25rem; } }
