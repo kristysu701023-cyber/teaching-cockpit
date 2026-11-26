@@ -269,7 +269,7 @@
         phone.innerHTML = '<div class="bar">表哥</div><div class="chat">' +
           '<div class="msg">翔翔！我在峇里島玩，<button class="hot" data-c="0">手機快沒電了</button>，幫我一個忙</div>' +
           '<div class="msg"><button class="hot" data-c="1">你先去超商買 3 張 1000 元的遊戲點數</button>，拍序號傳給我，回去馬上還你</div>' +
-          '<div class="msg"><button class="hot" data-c="2">千萬不要跟你爸媽說喔</button>，不然我會被罵</div>' +
+          '<div class="msg"><button class="hot" data-c="2">千萬不要跟你家人說喔</button>，不然我會被罵</div>' +
           '<div class="msg">很急！<button class="hot" data-c="3">10 分鐘內</button>要好，拜託拜託</div></div>';
         var list = h('div', ''); list.style.cssText = 'display:grid;gap:8px';
         var els = clues.map(function (c, i) { var e = h('div', 'clue', '線索 ' + (i + 1) + '：？'); list.appendChild(e); return e; });
@@ -385,7 +385,7 @@
         a: { text: '連結長得跟遊戲登入頁一模一樣。你輸入了帳號密碼，畫面卻卡住……隔天你的帳號被登出，寶物全部不見，還被拿去騙你的朋友。<br><b>結局：帳號被盜。</b>真正的官方不會私訊送寶物。', choices: [{ label: '如果被盜了，該怎麼辦？', to: 'r' }, { label: '重新開始', to: 's' }] },
         b: { text: '官方公告沒有這個活動。這時對方又說：「不然你先付 100 元點數，我幫你代儲，打 5 折喔！」', choices: [{ label: '好便宜，買點數給他', to: 'c' }, { label: '拒絕，檢舉並告訴大人', to: 'd' }] },
         c: { text: '你傳了點數序號，對方就消失了，還把你封鎖。<br><b>結局：錢拿不回來。</b>「代儲」、「便宜賣寶物」、「帳號買賣」都是常見的遊戲詐騙。', choices: [{ label: '重新開始', to: 's' }] },
-        d: { text: '你用遊戲裡的檢舉功能檢舉對方，也告訴了爸媽，還提醒好朋友不要上當。<br><b>結局：偵探破案！</b>', choices: [{ label: '重新開始', to: 's' }] },
+        d: { text: '你用遊戲裡的檢舉功能檢舉對方，也告訴了家人，還提醒好朋友不要上當。<br><b>結局：偵探破案！</b>', choices: [{ label: '重新開始', to: 's' }] },
         r: { text: '馬上告訴家長；用其他裝置到官方網站改密碼、開雙重驗證；通知好友「我的帳號被盜，不要相信它傳的訊息」；向遊戲客服回報。', choices: [{ label: '重新開始', to: 's' }] }
       }, 's'),
 
