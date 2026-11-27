@@ -140,18 +140,21 @@
   footer .tips b { color: var(--red-ink); font-family: var(--hand); font-size: 1.9rem; }
   footer p { margin: 14px 0 0; }
   .toc { margin: 18px auto 0; background: #fff; border: 2.5px solid var(--pen); border-radius: 20px;
-         padding: 12px 18px 14px; box-shadow: 4px 4px 0 var(--pen); text-align: left; }
-  .toc-h { margin: 0 0 6px; font-family: var(--hand); font-weight: 900; font-size: 1.2rem; }
+         padding: 12px 18px 16px; box-shadow: 4px 4px 0 var(--pen); text-align: left; }
+  .toc-h { margin: 0 0 10px; font-family: var(--hand); font-weight: 900; font-size: 1.2rem; }
   .toc-h::before { content: "📖 "; }
-  .toc-unit { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 8px 0; border-top: 2px dashed #E4DCCB; }
-  .toc-unit:first-of-type { border-top: 0; }
-  .toc-u { flex-basis: 100%; color: var(--ink); text-decoration: none; font-weight: 900; font-size: 1.05rem; }
-  .toc-u .utab { font-size: .85rem; padding: 1px 10px; margin-right: 6px; }
-  .toc-u .utab b { font-size: 1.05rem; }
-  .toc-q { color: var(--ink); text-decoration: none; font-size: .92rem; font-weight: 700; background: var(--cbg);
-           border: 2px solid var(--c); border-radius: 999px; padding: 1px 12px; }
-  .toc-q:hover, .toc-u:hover { background: var(--hl-soft); }
-  .toc-q b { color: var(--cink); margin-right: 4px; }
+  .toc-tabs { display: flex; flex-wrap: wrap; gap: 10px; }
+  .toc-tab { appearance: none; font: inherit; color: var(--ink); background: var(--paper);
+             border: 2px solid var(--pen); border-radius: 14px; padding: 7px 16px;
+             font-weight: 900; font-size: 1rem; cursor: pointer;
+             transition: background .15s, transform .1s, box-shadow .1s; }
+  .toc-tab:hover { background: var(--hl-soft); transform: translateY(-1px); }
+  .toc-tab.active { background: var(--hl); border-width: 2.5px; box-shadow: 3px 3px 0 var(--pen); transform: translate(-1px, -1px); }
+  .toc-tab .tnum { color: var(--muted); font-size: .88em; margin-right: 6px; }
+  .toc-tab.active .tnum { color: var(--ink); }
+  .unit-panel { display: none; }
+  .unit-panel.active { display: block; animation: tabFade .2s ease; }
+  @keyframes tabFade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
   .to-top { position: fixed; right: 14px; bottom: 16px; z-index: 10; font-weight: 900; text-decoration: none; color: var(--ink);
             background: var(--hl); border: 2.5px solid var(--pen); border-radius: 999px; padding: 6px 14px;
             box-shadow: 3px 3px 0 var(--pen); opacity: 0; pointer-events: none; transition: opacity .2s; }
@@ -177,6 +180,46 @@
     .hero .ch-l { left: auto; right: 52px; } .hero .ch-r { right: 0; } }
   @media (max-width: 640px) { h3.sec { font-size: 1.3rem; } .snum { font-size: .95rem; } summary { font-size: 1.05rem; } details p, .steps li { font-size: 1rem; } .talk .ch, .ending .ch { width: 52px; height: 84px; } .talk .bubble, .ending .bubble { flex: 1 1 0; max-width: max-content; min-width: 0; font-size: 1rem; padding: 4px 12px; margin-bottom: 14px; } footer .duo .ch { width: 88px; height: 100px; } footer .tips { flex: 1 1 0; min-width: 0; font-size: 1.1rem; padding: 8px 14px; } footer .tips b { font-size: 1.25rem; } }
   @media (prefers-reduced-motion: reduce) { .hero .ch-l, .hero .ch-r { animation: none; } }
+  /* U5_CSS_START */
+  .u5-pics { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin: 6px 0 10px; }
+  .u5-pics figure { margin: 0; text-align: center; }
+  .u5-pics img, .u5-fig img { width: 100%; height: auto; display: block; margin: 0 auto; }
+  .u5-pics figcaption { font-weight: 900; color: var(--cink); margin-top: 4px; }
+  .u5-fig img { max-width: 440px; }
+  .u5-tablewrap { overflow-x: auto; }
+  .u5-table { width: 100%; border-collapse: collapse; font-size: 1.05rem; background: #fff; }
+  .u5-table th, .u5-table td { border: 2px solid #E4DCCB; padding: 6px 10px; text-align: center; }
+  .u5-table thead th { background: var(--cbg); color: var(--cink); font-family: var(--hand); font-size: 1.2rem; }
+  .u5-table tbody th { background: var(--hl-soft); white-space: nowrap; }
+  .fr { display: inline-flex; flex-direction: column; vertical-align: middle; text-align: center; font-size: .85em; line-height: 1.15; }
+  .fr > span:first-child { border-bottom: 1.5px solid currentColor; padding: 0 .2em; }
+  .u5-reveal { visibility: hidden; text-align: center; margin: 10px 0 0; font-weight: 900; font-size: 1.35rem; color: var(--ans); }
+  .u5-reveal.show { visibility: visible; }
+  .u5-lab { background: #fff; border: 2.5px solid var(--pen); border-radius: 18px; padding: 14px; margin-top: 10px; }
+  .u5-ctrl { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px 14px; font-weight: 700; font-size: 1.1rem; margin: 6px 0; }
+  .u5-ctrl select { font: inherit; font-weight: 700; padding: 4px 8px; border: 2px solid var(--pen); border-radius: 10px; background: var(--hl-soft); max-width: 100%; }
+  .u5-ctrl input[type=range] { width: min(380px, 60vw); accent-color: var(--c); }
+  .u5-check { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+  .u5-check input { width: 20px; height: 20px; accent-color: var(--c); }
+  .u5-stage { position: relative; height: 420px; perspective: 900px; overflow: hidden; touch-action: none; cursor: grab;
+              border-radius: 14px; background: radial-gradient(circle at 50% 40%, #fff 0, var(--cbg) 75%); }
+  .u5-stage:active { cursor: grabbing; }
+  .u5-scene { position: absolute; left: 50%; top: 50%; width: 0; height: 0; transform-style: preserve-3d; }
+  .u5-face { position: absolute; width: 92px; height: 92px; transform-style: preserve-3d; }
+  .u5-face > b { position: absolute; inset: 0; display: grid; place-items: center; font: 900 1.5rem var(--hand);
+                 color: var(--ink); border: 2.5px solid var(--pen); border-radius: 3px; backface-visibility: visible; opacity: .9; }
+  .u5-msg { text-align: center; font-weight: 900; font-size: 1.2rem; min-height: 1.8em; margin: 6px 0 0; }
+  .u5-msg.ok { color: var(--green-ink); } .u5-msg.no { color: var(--red-ink); }
+  .u5-two { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+  .u5-solid { text-align: center; }
+  .u5-solid svg { width: 100%; max-width: 300px; height: auto; }
+  .u5-name { margin: 0; font: 900 1.6rem var(--hand); color: var(--cink); }
+  .u5-n { display: inline-grid; place-items: center; min-width: 2em; font: 900 1.5rem var(--hand); color: #fff; background: var(--c);
+          border: 2.5px solid var(--pen); border-radius: 12px; }
+  .u5-count { list-style: none; padding: 0; margin: 6px 0 0; font-size: 1.15rem; line-height: 1.9; }
+  .u5-count b { color: var(--ans); font-size: 1.3rem; }
+  @media (max-width: 640px) { .u5-stage { height: 320px; } .u5-face { width: 58px; height: 58px; } .u5-face > b { font-size: 1rem; } }
+/* U5_CSS_END */
 </style>
 </head>
 <body>
@@ -557,27 +600,292 @@
       </div></div>
   </section>
 <!-- U4_EXTRA_END -->
+<!-- U5_START -->
+  <h2 class="unit" id="u5"><span class="utab">第<b>5</b>單元</span><span class="utitle">立體圖形</span><span class="usem">五上</span></h2>
+  <section class="card c-green" id="c5-1">
+    <div class="card-head"><span class="qno">觀念 1</span><h3 class="ct">認識角柱與角錐</h3><span class="code">數5-1 觀念教導（一）</span></div>
+    <p class="ask">角柱、角錐都是「看底面的形狀」來命名：底面是三角形就叫三角柱、三角錐。</p>
+    <div class="cgrid">
+      <div class="cbox">
+        <h4>【一、各部分的名稱】</h4>
+        <div class="u5-pics">
+          <figure><img class="fig" src="img/u5/u5_concept_prism.webp" alt="五角柱：標出頂點、邊、側面、底面" loading="lazy"><figcaption>角柱（五角柱）</figcaption></figure>
+          <figure><img class="fig" src="img/u5/u5_concept_pyramid.webp" alt="四角錐：標出頂點、邊、側面、底面" loading="lazy"><figcaption>角錐（四角錐）</figcaption></figure>
+        </div>
+        <ul class="clist"><li>柱體 2 個底面之間的距離，叫做柱體的<strong>高</strong>。</li></ul>
+      </div>
+      <div class="cbox">
+        <h4>【二、角柱和角錐比一比（底面是 n 邊形）】</h4>
+        <div class="u5-tablewrap"><table class="u5-table"><thead><tr><th></th><th>角柱</th><th>角錐</th></tr></thead><tbody><tr><th>頂點個數</th><td>底面邊數 × 2</td><td>底面邊數 ＋ 1</td></tr><tr><th>邊的個數</th><td>底面邊數 × 3</td><td>底面邊數 × 2</td></tr><tr><th>底面</th><td>2 個，互相平行且全等</td><td>1 個</td></tr><tr><th>側面形狀</th><td>長方形</td><td>三角形</td></tr><tr><th>面的總數</th><td>底面邊數 ＋ 2</td><td>底面邊數 ＋ 1</td></tr><tr><th>垂直關係</th><td>底面和側面互相垂直</td><td>沒有互相垂直或平行的面</td></tr></tbody></table></div>
+        <div class="ex-line">例：五角柱有 <span class="ans-val">10</span> 個頂點、<span class="ans-val">15</span> 個邊、<span class="ans-val">7</span> 個面；十角錐有 <span class="ans-val">11</span> 個頂點、<span class="ans-val">20</span> 個邊、<span class="ans-val">11</span> 個面。</div>
+        <div class="warn-box">⚠ 小陷阱：角錐的側面是斜的，所以沒有任何一面和底面垂直！</div>
+      </div>
+    </div>
+  </section>
+  <section class="card c-purple" id="c5-2">
+    <div class="card-head"><span class="qno">觀念 2</span><h3 class="ct">展開圖與表面積</h3><span class="code">數5-2 觀念教導（二）</span></div>
+    <p class="ask">把立體圖形「攤平」就是展開圖；展開圖每一塊的面積加起來，就是表面積。</p>
+    <div class="cgrid">
+      <div class="cbox">
+        <h4>【一、角柱與角錐的展開圖】</h4>
+        <div class="u5-pics">
+          <figure><img class="fig" src="img/u5/u5_tri_prism_net.webp" alt="三角柱與它的展開圖" loading="lazy"><figcaption>例 1：三角柱的展開圖</figcaption></figure>
+          <figure><img class="fig" src="img/u5/u5_penta_pyramid_net.webp" alt="五角錐與它的展開圖" loading="lazy"><figcaption>例 2：五角錐的展開圖</figcaption></figure>
+        </div>
+      </div>
+      <div class="cbox">
+        <h4>【二、圓柱與圓錐的展開圖】</h4>
+        <div class="u5-pics">
+          <figure><img class="fig" src="img/u5/u5_cylinder_net.webp" alt="圓柱的展開圖：側面是長方形" loading="lazy"><figcaption>圓柱</figcaption></figure>
+          <figure><img class="fig" src="img/u5/u5_cone_net.webp" alt="圓錐的展開圖：側面是扇形" loading="lazy"><figcaption>圓錐</figcaption></figure>
+        </div>
+        <ul class="clist">
+          <li>圓柱：側面長方形的<strong>長 ＝ 底面的圓周</strong>，<strong>寬 ＝ 柱高</strong>。</li>
+          <li>圓錐：側面扇形的<strong>弧長 ＝ 底面的圓周</strong>，<strong>半徑 ＝ 頂點到圓周的距離</strong>。</li>
+        </ul>
+      </div>
+      <div class="cbox">
+        <h4>【三、表面積公式】</h4>
+        <ul class="clist">
+          <li><span class="formula">正方體表面積 ＝ 邊長 × 邊長 × 6</span></li>
+          <li><span class="formula">長方體表面積 ＝（長 × 寬 ＋ 寬 × 高 ＋ 長 × 高）× 2</span></li>
+          <li><span class="formula">柱體和錐體表面積 ＝ 底面總面積 ＋ 側面總面積</span></li>
+        </ul>
+        <div class="ex-line">例：邊長 8 公分的正方體，表面積 ＝ 8 × 8 × 6 ＝ <span class="ans-val">384</span> 平方公分。</div>
+      </div>
+    </div>
+  </section>
+  <section class="card c-blue" id="lab5-1">
+    <div class="card-head"><span class="qno">動手玩 1</span><h3 class="ct">正方體展開圖摺摺看</h3><span class="code">互動實驗</span></div>
+    <p class="ask">選一個展開圖，拖動滑桿把它摺起來。用手指（或滑鼠）拖曳圖形可以轉動看看！</p>
+    <div class="u5-lab">
+      <div class="u5-ctrl">
+        <label>展開圖：<select id="fold-pick"></select></label>
+        <label class="u5-check"><input type="checkbox" id="fold-pair"> 相對面塗同色</label>
+      </div>
+      <div class="u5-stage" id="fold-stage"><div class="u5-scene" id="fold-scene"></div></div>
+      <div class="u5-ctrl">
+        <span>攤平</span><input type="range" id="fold-t" min="0" max="100" value="0" aria-label="摺疊程度"><span>摺好</span>
+        <button type="button" class="btn" id="fold-play">▶ 自動摺</button>
+      </div>
+      <p class="u5-msg" id="fold-msg"></p>
+    </div>
+    <div class="talk"><img class="ch" src="../../assets/mascot/x_think.webp" alt="" loading="lazy"><span class="bubble">名偵探 X：一排連著的面，隔一格的兩面就是相對面！</span></div>
+  </section>
+  <section class="card c-red" id="lab5-2">
+    <div class="card-head"><span class="qno">動手玩 2</span><h3 class="ct">角柱、角錐計數器</h3><span class="code">互動實驗</span></div>
+    <p class="ask">拖動滑桿改變底面的邊數，數數看頂點、邊、面各有幾個，找出規律！</p>
+    <div class="u5-lab">
+      <div class="u5-ctrl"><span>底面邊數</span><input type="range" id="poly-n" min="3" max="10" value="5" aria-label="底面邊數"><b id="poly-nv" class="u5-n">5</b></div>
+      <div class="u5-two">
+        <div class="u5-solid"><svg id="poly-prism" viewBox="-1.6 -2.3 3.4 3.2" role="img" aria-label="角柱"></svg><p class="u5-name" id="poly-prism-name"></p><ul class="u5-count" id="poly-prism-count"></ul></div>
+        <div class="u5-solid"><svg id="poly-pyr" viewBox="-1.6 -2.3 3.4 3.2" role="img" aria-label="角錐"></svg><p class="u5-name" id="poly-pyr-name"></p><ul class="u5-count" id="poly-pyr-count"></ul></div>
+      </div>
+    </div>
+    <div class="talk"><img class="ch" src="../../assets/mascot/y_check.webp" alt="" loading="lazy"><span class="bubble">助手 Y：角柱上下各一圈，角錐只有底下一圈加一個尖尖！</span></div>
+  </section>
+  <section class="card c-red" id="q5-1">
+    <div class="card-head"><span class="qno">第 1 題</span><h3 class="ct">展開圖：哪兩條邊會重合？</h3><span class="code">數5-5 填充題 第 3 題</span></div>
+    <div class="qbody"><div class="qa">
+    <p class="ask">下圖為正方體展開圖，摺成正方體時，邊 A 會和邊（　　）重合。</p>
+    <div class="prob-wrap u5-fig"><img class="fig" src="img/u5/u5_55_fill3.webp" alt="展開圖：哪兩條邊會重合？ 題目圖" loading="lazy"></div>
+    <div class="row"><button type="button" class="btn" data-toggle="ans5-1" aria-pressed="false">顯示答案</button></div>
+    <p class="u5-reveal" id="ans5-1">答案：B</p>
+    <div class="row"><button type="button" class="btn u5-try" data-net="q553">🧩 用摺摺看試試</button></div>
+    <h3 class="sec"><span class="snum">1</span>先想一想</h3>
+    <div class="talk"><img class="ch" src="../../assets/mascot/x_think.webp" alt="" loading="lazy"><span class="bubble">名偵探 X：線索一次看一個，自己推理看看！</span></div>
+    <details class="hint"><summary><span class="bulb">💡</span>提示 1</summary><p>先找「轉角」：兩個正方形在同一個轉角相鄰時，摺起來它們的邊會碰在一起。</p></details><details class="hint"><summary><span class="bulb">💡</span>提示 2</summary><p>一步一步把轉角的邊配對，配到最上面那一格的左邊時，看它會碰到哪一條。</p></details>
+    </div><div class="qb">
+    <h3 class="sec"><span class="snum">2</span>文字詳解</h3>
+    <details class="steps"><summary>打開一步一步的算法</summary><ol><li>這是 2-2-2 階梯型展開圖。先摺相鄰的直角：同一個轉角的兩條邊會碰在一起。</li><li>依序摺好後，最上排左邊那一格的左邊（邊 A）會和最下排左邊那一格的底邊重合，也就是邊 B。</li><li>可以用紙剪下來摺摺看驗證。</li></ol>
+      <div class="ending"><p class="final">答案：B</p><img class="ch" src="../../assets/mascot/y_check.webp" alt="" loading="lazy"><span class="bubble">助手 Y：驗算通過，才算破案！</span></div></details>
+      </div></div>
+  </section>
+  <section class="card c-blue" id="q5-2">
+    <div class="card-head"><span class="qno">第 2 題</span><h3 class="ct">展開圖：A 點會碰到誰？</h3><span class="code">數5-5 填充題 第 4 題</span></div>
+    <div class="qbody"><div class="qa">
+    <p class="ask">下圖為正方體展開圖，摺成正方體時，A 點會和哪個點相碰？（　　）點</p>
+    <div class="prob-wrap u5-fig"><img class="fig" src="img/u5/u5_55_fill4.webp" alt="展開圖：A 點會碰到誰？ 題目圖" loading="lazy"></div>
+    <div class="row"><button type="button" class="btn" data-toggle="ans5-2" aria-pressed="false">顯示答案</button></div>
+    <p class="u5-reveal" id="ans5-2">答案：C</p>
+    <div class="row"><button type="button" class="btn u5-try" data-net="q554">🧩 用摺摺看試試</button></div>
+    <h3 class="sec"><span class="snum">1</span>先想一想</h3>
+    <div class="talk"><img class="ch" src="../../assets/mascot/x_think.webp" alt="" loading="lazy"><span class="bubble">名偵探 X：線索一次看一個，自己推理看看！</span></div>
+    <details class="hint"><summary><span class="bulb">💡</span>提示 1</summary><p>中間 4 格會圍成一圈側面，最左格和最右格是相鄰的。</p></details><details class="hint"><summary><span class="bulb">💡</span>提示 2</summary><p>上面那一格摺成頂面時，它的左邊會貼到哪一格的上邊？</p></details>
+    </div><div class="qb">
+    <h3 class="sec"><span class="snum">2</span>文字詳解</h3>
+    <details class="steps"><summary>打開一步一步的算法</summary><ol><li>中間一排 4 格會圍成正方體的 4 個側面，第 1 格和第 4 格相鄰。</li><li>上面那一格摺成頂面，它的左邊會貼到第 4 格的上邊，遠邊會貼到第 3 格的上邊。</li><li>A 點是這兩條邊的交點，對應到第 3、4 格上邊的交點，也就是 C 點。</li></ol>
+      <div class="ending"><p class="final">答案：C</p><img class="ch" src="../../assets/mascot/y_check.webp" alt="" loading="lazy"><span class="bubble">助手 Y：驗算通過，才算破案！</span></div></details>
+      </div></div>
+  </section>
+  <section class="card c-purple" id="q5-3">
+    <div class="card-head"><span class="qno">第 3 題</span><h3 class="ct">階梯積木的表面積</h3><span class="code">數5-6 應用題 第 8 題</span></div>
+    <div class="qbody"><div class="qa">
+    <p class="ask">下圖的形體是由邊長 2 公分的小正方體疊成的，表面積是多少平方公分？</p>
+    <div class="prob-wrap u5-fig"><img class="fig" src="img/u5/u5_56_a8.webp" alt="階梯積木的表面積 題目圖" loading="lazy"></div>
+    <div class="row"><button type="button" class="btn" data-toggle="ans5-3" aria-pressed="false">顯示答案</button></div>
+    <p class="u5-reveal" id="ans5-3">答案：288 平方公分</p>
+    <h3 class="sec"><span class="snum">1</span>先想一想</h3>
+    <div class="talk"><img class="ch" src="../../assets/mascot/x_think.webp" alt="" loading="lazy"><span class="bubble">名偵探 X：線索一次看一個，自己推理看看！</span></div>
+    <details class="hint"><summary><span class="bulb">💡</span>提示 1</summary><p>不要一塊一塊算！從上、下、前、後、左、右 6 個方向看，各看到幾個小正方形？</p></details><details class="hint"><summary><span class="bulb">💡</span>提示 2</summary><p>從上面看是 4 × 4；從前面看，從左到右每一排的高度是 4、3、2、1。</p></details>
+    </div><div class="qb">
+    <h3 class="sec"><span class="snum">2</span>文字詳解</h3>
+    <details class="steps"><summary>打開一步一步的算法</summary><ol><li>由 6 個方向看：上、下各看到 4×4=16 個面。</li><li>前、後、左、右各看到 1+2+3+4=10 個面。</li><li>共 16×2+10×4=72 個小正方形面，每面 2×2=4 平方公分。</li><li>表面積 =72×4=288（平方公分）。</li></ol>
+      <div class="ending"><p class="final">答案：288 平方公分</p><img class="ch" src="../../assets/mascot/y_check.webp" alt="" loading="lazy"><span class="bubble">助手 Y：驗算通過，才算破案！</span></div></details>
+      </div></div>
+  </section>
+  <section class="card c-green" id="q5-4">
+    <div class="card-head"><span class="qno">第 4 題</span><h3 class="ct">挖了三個洞的正方體</h3><span class="code">數5-7 應用題 第 2 題</span></div>
+    <div class="qbody"><div class="qa">
+    <p class="ask">一邊長 30 公分的正方體，由上到下、由左到右、由前到後共有三個底面為邊長 10 公分的正方形、高為 30 公分的長方體的洞，求此立體圖形的表面積是多少平方公分？</p>
+    <div class="prob-wrap u5-fig"><img class="fig" src="img/u5/u5_57_a2.webp" alt="挖了三個洞的正方體 題目圖" loading="lazy"></div>
+    <div class="row"><button type="button" class="btn" data-toggle="ans5-4" aria-pressed="false">顯示答案</button></div>
+    <p class="u5-reveal" id="ans5-4">答案：7200 平方公分</p>
+    <h3 class="sec"><span class="snum">1</span>先想一想</h3>
+    <div class="talk"><img class="ch" src="../../assets/mascot/x_think.webp" alt="" loading="lazy"><span class="bubble">名偵探 X：線索一次看一個，自己推理看看！</span></div>
+    <details class="hint"><summary><span class="bulb">💡</span>提示 1</summary><p>外表面：6 個大面各被挖掉一個 10 × 10 的洞。</p></details><details class="hint"><summary><span class="bulb">💡</span>提示 2</summary><p>洞裡面的牆：中間 10 × 10 × 10 的地方三個洞交會，沒有牆；每個洞只剩兩段通道。</p></details>
+    </div><div class="qb">
+    <h3 class="sec"><span class="snum">2</span>文字詳解</h3>
+    <details class="steps"><summary>打開一步一步的算法</summary><ol><li>外表面：30×30×6−10×10×6=5400−600=4800。</li><li>每個洞穿過中心時，中間 10×10×10 的部分是三個洞共用的空間，沒有牆。</li><li>每個洞剩兩段長 10 公分的通道，每段有 4 面牆：10×10×4×2=800，三個洞共 800×3=2400。</li><li>表面積 =4800+2400=7200（平方公分）。</li></ol>
+      <div class="ending"><p class="final">答案：7200 平方公分</p><img class="ch" src="../../assets/mascot/y_check.webp" alt="" loading="lazy"><span class="bubble">助手 Y：驗算通過，才算破案！</span></div></details>
+      </div></div>
+  </section>
+  <section class="card c-red" id="q5-5">
+    <div class="card-head"><span class="qno">第 5 題</span><h3 class="ct">一個頂點三個面的數字和</h3><span class="code">數5-7 應用題 第 5 題</span></div>
+    <div class="qbody"><div class="qa">
+    <p class="ask">將下圖摺成一個正方體，相交同一頂點的三個面上的數字和最大是多少？</p>
+    <div class="prob-wrap u5-fig"><img class="fig" src="img/u5/u5_57_a5.webp" alt="一個頂點三個面的數字和 題目圖" loading="lazy"></div>
+    <div class="row"><button type="button" class="btn" data-toggle="ans5-5" aria-pressed="false">顯示答案</button></div>
+    <p class="u5-reveal" id="ans5-5">答案：180</p>
+    <div class="row"><button type="button" class="btn u5-try" data-net="q575">🧩 用摺摺看試試</button></div>
+    <h3 class="sec"><span class="snum">1</span>先想一想</h3>
+    <div class="talk"><img class="ch" src="../../assets/mascot/x_think.webp" alt="" loading="lazy"><span class="bubble">名偵探 X：線索一次看一個，自己推理看看！</span></div>
+    <details class="hint"><summary><span class="bulb">💡</span>提示 1</summary><p>先找出三組相對面。相對面不可能交在同一個頂點。</p></details><details class="hint"><summary><span class="bulb">💡</span>提示 2</summary><p>交在同一頂點的三個面，剛好是每一組相對面各挑一個。</p></details>
+    </div><div class="qb">
+    <h3 class="sec"><span class="snum">2</span>文字詳解</h3>
+    <details class="steps"><summary>打開一步一步的算法</summary><ol><li>找相對面：57↔21、65↔73、38↔50。</li><li>交於同一頂點的三個面，一定是從每一組相對面各取一個。</li><li>每組取大的：57+73+50=180。</li></ol>
+      <div class="ending"><p class="final">答案：180</p><img class="ch" src="../../assets/mascot/y_check.webp" alt="" loading="lazy"><span class="bubble">助手 Y：驗算通過，才算破案！</span></div></details>
+      </div></div>
+  </section>
+  <section class="card c-blue" id="q5-6">
+    <div class="card-head"><span class="qno">第 6 題</span><h3 class="ct">由展開圖求體積</h3><span class="code">數5-8 應用題 第 7 題</span></div>
+    <div class="qbody"><div class="qa">
+    <p class="ask">下圖是一個長方體的展開圖，當摺成長方體時，它的體積是多少 cm³？</p>
+    <div class="prob-wrap u5-fig"><img class="fig" src="img/u5/u5_58_a7.webp" alt="由展開圖求體積 題目圖" loading="lazy"></div>
+    <div class="row"><button type="button" class="btn" data-toggle="ans5-6" aria-pressed="false">顯示答案</button></div>
+    <p class="u5-reveal" id="ans5-6">答案：105 cm³</p>
+    <h3 class="sec"><span class="snum">1</span>先想一想</h3>
+    <div class="talk"><img class="ch" src="../../assets/mascot/x_think.webp" alt="" loading="lazy"><span class="bubble">名偵探 X：線索一次看一個，自己推理看看！</span></div>
+    <details class="hint"><summary><span class="bulb">💡</span>提示 1</summary><p>把長方體的三個邊叫做甲、乙、丙。8 cm、12 cm、10 cm 各是哪兩個邊加起來？</p></details><details class="hint"><summary><span class="bulb">💡</span>提示 2</summary><p>三個式子全部加起來，等於（甲＋乙＋丙）的 2 倍。</p></details>
+    </div><div class="qb">
+    <h3 class="sec"><span class="snum">2</span>文字詳解</h3>
+    <details class="steps"><summary>打開一步一步的算法</summary><ol><li>設長方體三邊為甲、乙、丙。由展開圖：甲+乙=8、甲+丙=12、乙+丙=10。</li><li>三式相加：(甲+乙+丙)×2=30，甲+乙+丙=15。</li><li>甲 =15−10=5、乙 =15−12=3、丙 =15−8=7。</li><li>體積 =5×3×7=105（cm³）。</li></ol>
+      <div class="ending"><p class="final">答案：105 cm³</p><img class="ch" src="../../assets/mascot/y_check.webp" alt="" loading="lazy"><span class="bubble">助手 Y：驗算通過，才算破案！</span></div></details>
+      </div></div>
+  </section>
+  <section class="card c-purple" id="q5-7">
+    <div class="card-head"><span class="qno">第 7 題</span><h3 class="ct">拿掉 8 塊小正方體</h3><span class="code">數5-8 應用題 第 9 題</span></div>
+    <div class="qbody"><div class="qa">
+    <p class="ask">如圖，將 64 塊邊長為 1 公分的小正方體堆砌成邊長為 4 公分的實心正方體。若拿掉圖中 8 塊綠色小正方體，則新立體圖形的表面積為多少平方公分？</p>
+    <div class="prob-wrap u5-fig"><img class="fig" src="img/u5/u5_58_a9.webp" alt="拿掉 8 塊小正方體 題目圖" loading="lazy"></div>
+    <div class="row"><button type="button" class="btn" data-toggle="ans5-7" aria-pressed="false">顯示答案</button></div>
+    <p class="u5-reveal" id="ans5-7">答案：100 平方公分</p>
+    <h3 class="sec"><span class="snum">1</span>先想一想</h3>
+    <div class="talk"><img class="ch" src="../../assets/mascot/x_think.webp" alt="" loading="lazy"><span class="bubble">名偵探 X：線索一次看一個，自己推理看看！</span></div>
+    <details class="hint"><summary><span class="bulb">💡</span>提示 1</summary><p>拿掉以後，哪些面不見了？又有哪些新的面露出來？</p></details><details class="hint"><summary><span class="bulb">💡</span>提示 2</summary><p>凹槽有一面後牆和左右兩面側牆，上、下是打通的。</p></details>
+    </div><div class="qb">
+    <h3 class="sec"><span class="snum">2</span>文字詳解</h3>
+    <details class="steps"><summary>打開一步一步的算法</summary><ol><li>原來表面積 =4×4×6=96。</li><li>拿掉前面一條 2 格寬、4 格高的小正方體：前面少 8 個面、上面少 2 個、下面少 2 個。</li><li>凹槽露出新的面：後牆 8 個、左右兩邊牆各 4 個，共 16 個。</li><li>表面積 =96−8−2−2+16=100（平方公分）。</li></ol>
+      <div class="ending"><p class="final">答案：100 平方公分</p><img class="ch" src="../../assets/mascot/y_check.webp" alt="" loading="lazy"><span class="bubble">助手 Y：驗算通過，才算破案！</span></div></details>
+      </div></div>
+  </section>
+  <section class="card c-green" id="q5-8">
+    <div class="card-head"><span class="qno">第 8 題</span><h3 class="ct">塗色長方體切成小正方體</h3><span class="code">數5-8 專題討論 第 1 題</span></div>
+    <div class="qbody"><div class="qa">
+    <p class="ask">將 4 個長、寬、高皆為 6cm、5cm、4cm 的長方體分別塗色，如下圖，第 1 個塗 1 面、第 2 個塗 2 面、第 3 個塗 3 面、第 4 個塗 4 面，塗色後再把所有長方體分割成邊長 1cm 的小正方體，分割完最多有幾個小正方體只有一面塗色？</p>
+    <div class="prob-wrap u5-fig"><img class="fig" src="img/u5/u5_58_topic.webp" alt="塗色長方體切成小正方體 題目圖" loading="lazy"></div>
+    <div class="row"><button type="button" class="btn" data-toggle="ans5-8" aria-pressed="false">顯示答案</button></div>
+    <p class="u5-reveal" id="ans5-8">答案：210 個</p>
+    <h3 class="sec"><span class="snum">1</span>先想一想</h3>
+    <div class="talk"><img class="ch" src="../../assets/mascot/x_think.webp" alt="" loading="lazy"><span class="bubble">名偵探 X：線索一次看一個，自己推理看看！</span></div>
+    <details class="hint"><summary><span class="bulb">💡</span>提示 1</summary><p>只有一面塗色的小正方體，在塗色面上，但不能碰到另一個塗色面。</p></details><details class="hint"><summary><span class="bulb">💡</span>提示 2</summary><p>塗上下兩面時，高是 4，上下兩層不會互相碰到；塗到側面時，要扣掉和上下面重疊的那一排。</p></details>
+    </div><div class="qb">
+    <h3 class="sec"><span class="snum">2</span>文字詳解</h3>
+    <details class="steps"><summary>打開一步一步的算法</summary><ol><li>塗 1 面（上）：6×5=30 個。</li><li>塗 2 面（上、下）：30×2=60 個。</li><li>塗 3 面（上、下、右）：上、下各 5×5=25，右面中間 5×2=10，共 25×2+10=60 個。</li><li>塗 4 面（上、下、左、右）：上、下各 4×5=20，左、右各 5×2=10，共 20×2+10×2=60 個。</li><li>全部共 30+60+60+60=210（個）。</li><li>「最多」是指選擇塗哪幾面：塗 1 面選最大的 6×5 面、塗 2 面選相對的上下兩面，只塗一面的小正方體才會最多（就是圖中的塗法）。</li></ol>
+      <div class="ending"><p class="final">答案：210 個</p><img class="ch" src="../../assets/mascot/y_check.webp" alt="" loading="lazy"><span class="bubble">助手 Y：驗算通過，才算破案！</span></div></details>
+      </div></div>
+  </section>
+<!-- U5_END -->
 </main>
 <footer><div class="duo"><img class="ch" src="../../assets/mascot/duo_cheer.webp" alt="名偵探 X 和助手 Y" loading="lazy"></div><div class="tips"><b>解題提醒</b>｜從個位下手・從最後一步往回推・算完要驗算</div><p>數學解謎室・五年級</p></footer>
 <script>
   (function () {
     var toc = document.getElementById("toc");
-    if (!toc) return;
-    var html = '<p class="toc-h">目錄</p>';
-    document.querySelectorAll("h2.unit").forEach(function (h) {
-      var tab = h.querySelector(".utab"), t = h.querySelector(".utitle");
-      html += '<div class="toc-unit"><a class="toc-u" href="#' + h.id + '">' + (tab ? tab.outerHTML : "") + (t ? t.textContent : h.textContent) + '</a>';
-      var el = h.nextElementSibling;
-      while (el && !(el.matches && el.matches("h2.unit"))) {
-        if (el.matches && el.matches("section.card")) {
-          var no = el.querySelector(".qno"), ct = el.querySelector(".ct");
-          html += '<a class="toc-q ' + el.className.replace("card", "").trim() + '" href="#' + el.id + '"><b>' + (no ? no.textContent : "") + '</b>' + (ct ? ct.textContent : "") + '</a>';
-        }
-        el = el.nextElementSibling;
+    var main = document.querySelector("main");
+    if (!toc || !main) return;
+    var units = Array.prototype.slice.call(main.querySelectorAll("h2.unit"));
+    if (!units.length) return;
+    var panels = [], tabs = [];
+    var navHtml = '<p class="toc-h">目錄</p><div class="toc-tabs" role="tablist" aria-label="單元分頁">';
+    units.forEach(function (h) {
+      var panel = document.createElement("div");
+      panel.className = "unit-panel";
+      panel.setAttribute("role", "tabpanel");
+      panel.dataset.unit = h.id;
+      main.insertBefore(panel, h);
+      var el = h;
+      while (el) {
+        var next = el.nextElementSibling;
+        panel.appendChild(el);
+        if (next && next.matches && next.matches("h2.unit")) break;
+        el = next;
       }
-      html += '</div>';
+      panels.push(panel);
+      var tab = h.querySelector(".utab"), t = h.querySelector(".utitle");
+      var num = tab ? tab.textContent.trim() : "";
+      var title = t ? t.textContent.trim() : h.textContent.trim();
+      navHtml += '<button type="button" class="toc-tab" role="tab" aria-selected="false" data-unit="' + h.id + '">' +
+        (num ? '<span class="tnum">' + num + '</span>' : '') + title + '</button>';
     });
-    toc.innerHTML = html;
+    navHtml += '</div>';
+    toc.innerHTML = navHtml;
+    tabs = Array.prototype.slice.call(toc.querySelectorAll(".toc-tab"));
+
+    function activate(uid, updateHash) {
+      var found = panels.some(function (p) { return p.dataset.unit === uid; });
+      if (!found) uid = panels[0].dataset.unit;
+      panels.forEach(function (p) {
+        var on = p.dataset.unit === uid;
+        if (!on && p.classList.contains("active")) {
+          p.querySelectorAll("video").forEach(function (v) { try { v.pause(); } catch (e) {} });
+          p.querySelectorAll("iframe").forEach(function (f) { var s = f.src; f.src = s; });
+        }
+        p.classList.toggle("active", on);
+      });
+      tabs.forEach(function (b) {
+        var on = b.dataset.unit === uid;
+        b.classList.toggle("active", on);
+        b.setAttribute("aria-selected", on ? "true" : "false");
+      });
+      if (updateHash && history.replaceState) history.replaceState(null, "", "#" + uid);
+      window.dispatchEvent(new Event("resize"));
+    }
+
+    tabs.forEach(function (b) {
+      b.addEventListener("click", function () { activate(b.dataset.unit, true); });
+    });
+
+    function syncFromHash() {
+      var id = decodeURIComponent((location.hash || "").replace(/^#/, ""));
+      if (!id) { activate(panels[0].dataset.unit, false); return; }
+      var target = document.getElementById(id);
+      var owner = target ? target.closest(".unit-panel") : null;
+      activate(owner ? owner.dataset.unit : id, false);
+      if (target && target !== owner) setTimeout(function () { target.scrollIntoView({ behavior: "smooth" }); }, 60);
+    }
+    window.addEventListener("hashchange", syncFromHash);
+    syncFromHash();
+
     var top = document.createElement("a");
     top.className = "to-top"; top.href = "#toc"; top.textContent = "↑ 回目錄";
     document.body.appendChild(top);
@@ -592,5 +900,191 @@
     });
   });
 </script>
+<!-- U5_JS_START -->
+<script>
+(function () {
+  var NETS = {"n1": ["1-4-1 型（1）", [[0, 0], [1, 0], [2, 0], [3, 0], [0, 1], [0, -1]], null], "n2": ["1-4-1 型（2）", [[0, 0], [1, 0], [2, 0], [3, 0], [0, 1], [1, -1]], null], "n3": ["1-4-1 型（3）", [[0, 0], [1, 0], [2, 0], [3, 0], [0, 1], [2, -1]], null], "n4": ["1-4-1 型（4）", [[0, 0], [1, 0], [2, 0], [3, 0], [0, 1], [3, -1]], null], "n5": ["1-4-1 型（5）", [[0, 0], [1, 0], [2, 0], [3, 0], [1, 1], [1, -1]], null], "n6": ["1-4-1 型（6）", [[0, 0], [1, 0], [2, 0], [3, 0], [1, 1], [2, -1]], null], "n7": ["2-3-1 型（1）", [[0, 0], [1, 0], [2, 0], [-1, 1], [0, 1], [0, -1]], null], "n8": ["2-3-1 型（2）", [[0, 0], [1, 0], [2, 0], [-1, 1], [0, 1], [1, -1]], null], "n9": ["2-3-1 型（3）", [[0, 0], [1, 0], [2, 0], [-1, 1], [0, 1], [2, -1]], null], "n10": ["2-2-2 階梯型", [[1, 1], [0, 2], [1, 2], [2, 1], [2, 0], [3, 0]], null], "n11": ["3-3 型", [[2, 1], [0, 1], [1, 1], [2, 0], [3, 0], [4, 0]], null], "q533": ["數5-3 二2：甲乙丙丁戊己", [[1, 0], [0, 1], [0, 0], [2, 0], [3, 0], [1, -1]], ["丙", "甲", "乙", "戊", "己", "丁"]], "q543": ["數5-4 二3：阿哲的正方體", [[1, 0], [1, 1], [0, 0], [2, 0], [2, -1], [3, -1]], ["乙", "3", "甲", "6", "丙", "5"]], "q553": ["數5-5 二3：邊 A 和誰重合", [[1, 1], [0, 2], [1, 2], [2, 1], [2, 0], [3, 0]], ["", "含A邊", "", "", "含B邊", ""]], "q554": ["數5-5 二4：A 點碰到誰", [[1, 0], [0, 1], [0, 0], [2, 0], [3, 0], [3, -1]], ["", "含A點", "含B點", "", "含C點", ""]], "q575": ["數5-7 第5題：數字展開圖", [[1, 0], [1, 1], [0, 0], [2, 0], [3, 0], [3, -1]], ["65", "38", "57", "21", "73", "50"]], "x1": ["✗ 數5-3 一7 (A)", [[2, 0], [0, 0], [1, 0], [2, 1], [3, 1], [3, 2]], null], "x2": ["✗ 數5-3 一7 (C)", [[0, 2], [1, 2], [2, 2], [3, 2], [0, 1], [0, 0]], null], "x3": ["✗ 數5-3 一7 (D)", [[2, 2], [0, 2], [1, 2], [3, 2], [2, 1], [2, 0]], null]};
+  var pick = document.getElementById("fold-pick");
+  if (!pick) return;
+  var scene = document.getElementById("fold-scene"), stage = document.getElementById("fold-stage");
+  var slider = document.getElementById("fold-t"), msg = document.getElementById("fold-msg"), pair = document.getElementById("fold-pair");
+  var PALETTE = ["#FFD6DC", "#CFE5FF", "#E4D6FF", "#D3F2DC", "#FFF1A8", "#FFDDBF"];
+  var PAIRC = ["#FFB3C1", "#9CC9FF", "#B8F0C8"];
+  var groups = [["1-4-1 型", ["n1","n2","n3","n4","n5","n6"]], ["2-3-1 型", ["n7","n8","n9"]], ["其他型", ["n10","n11"]],
+                ["學習單題目", ["q533","q543","q553","q554","q575"]], ["摺不起來的（數5-3 一7）", ["x1","x2","x3"]]];
+  groups.forEach(function (g) {
+    var og = document.createElement("optgroup"); og.label = g[0];
+    g[1].forEach(function (k) { var o = document.createElement("option"); o.value = k; o.textContent = NETS[k][0]; og.appendChild(o); });
+    pick.appendChild(og);
+  });
+  var faces = [], rx = -24, ry = 28, cur;
+  function size() { return stage.clientWidth < 500 ? 58 : 92; }
+  // 摺疊模擬（與 Python cube_net.fold 相同）：回傳每格的面中心
+  function add(a, b) { return [a[0]+b[0], a[1]+b[1], a[2]+b[2]]; }
+  function neg(a) { return [-a[0], -a[1], -a[2]]; }
+  function foldCenters(cells) {
+    var key = function (c) { return c[0] + "," + c[1]; }, inSet = {}, place = {};
+    cells.forEach(function (c) { inSet[key(c)] = 1; });
+    place[key(cells[0])] = [[0,0,0],[1,0,0],[0,1,0],[0,0,1]];
+    var q = [cells[0]];
+    while (q.length) {
+      var c = q.shift(), p = place[key(c)], O = p[0], u = p[1], v = p[2], n = p[3];
+      var nb = [[[c[0]+1,c[1]], [add(O,u), n, v, neg(u)]], [[c[0]-1,c[1]], [add(O,n), neg(n), v, u]],
+                [[c[0],c[1]+1], [add(O,v), u, n, neg(v)]], [[c[0],c[1]-1], [add(O,n), u, neg(n), v]]];
+      nb.forEach(function (e) { var k = key(e[0]); if (inSet[k] && !place[k]) { place[k] = e[1]; q.push(e[0]); } });
+    }
+    return cells.map(function (c) { var p = place[key(c)]; return add(p[0], [(p[1][0]+p[2][0])/2, (p[1][1]+p[2][1])/2, (p[1][2]+p[2][2])/2]); });
+  }
+  function build(k) {
+    cur = k; scene.innerHTML = ""; faces = [];
+    var cells = NETS[k][1], labels = NETS[k][2], S = size();
+    var cen = foldCenters(cells), seen = {}, ok = true, pairIdx = [];
+    cen.forEach(function (c, i) { var s = c.join(); if (seen[s]) ok = false; seen[s] = 1; });
+    var pc = 0;
+    cen.forEach(function (c, i) {
+      if (pairIdx[i] !== undefined) return;
+      cen.forEach(function (d, j) { if (j > i && pairIdx[j] === undefined && Math.abs(c[0]+d[0]-1)<1e-9 && Math.abs(c[1]+d[1]-1)<1e-9 && Math.abs(c[2]+d[2]-1)<1e-9) { pairIdx[i] = pairIdx[j] = pc++; } });
+    });
+    var el = {}, key = function (c) { return c[0] + "," + c[1]; };
+    var minC = Math.min.apply(null, cells.map(function (c) { return c[0]; })), maxC = Math.max.apply(null, cells.map(function (c) { return c[0]; }));
+    var minR = Math.min.apply(null, cells.map(function (c) { return c[1]; })), maxR = Math.max.apply(null, cells.map(function (c) { return c[1]; }));
+    var root = cells[0], done = {}, q = [root];
+    function mk(i) {
+      var d = document.createElement("div"); d.className = "u5-face";
+      var b = document.createElement("b");
+      b.textContent = labels ? labels[i] : String(i + 1);
+      b.dataset.base = PALETTE[i % 6]; b.dataset.pair = ok && pairIdx[i] !== undefined ? PAIRC[pairIdx[i]] : PALETTE[i % 6];
+      d.appendChild(b); return d;
+    }
+    var idx = {}; cells.forEach(function (c, i) { idx[key(c)] = i; });
+    var r0 = mk(0); scene.appendChild(r0); el[key(root)] = r0; done[key(root)] = 1;
+    faces.push({ el: r0, dir: "root", S: S, off: [(root[0] - (minC + maxC) / 2) * S, ((minR + maxR) / 2 - root[1]) * S] });
+    while (q.length) {
+      var c = q.shift();
+      [[1,0,"R"],[-1,0,"L"],[0,1,"U"],[0,-1,"D"]].forEach(function (s) {
+        var n = [c[0]+s[0], c[1]+s[1]], kk = key(n);
+        if (idx[kk] === undefined || done[kk]) return;
+        done[kk] = 1; q.push(n);
+        var d = mk(idx[kk]), st = d.style;
+        if (s[2] === "R") { st.left = S + "px"; st.top = 0; st.transformOrigin = "0 50%"; }
+        if (s[2] === "L") { st.left = -S + "px"; st.top = 0; st.transformOrigin = "100% 50%"; }
+        if (s[2] === "U") { st.left = 0; st.top = -S + "px"; st.transformOrigin = "50% 100%"; }
+        if (s[2] === "D") { st.left = 0; st.top = S + "px"; st.transformOrigin = "50% 0"; }
+        el[key(c)].appendChild(d); el[kk] = d; faces.push({ el: d, dir: s[2] });
+      });
+    }
+    faces.ok = ok; paint(); update();
+  }
+  function paint() {
+    scene.querySelectorAll(".u5-face > b").forEach(function (b) { b.style.background = pair.checked ? b.dataset.pair : b.dataset.base; });
+  }
+  function update() {
+    var t = slider.value / 100, a = 90 * t, S = faces[0].S;
+    faces.forEach(function (f) {
+      var st = f.el.style;
+      if (f.dir === "root") { st.left = (-S / 2 + f.off[0] * (1 - t)) + "px"; st.top = (-S / 2 + f.off[1] * (1 - t)) + "px"; st.transform = "translateZ(" + (-S / 2 * t) + "px)"; }
+      if (f.dir === "R") st.transform = "rotateY(" + (-a) + "deg)";
+      if (f.dir === "L") st.transform = "rotateY(" + a + "deg)";
+      if (f.dir === "U") st.transform = "rotateX(" + (-a) + "deg)";
+      if (f.dir === "D") st.transform = "rotateX(" + a + "deg)";
+    });
+    scene.style.transform = "rotateX(" + rx + "deg) rotateY(" + ry + "deg)";
+    if (t >= 1) { msg.textContent = faces.ok ? "✅ 可以摺成正方體！" : "❌ 有兩個面疊在一起，還缺一個面，摺不成正方體。"; msg.className = "u5-msg " + (faces.ok ? "ok" : "no"); }
+    else { msg.textContent = t > 0 ? "摺疊中……" : "先猜猜看：這個展開圖可以摺成正方體嗎？"; msg.className = "u5-msg"; }
+  }
+  pick.addEventListener("change", function () { build(pick.value); });
+  slider.addEventListener("input", update);
+  pair.addEventListener("change", paint);
+  var timer = null;
+  document.getElementById("fold-play").addEventListener("click", function (e) {
+    var btn = e.currentTarget;
+    if (timer) { clearInterval(timer); timer = null; btn.textContent = "▶ 自動摺"; return; }
+    var dir = slider.value >= 100 ? -1 : 1; btn.textContent = "⏸ 暫停";
+    timer = setInterval(function () {
+      var v = +slider.value + dir * 2; slider.value = Math.max(0, Math.min(100, v)); update();
+      if (v <= 0 || v >= 100) { clearInterval(timer); timer = null; btn.textContent = "▶ 自動摺"; }
+    }, 30);
+  });
+  var drag = null;
+  stage.addEventListener("pointerdown", function (e) { drag = [e.clientX, e.clientY]; stage.setPointerCapture(e.pointerId); });
+  stage.addEventListener("pointermove", function (e) {
+    if (!drag) return;
+    ry += (e.clientX - drag[0]) * 0.5; rx -= (e.clientY - drag[1]) * 0.5; rx = Math.max(-89, Math.min(89, rx));
+    drag = [e.clientX, e.clientY]; update();
+  });
+  ["pointerup", "pointercancel"].forEach(function (n) { stage.addEventListener(n, function () { drag = null; }); });
+  document.querySelectorAll(".u5-try").forEach(function (b) {
+    b.addEventListener("click", function () {
+      pick.value = b.dataset.net; slider.value = 0; build(pick.value);
+      document.getElementById("lab5-1").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
+  var resizeT; window.addEventListener("resize", function () { clearTimeout(resizeT); resizeT = setTimeout(function () { build(cur); }, 200); });
+  build("n1");
+
+  // ---------------- 角柱、角錐計數器 ----------------
+  var NUM = ["", "", "", "三", "四", "五", "六", "七", "八", "九", "十"];
+  var KX = 0.18, KY = 0.42, VIEW = [-KX, 1, -KY], NS = "http://www.w3.org/2000/svg";
+  function P(v) { return [v[0] + KX * v[1], -(v[2] + KY * v[1])]; }
+  function sub(a, b) { return [a[0]-b[0], a[1]-b[1], a[2]-b[2]]; }
+  function cross(a, b) { return [a[1]*b[2]-a[2]*b[1], a[2]*b[0]-a[0]*b[2], a[0]*b[1]-a[1]*b[0]]; }
+  function dot(a, b) { return a[0]*b[0] + a[1]*b[1] + a[2]*b[2]; }
+  function draw(svg, V, F, color, fill) {
+    svg.innerHTML = "";
+    var cen = [0,1,2].map(function (k) { return V.reduce(function (s, v) { return s + v[k]; }, 0) / V.length; });
+    var vis = F.map(function (f) {
+      var n = cross(sub(V[f[1]], V[f[0]]), sub(V[f[2]], V[f[0]]));
+      var fc = [0,1,2].map(function (k) { return f.reduce(function (s, i) { return s + V[i][k]; }, 0) / f.length; });
+      if (dot(n, sub(fc, cen)) < 0) n = n.map(function (x) { return -x; });
+      return dot(n, VIEW) < -1e-9;
+    });
+    F.forEach(function (f, i) {
+      if (!vis[i] || f.length < 4 && i > 0 && fill === "none") return;
+      if (i === 1 && f.length > 3) {
+        var pg = document.createElementNS(NS, "polygon");
+        pg.setAttribute("points", f.map(function (j) { return P(V[j]).join(","); }).join(" "));
+        pg.setAttribute("fill", fill); svg.appendChild(pg);
+      }
+    });
+    var E = {};
+    F.forEach(function (f, i) { f.forEach(function (a, k) { var b = f[(k + 1) % f.length], key = Math.min(a, b) + "-" + Math.max(a, b); E[key] = E[key] || vis[i]; }); });
+    Object.keys(E).sort(function (a, b) { return E[a] - E[b]; }).forEach(function (key) {
+      var ab = key.split("-").map(Number), p = P(V[ab[0]]), q = P(V[ab[1]]);
+      var l = document.createElementNS(NS, "line");
+      l.setAttribute("x1", p[0]); l.setAttribute("y1", p[1]); l.setAttribute("x2", q[0]); l.setAttribute("y2", q[1]);
+      l.setAttribute("stroke", color); l.setAttribute("stroke-width", E[key] ? 0.045 : 0.03); l.setAttribute("stroke-linecap", "round");
+      if (!E[key]) l.setAttribute("stroke-dasharray", "0.08 0.07");
+      svg.appendChild(l);
+    });
+    V.forEach(function (v) { var p = P(v), c = document.createElementNS(NS, "circle"); c.setAttribute("cx", p[0]); c.setAttribute("cy", p[1]); c.setAttribute("r", 0.045); c.setAttribute("fill", "#E23B4E"); svg.appendChild(c); });
+  }
+  function base(n, r) {
+    var out = [];
+    for (var k = 0; k < n; k++) { var t = (-90 + (n % 2 ? 0 : 180 / n) + 360 * k / n) * Math.PI / 180; out.push([r * Math.cos(t), r * Math.sin(t)]); }
+    return out;
+  }
+  var nIn = document.getElementById("poly-n");
+  function li(label, val, rule) { return "<li>" + label + "：<b>" + val + "</b> 個（" + rule + "）</li>"; }
+  function poly() {
+    var n = +nIn.value, b = base(n, 1.05);
+    document.getElementById("poly-nv").textContent = n;
+    var V = b.map(function (p) { return [p[0], p[1], 0]; }).concat(b.map(function (p) { return [p[0], p[1], 1.5]; }));
+    var F = [b.map(function (_, k) { return k; }), b.map(function (_, k) { return n + k; })];
+    for (var k = 0; k < n; k++) F.push([k, (k + 1) % n, n + (k + 1) % n, n + k]);
+    draw(document.getElementById("poly-prism"), V, F, "#1E5FB3", "#EEF6FF");
+    var V2 = b.map(function (p) { return [p[0], p[1], 0]; }).concat([[0, 0, 1.75]]);
+    var F2 = [b.map(function (_, k) { return k; })];
+    for (var k2 = 0; k2 < n; k2++) F2.push([k2, (k2 + 1) % n, n]);
+    draw(document.getElementById("poly-pyr"), V2, F2, "#C8323F", "none");
+    document.getElementById("poly-prism-name").textContent = NUM[n] + "角柱";
+    document.getElementById("poly-pyr-name").textContent = NUM[n] + "角錐";
+    document.getElementById("poly-prism-count").innerHTML = li("頂點", 2 * n, n + " × 2") + li("邊", 3 * n, n + " × 3") + li("面", n + 2, n + " ＋ 2");
+    document.getElementById("poly-pyr-count").innerHTML = li("頂點", n + 1, n + " ＋ 1") + li("邊", 2 * n, n + " × 2") + li("面", n + 1, n + " ＋ 1");
+  }
+  nIn.addEventListener("input", poly);
+  poly();
+})();
+</script>
+<!-- U5_JS_END -->
 </body>
 </html>

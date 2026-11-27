@@ -22,7 +22,7 @@
          background-color: var(--paper);
          background-image: radial-gradient(#E9E2CF 1.2px, transparent 1.2px);
          background-size: 22px 22px; }
-  header, main { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+  header, main { max-width: 900px; margin: 0 auto; padding: 0 16px; }
   header { padding-top: 22px; }
   .home { display: inline-block; color: var(--muted); text-decoration: none; font-weight: 700;
           background: #fff; border: 2px solid var(--pen); border-radius: 999px; padding: 2px 14px; }
@@ -30,21 +30,21 @@
 
   .hero { position: relative; text-align: center; padding: 26px 8px 8px; }
   .title { margin: 0; font-family: var(--hand); font-weight: 900; line-height: 1.15;
-           font-size: clamp(2.6rem, 11vw, 6.6rem); letter-spacing: .04em; }
+           font-size: clamp(2.6rem, 9vw, 4.6rem); letter-spacing: .04em; }
   .title span { display: inline-block; -webkit-text-stroke: 2px var(--pen); paint-order: stroke fill;
                 text-shadow: 3px 4px 0 rgba(0,0,0,.12); }
   .t1 { color: #3D8BE0; transform: rotate(-4deg); } .t2 { color: #E8506A; transform: translateY(-4px); }
   .t3 { color: #FFC21A; transform: rotate(3deg); } .t4 { color: #4CAF6E; transform: translateY(-2px) rotate(-2deg); }
   .t5 { color: #8E5BD6; transform: rotate(4deg); }
-  .ribbon { display: inline-block; margin: 12px 0 0; padding: 8px 26px; font-weight: 900; font-size: 1.35rem;
+  .ribbon { display: inline-block; margin: 10px 0 0; padding: 6px 22px; font-weight: 900; font-size: 1.05rem;
             background: var(--hl); border: 2.5px solid var(--pen); border-radius: 12px;
-            box-shadow: 3px 3px 0 var(--pen); }
-  .badge { position: absolute; right: -24px; top: -26px; z-index: 2; margin: 0; padding: 12px 20px; font-family: var(--hand); font-size: 1.45rem;
+            box-shadow: 3px 3px 0 var(--pen); transform: rotate(-1deg); }
+  .badge { position: absolute; left: 4px; top: 18px; margin: 0; padding: 8px 14px; font-family: var(--hand);
            font-weight: 900; line-height: 1.3; color: var(--red-ink); background: #FFE3E8;
            border: 2.5px solid var(--pen); border-radius: 50% 46% 52% 44% / 52% 50% 48% 46%; transform: rotate(-8deg); }
-  .doodle { position: absolute; width: 58px; height: 58px; }
-  .d1 { left: 18.5%; top: -4px; transform: rotate(-12deg); } .d2 { right: -6px; bottom: 6px; width: 46px; height: 46px; }
-  @media (max-width: 640px) { .badge { display: none; } .doodle { width: 34px; height: 34px; } .d1 { left: 4px; top: 4px; } .d2 { right: 2px; width: 26px; height: 26px; } }
+  .doodle { position: absolute; width: 34px; height: 34px; }
+  .d1 { left: 22%; top: 4px; transform: rotate(-12deg); } .d2 { right: 2px; bottom: 6px; width: 26px; height: 26px; }
+  @media (max-width: 640px) { .badge { display: none; } .d1 { left: 4px; } }
 
   h2.unit { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 38px 0 6px; font-size: 1.6rem;
             font-family: var(--hand); font-weight: 900; }
@@ -69,17 +69,17 @@
   h3.ct { margin: 0; font-family: var(--hand); font-weight: 900; font-size: 1.65rem; color: var(--ink); }
   .code { margin-left: auto; font-size: .85rem; font-weight: 700; color: var(--cink); background: #fff;
           border: 1.5px solid var(--c); border-radius: 999px; padding: 0 10px; }
-  .ask { margin: 8px 0 14px; font-weight: 700; font-size: 1.45rem; line-height: 1.6; }
-  @media (max-width: 640px) { .ask { font-size: 1.15rem; } }
+  .ask { margin: 4px 0 12px; font-weight: 700; }
 
-  /* 觀念教導單欄滿版卡片 */
+  /* 觀念教導雙欄卡片 */
   .cgrid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 10px; }
+  @media (min-width: 780px) { .cgrid { grid-template-columns: 1fr 1fr; } }
   .cbox { background: #fff; border: 2.5px solid var(--pen); border-radius: 18px; padding: 14px 16px; }
   .cbox h4 { margin: 0 0 6px; font-family: var(--hand); font-size: 1.2rem; color: var(--cink); }
   .cbox p { margin: 0 0 10px; font-size: .95rem; }
   .cbox .ex { color: var(--muted); font-size: .88rem; }
   .csvg-wrap { background: #FFFDF8; border: 1.5px solid #E4DCCB; border-radius: 12px; padding: 6px; display: flex; justify-content: center; }
-  .csvg { width: 100%; max-width: 680px; height: auto; }
+  .csvg { width: 100%; max-width: 440px; height: auto; }
   .clist { margin: 0; padding-left: 1.2em; font-size: .95rem; }
   .clist li { margin: 5px 0; }
   .ctbl { width: 100%; border-collapse: collapse; margin-top: 6px; font-size: .92rem; text-align: center; background: #fff; }
@@ -91,7 +91,7 @@
                border-radius: 18px; padding: 10px; background-image:
                linear-gradient(#EEF3FA 1px, transparent 1px), linear-gradient(90deg, #EEF3FA 1px, transparent 1px);
                background-size: 20px 20px; }
-  .prob { width: 100%; max-width: 640px; height: auto; }
+  .prob { width: 100%; max-width: 520px; height: auto; }
   .prob .ans { fill: var(--ans); opacity: 0; transition: opacity .3s; }
   .prob.show .ans { opacity: 1; }
   .row { display: flex; justify-content: center; margin-top: 14px; }
@@ -102,32 +102,32 @@
   .btn:active, .btn[aria-pressed="true"] { transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--pen); }
   .btn[aria-pressed="true"] { background: #fff; }
 
-  h3.sec { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 28px 0 10px;
-           font-family: var(--hand); font-weight: 900; font-size: 1.75rem; color: var(--cink); }
+  h3.sec { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 24px 0 8px;
+           font-family: var(--hand); font-weight: 900; font-size: 1.3rem; color: var(--cink); }
   .snum { display: inline-grid; place-items: center; width: 1.7em; height: 1.7em; border-radius: 50%;
-          background: var(--c); color: #fff; font-size: 1.2rem; border: 2.5px solid var(--pen); }
-  .bubble { position: relative; font-size: 1.25rem; color: var(--ink); background: #fff; border: 2.5px solid var(--pen);
-            border-radius: 22px; padding: 8px 20px; margin-left: 12px; font-weight: 700; }
-  .bubble::before { content: ""; position: absolute; left: -11px; top: 50%; margin-top: -7px; border: 7px solid transparent;
-                    border-right: 10px solid var(--pen); border-left: 0; }
+          background: var(--c); color: #fff; font-size: .95rem; border: 2px solid var(--pen); }
+  .bubble { position: relative; font-size: .85rem; color: var(--ink); background: #fff; border: 2px solid var(--pen);
+            border-radius: 16px; padding: 2px 12px; margin-left: 8px; font-weight: 700; }
+  .bubble::before { content: ""; position: absolute; left: -9px; top: 50%; margin-top: -6px; border: 6px solid transparent;
+                    border-right: 8px solid var(--pen); border-left: 0; }
 
-  details { background: #fff; border: 2.5px solid color-mix(in srgb, var(--c) 55%, #fff); border-radius: 18px;
-            padding: 12px 22px; margin: 12px 0; }
+  details { background: #fff; border: 2px solid color-mix(in srgb, var(--c) 55%, #fff); border-radius: 16px;
+            padding: 8px 16px; margin: 8px 0; }
   details[open] { border-color: var(--c); }
   details.hint[open] { background: var(--hl-soft); }
-  summary { cursor: pointer; font-weight: 900; font-size: 1.3rem; }
-  .bulb { margin-right: 8px; }
-  details p { margin: 10px 0 6px; font-size: 1.2rem; line-height: 1.85; }
+  summary { cursor: pointer; font-weight: 900; }
+  .bulb { margin-right: 6px; }
+  details p { margin: 8px 0 4px; }
   .yt { position: relative; aspect-ratio: 16 / 9; border-radius: 18px; overflow: hidden; background: #000;
         border: 3px solid var(--pen); box-shadow: 4px 4px 0 color-mix(in srgb, var(--c) 45%, transparent); }
   .yt iframe, .yt video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-  .steps ol { list-style: none; counter-reset: st; margin: 12px 0; padding: 0; }
-  .steps li { counter-increment: st; position: relative; padding: 4px 0 4px 2.4em; margin: 6px 0; font-size: 1.2rem; line-height: 1.8; }
-  .steps li::before { content: counter(st); position: absolute; left: 0; top: 6px; width: 1.65em; height: 1.65em;
-                      display: grid; place-items: center; border-radius: 50%; font-size: 1rem; font-weight: 900;
+  .steps ol { list-style: none; counter-reset: st; margin: 10px 0; padding: 0; }
+  .steps li { counter-increment: st; position: relative; padding: 3px 0 3px 2.3em; margin: 4px 0; }
+  .steps li::before { content: counter(st); position: absolute; left: 0; top: 4px; width: 1.6em; height: 1.6em;
+                      display: grid; place-items: center; border-radius: 50%; font-size: .85rem; font-weight: 900;
                       color: var(--cink); background: var(--cbg); border: 2px solid var(--c); }
-  .final { display: inline-block; color: var(--ans); font-weight: 900; font-size: 1.45rem; margin: 8px 0 6px;
-           padding: 4px 18px; background: linear-gradient(transparent 45%, var(--hl) 45%); }
+  .final { display: inline-block; color: var(--ans); font-weight: 900; font-size: 1.2rem; margin: 6px 0 4px;
+           padding: 2px 14px; background: linear-gradient(transparent 45%, var(--hl) 45%); }
   .sq { display: inline-block; width: .7em; height: .8em; border: 2px solid currentColor; border-radius: 2px;
         vertical-align: -.1em; margin: 0 .08em; opacity: .75; }
   .frac { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle;
@@ -135,53 +135,59 @@
   .frac .num { border-bottom: 2px solid currentColor; padding: 0 4px 1px; }
   .frac .den { padding: 1px 4px 0; }
 
-  .toc { margin: 18px auto 0; background: #fff; border: 2.5px solid var(--pen); border-radius: 20px;
-         padding: 12px 18px 14px; box-shadow: 4px 4px 0 var(--pen); text-align: left; }
-  .toc-h { margin: 0 0 6px; font-family: var(--hand); font-weight: 900; font-size: 1.2rem; }
+  .toc { margin: 18px auto 0; max-width: 780px; background: #fff; border: 2.5px solid var(--pen); border-radius: 20px;
+         padding: 12px 18px 16px; box-shadow: 4px 4px 0 var(--pen); text-align: left; }
+  .toc-h { margin: 0 0 10px; font-family: var(--hand); font-weight: 900; font-size: 1.2rem; }
   .toc-h::before { content: "📖 "; }
-  .toc-unit { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 8px 0; border-top: 2px dashed #E4DCCB; }
-  .toc-unit:first-of-type { border-top: 0; }
-  .toc-u { flex-basis: 100%; color: var(--ink); text-decoration: none; font-weight: 900; font-size: 1.05rem; }
-  .toc-u .utab { font-size: .85rem; padding: 1px 10px; margin-right: 6px; }
-  .toc-u .utab b { font-size: 1.05rem; }
-  .toc-q { color: var(--ink); text-decoration: none; font-size: .92rem; font-weight: 700; background: var(--cbg);
-           border: 2px solid var(--c); border-radius: 999px; padding: 1px 12px; }
-  .toc-q:hover, .toc-u:hover { background: var(--hl-soft); }
-  .toc-q b { color: var(--cink); margin-right: 4px; }
+  .toc-tabs { display: flex; flex-wrap: wrap; gap: 10px; }
+  .toc-tab { appearance: none; font: inherit; color: var(--ink); background: var(--paper);
+             border: 2px solid var(--pen); border-radius: 14px; padding: 7px 16px;
+             font-weight: 900; font-size: 1rem; cursor: pointer;
+             transition: background .15s, transform .1s, box-shadow .1s; }
+  .toc-tab:hover { background: var(--hl-soft); transform: translateY(-1px); }
+  .toc-tab.active { background: var(--hl); border-width: 2.5px; box-shadow: 3px 3px 0 var(--pen); transform: translate(-1px, -1px); }
+  .toc-tab .tnum { color: var(--muted); font-size: .88em; margin-right: 6px; }
+  .toc-tab.active .tnum { color: var(--ink); }
+  .unit-panel { display: none; }
+  .unit-panel.active { display: block; animation: tabFade .2s ease; }
+  @keyframes tabFade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
   .to-top { position: fixed; right: 14px; bottom: 16px; z-index: 10; font-weight: 900; text-decoration: none; color: var(--ink);
             background: var(--hl); border: 2.5px solid var(--pen); border-radius: 999px; padding: 6px 14px;
             box-shadow: 3px 3px 0 var(--pen); opacity: 0; pointer-events: none; transition: opacity .2s; }
   .to-top.on { opacity: 1; pointer-events: auto; }
   html { scroll-behavior: smooth; }
   .ch { display: inline-block; width: 64px; height: 96px; flex: none; object-fit: contain; }
-  .hero .ch-l, .hero .ch-r { position: absolute; bottom: 0; width: 150px; height: 235px; }
-  .hero .ch-l { left: calc(50% - 440px); animation: bob 3s ease-in-out infinite; }
-  .hero .ch-r { right: calc(50% - 440px); animation: bob 3s ease-in-out 1.5s infinite; }
+  .hero .ch-l, .hero .ch-r { position: absolute; bottom: 4px; width: 96px; height: 150px; }
+  .hero .ch-l { left: calc(8% + 40px); animation: bob 3s ease-in-out infinite; }
+  .hero .ch-r { right: 8%; animation: bob 3s ease-in-out 1.5s infinite; }
   @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-  .names { margin: 10px 0 0; font-size: 1.55rem; color: var(--muted); font-weight: 700; }
-  @media (max-width: 640px) { .names { font-size: 1.15rem; } }
+  .names { margin: 6px 0 0; font-size: .85rem; color: var(--muted); font-weight: 700; }
   .names b { color: var(--red-ink); } .names b + b { color: var(--blue-ink); }
-  .talk { display: flex; align-items: flex-end; gap: 10px; margin: 6px 0 12px; }
-  .talk .ch, .ending .ch { width: 96px; height: 152px; }
-  .talk .bubble { margin: 0 0 36px 12px; font-family: var(--hand); font-size: 1.35rem; font-weight: 900; color: var(--ink); }
-  .ending { display: flex; align-items: flex-end; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
-  .ending .bubble { margin: 0 0 36px 12px; font-family: var(--hand); font-size: 1.3rem; font-weight: 900; }
-  footer { text-align: center; color: var(--muted); font-size: 1rem; padding: 18px 16px 42px;
-           display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px 18px; }
-  footer .tips { display: inline-block; color: var(--ink); font-size: 1.65rem; background: #fff; border: 3px solid var(--pen);
-                 border-radius: 18px; padding: 12px 28px; box-shadow: 4px 4px 0 var(--pen); }
-  footer .tips b { color: var(--red-ink); font-family: var(--hand); font-size: 1.9rem; }
+  .talk { display: flex; align-items: flex-end; gap: 6px; margin: 4px 0 8px; }
+  .talk .ch, .ending .ch { width: 58px; height: 96px; }
+  .talk .bubble { margin: 0 0 18px 10px; font-family: var(--hand); font-size: .95rem; font-weight: 900; color: var(--ink); }
+  .ending { display: flex; align-items: flex-end; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+  .ending .bubble { margin: 0 0 18px 10px; font-family: var(--hand); font-weight: 900; }
+  footer { text-align: center; color: var(--muted); font-size: .9rem; padding: 12px 16px 36px;
+           display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px 12px; }
+  footer .tips { display: inline-block; color: var(--ink); font-size: 1.3rem; background: #fff; border: 2.5px solid var(--pen);
+                 border-radius: 14px; padding: 6px 20px; box-shadow: 3px 3px 0 var(--pen); }
+  footer .tips b { color: var(--red-ink); font-family: var(--hand); font-size: 1.5rem; }
   footer p { margin: 14px 0 0; flex-basis: 100%; }
-  footer .duo { display: flex; } footer .duo .ch { width: 165px; height: 190px; }
-  @media (max-width: 960px) { .hero .ch-l, .hero .ch-r { width: 115px; height: 180px; } .hero .ch-l { left: calc(50% - 400px); } .hero .ch-r { right: calc(50% - 400px); } .badge { display: none; } .d1 { left: calc(50% - 345px); top: 8px; } }
+  footer .duo { display: flex; } footer .duo .ch { width: 100px; height: 115px; }
   @media (max-width: 640px) {
     .hero .ch-l, .hero .ch-r { width: 44px; height: 72px; bottom: auto; top: -54px; }
     .hero .ch-l { left: auto; right: 52px; } .hero .ch-r { right: 0; }
-    h3.sec { font-size: 1.3rem; } .snum { font-size: .95rem; } summary { font-size: 1.05rem; } details p, .steps li { font-size: 1rem; }
-    .talk .ch, .ending .ch { width: 52px; height: 84px; }
-    .talk .bubble, .ending .bubble { flex: 1 1 0; max-width: max-content; min-width: 0; font-size: 1rem; padding: 4px 12px; margin-bottom: 14px; }
-    footer .duo .ch { width: 88px; height: 100px; } footer .tips { flex: 1 1 0; min-width: 0; font-size: 1.1rem; padding: 8px 14px; }
-    footer .tips b { font-size: 1.25rem; }
+    .talk .ch, .ending .ch { width: 44px; height: 72px; }
+    .talk .bubble, .ending .bubble { flex: 1 1 0; max-width: max-content; min-width: 0; margin-bottom: 10px; }
+    footer .duo .ch { width: 70px; height: 80px; } footer .tips { flex: 1 1 0; min-width: 0; font-size: 1.05rem; }
+    footer .tips b { font-size: 1.2rem; }
+  }
+  @media (min-width: 1100px) {
+    main { max-width: 1320px; }
+    .qbody { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 0 32px; align-items: start; }
+    .qb > h3.sec:first-child { margin-top: 4px; }
+    .prob { max-width: 100%; }
   }
   @media (prefers-reduced-motion: reduce) { .hero .ch-l, .hero .ch-r { animation: none; } }
 </style>
@@ -218,7 +224,6 @@
     <details class="hint"><summary><span class="bulb">💡</span>提示 1</summary><p>先把時刻想成「10 時整」：這時分針在 12、時針在 10，時針領先分針 30° × 10 ＝ 300°。</p></details><details class="hint"><summary><span class="bulb">💡</span>提示 2</summary><p>分針每分鐘走 6°、時針每分鐘走 0.5°，所以分針每分鐘會追近 6° − 0.5° ＝ 5.5°。從相差 300° 追到還差 69°，一共追近了幾度？</p></details>
     </div><div class="qb">
     <h3 class="sec"><span class="snum">2</span>解題影片</h3>
-    <div class="talk"><img class="ch" src="../../assets/mascot/y_hello.webp" alt="" loading="lazy"><span class="bubble">助手 Y：想好了嗎？一起來看解題影片吧！</span></div>
     <div class="yt"><iframe src="https://www.youtube-nocookie.com/embed/y1YIPcJ98Z4?rel=0" title="數8-6 精熟11｜看鐘面夾角 69° 求時刻 解題影片" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe></div>
     <h3 class="sec"><span class="snum">3</span>文字詳解</h3>
     <details class="steps"><summary>打開一步一步的算法</summary><ol><li>時針在 10～11 之間，兩針夾角 69°</li><li>先回到「10 時整」作為起點</li><li>10 時整：時針在分針前方 30° × 10 ＝ 300°</li><li>分針每分走 6°，時針每分走 0.5°</li><li>每分鐘分針追近：6° − 0.5° ＝ 5.5°</li><li>從 300° 追到還差 69°，共追近幾度？</li><li>一共追近：300° − 69° ＝ 231°</li><li>經過時間：231° ÷ 5.5° ＝ 42（分）</li><li>答案：10 時 42 分 ✓</li></ol>
@@ -238,7 +243,6 @@
     <details class="hint"><summary><span class="bulb">💡</span>提示 1</summary><p>先算經過幾分鐘：從 7 時 50 分到 12 時 2 分，一共是 4 小時 12 分 ＝ 252 分鐘。</p></details><details class="hint"><summary><span class="bulb">💡</span>提示 2</summary><p>時針 1 小時（60 分鐘）走一大格 30°，所以時針每分鐘走 30° ÷ 60 ＝ 0.5°。</p></details>
     </div><div class="qb">
     <h3 class="sec"><span class="snum">2</span>解題影片</h3>
-    <div class="talk"><img class="ch" src="../../assets/mascot/y_hello.webp" alt="" loading="lazy"><span class="bubble">助手 Y：想好了嗎？一起來看解題影片吧！</span></div>
     <div class="yt"><iframe src="https://www.youtube-nocookie.com/embed/S8LAczeO5wA?rel=0" title="數8-6 精熟12｜時針轉動的角度 解題影片" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe></div>
     <h3 class="sec"><span class="snum">3</span>文字詳解</h3>
     <details class="steps"><summary>打開一步一步的算法</summary><ol><li>時針從 7 時 50 分走到 0 時 2 分，共轉幾度？</li><li>第一步：先算經過時間（0 時 2 分 ＝ 12 時 2 分）</li><li>12 時 2 分 − 7 時 50 分 ＝ 4 小時 12 分</li><li>換成分鐘：60 × 4 ＋ 12 ＝ 252（分）</li><li>第二步：時針 1 小時（60 分）走一大格 30°</li><li>時針每分鐘走：30° ÷ 60 ＝ 0.5°</li><li>時針連續走 252 分鐘的轉動扇形</li><li>0.5° × 252 ＝ 126°</li><li>答案：126 度 ✓</li></ol>
@@ -258,7 +262,6 @@
     <details class="hint"><summary><span class="bulb">💡</span>提示 1</summary><p>先回到「4 時整」：分針落後時針 4 大格，也就是 30° × 4 ＝ 120°。</p></details><details class="hint"><summary><span class="bulb">💡</span>提示 2</summary><p>兩針重疊代表分針要把落後的 120° 全部追完。分針每分鐘比時針多走 5.5°，用 120 ÷ 5.5 換成分數是多少？</p></details>
     </div><div class="qb">
     <h3 class="sec"><span class="snum">2</span>解題影片</h3>
-    <div class="talk"><img class="ch" src="../../assets/mascot/y_hello.webp" alt="" loading="lazy"><span class="bubble">助手 Y：想好了嗎？一起來看解題影片吧！</span></div>
     <div class="yt"><iframe src="https://www.youtube-nocookie.com/embed/rUOlp7weFeQ?rel=0" title="數8-7 資優4｜時針與分針重疊的時刻 解題影片" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe></div>
     <h3 class="sec"><span class="snum">3</span>文字詳解</h3>
     <details class="steps"><summary>打開一步一步的算法</summary><ol><li>兩針恰好重疊在 4 和 5 之間，求正確時刻</li><li>先回到「4 時整」作為追趕起點</li><li>4 時整：時針領先分針 4 大格</li><li>4 時整相差：30° × 4 ＝ 120°</li><li>分針每分走 6°，時針每分走 0.5°</li><li>每分鐘追趕速率差：6° − 0.5° ＝ 5.5°</li><li>兩針重疊 ＝ 分針把 120° 差距全部追完</li><li>120 ÷ 5.5 ＝ 240/11 ＝ 21 又 9/11（分）</li><li>答案：4 時 21 又 9/11 分 ✓</li></ol>
@@ -289,7 +292,6 @@
     <details class="hint"><summary><span class="bulb">💡</span>提示 1</summary><p>第一次相遇時，兩艘船合起來剛好走了「1 個河寬」，此時藍船走了 500 m。</p></details><details class="hint"><summary><span class="bulb">💡</span>提示 2</summary><p>各自到對岸折返後第二次相遇時，兩船合起來共走了「3 個河寬」！所以藍船總共走了 500 × 3 ＝ 1500 m，而這 1500 m 剛好是「1 個河寬 ＋ 折返的 300 m」。</p></details>
     </div><div class="qb">
     <h3 class="sec"><span class="snum">2</span>解題影片</h3>
-    <div class="talk"><img class="ch" src="../../assets/mascot/y_hello.webp" alt="" loading="lazy"><span class="bubble">助手 Y：想好了嗎？一起來看解題影片吧！</span></div>
     <div class="yt"><iframe src="https://www.youtube-nocookie.com/embed/yGZzmc24bhA?rel=0" title="數8-8 資優9｜兩船兩岸折返兩次相遇求河寬 解題影片" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe></div>
     <h3 class="sec"><span class="snum">3</span>文字詳解</h3>
     <details class="steps"><summary>打開一步一步的算法</summary><ol><li>兩艘船從河的左、右兩岸同時相向出發</li><li>第一次相遇：兩船合走 1 個河寬（藍船走 500 m）</li><li>每合走 1 個河寬 → 藍船就走 500 m</li><li>開到對岸馬上折返，在離右岸 300 m 處第二次相遇</li><li>從出發到第二次相遇：兩船一共合走 3 個河寬！</li><li>合走 3 個河寬 → 藍船共走 500 × 3 ＝ 1500 m</li><li>藍船路線 ＝ 1 個河寬 ＋ 折返 300 m ＝ 1500 m</li><li>河寬 ＝ 1500 − 300 ＝ 1200（m）</li><li>答案：河寬 1200 m ✓</li></ol>
@@ -320,7 +322,6 @@
     <details class="hint"><summary><span class="bulb">💡</span>提示 1</summary><p>(1) 直徑把圓周平分成兩半，相向爬行的距離是半個圓周。(2) 用半圓距離除以兩隻螞蟻的速率和（4.2 ＋ 2.8 ＝ 7 cm/s），可知需要「淨前進 7 秒」才會相遇。</p></details><details class="hint"><summary><span class="bulb">💡</span>提示 2</summary><p>(3) 記錄每段結束時的「淨前進秒數」：＋1 → −2 → ＋3 → −4 → ＋5 → −6 → ＋7！在第 7 段（爬 13 秒）結束時剛好累積滿 ＋7 秒相遇，把前 7 個奇數加起來就是總時間。</p></details>
     </div><div class="qb">
     <h3 class="sec"><span class="snum">2</span>解題影片</h3>
-    <div class="talk"><img class="ch" src="../../assets/mascot/y_hello.webp" alt="" loading="lazy"><span class="bubble">助手 Y：想好了嗎？一起來看解題影片吧！</span></div>
     <div class="yt"><video controls preload="metadata" src="數8-8_素養題_機器螞蟻奇數秒折返.mp4"></video></div>
     <h3 class="sec"><span class="snum">3</span>文字詳解</h3>
     <details class="steps"><summary>打開一步一步的算法</summary><ol><li>圓周長 98 cm，兩隻機器螞蟻從直徑兩端相向出發</li><li>第 (1) 題：直徑平分圓周 → 半圓路徑 ＝ 98 ÷ 2 ＝ 49 cm</li><li>第 (2) 題：速率和 ＝ 4.2 ＋ 2.8 ＝ 7（cm／秒）</li><li>不折返相遇時間：49 ÷ 7 ＝ 7 秒（需淨前進 7 秒）</li><li>第 (3) 題：走 1、3、5、7… 奇數秒就折返，何時累積滿 ＋7 秒？</li><li>爬 1 秒 → 淨 ＋1 秒；折返 3 秒 → 淨 −2 秒</li><li>爬 5 秒 → 淨 ＋3 秒；折返 7 秒 → 淨 −4 秒</li><li>爬 9 秒 → 淨 ＋5 秒；折返 11 秒 → 淨 −6 秒（下半圓差 1 秒未相遇）</li><li>第 7 段爬 13 秒：−6 ＋ 13 ＝ ＋7 秒（剛好相遇！）</li><li>總時間：1＋3＋5＋7＋9＋11＋13 ＝ 49（秒）✓</li></ol>
@@ -425,8 +426,7 @@
     <details class="hint"><summary><span class="bulb">💡</span>提示 1</summary><p>千萬別掉進陷阱！100 臺機器是「同時開工」的，所以平均 1 臺機器做 1 個玩具需要整整 100 分鐘。</p></details><details class="hint"><summary><span class="bulb">💡</span>提示 2</summary><p>時間縮短為 25 分鐘（只有 100 分鐘的 1/4），1 臺機器只能做 1/4 個玩具；要做 50 個玩具，需要 50 ÷ 1/4 臺。</p></details>
     </div><div class="qb">
     <h3 class="sec"><span class="snum">2</span>解題影片</h3>
-    <div class="talk"><img class="ch" src="../../assets/mascot/y_hello.webp" alt="" loading="lazy"><span class="bubble">助手 Y：想好了嗎？一起來看解題影片吧！</span></div>
-    <div class="yt"><iframe src="https://www.youtube-nocookie.com/embed/HEVcFlxAL5k?rel=0" title="數9-7 資優1｜100 臺機器 100 分鐘組裝 100 個玩具 解題影片" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe></div>
+    <div class="yt"><iframe src="https://www.youtube-nocookie.com/embed/_AYkflFolac?rel=0" title="數9-7 資優1｜100 臺機器 100 分鐘組裝 100 個玩具 解題影片" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe></div>
     <h3 class="sec"><span class="snum">3</span>文字詳解</h3>
     <details class="steps"><summary>打開一步一步的算法</summary><ol><li>100 臺機器 100 分鐘 → 100 個玩具；25 分鐘 50 個需幾臺？</li><li>陷阱提醒：不是「1 臺 1 分鐘做 1 個」！</li><li>100 臺同時開工 100 分鐘，各完成 1 個玩具</li><li>關鍵產能：1 臺機器 100 分鐘 ＝ 1 個玩具</li><li>25 分鐘 ＝ 100 分鐘的 1/4 → 1 臺只做 1/4 個</li><li>25 分鐘做 1 個完整玩具，需要 4 臺機器</li><li>做出 50 個玩具：50 ÷ 1/4 ＝ 50 × 4 ＝ 200（臺）</li><li>答案：200 臺 ✓</li></ol>
       <div class="ending"><p class="final">答案：200 臺</p><img class="ch" src="../../assets/mascot/y_check.webp" alt="" loading="lazy"><span class="bubble">助手 Y：驗算通過，才算破案！</span></div></details>
@@ -460,7 +460,6 @@
     <details class="hint"><summary><span class="bulb">💡</span>提示 1</summary><p>把全體平均 68.2 公斤當作基準線：前 50 人每人比基準線多出 70.5 − 68.2 ＝ 2.3 公斤，50 人一共多出幾公斤？</p></details><details class="hint"><summary><span class="bulb">💡</span>提示 2</summary><p>剩餘新兵每人比基準線少 68.2 − 63.6 ＝ 4.6 公斤。用前 50 人多出的總重量除以 4.6，就是剩餘的人數！</p></details>
     </div><div class="qb">
     <h3 class="sec"><span class="snum">2</span>解題影片</h3>
-    <div class="talk"><img class="ch" src="../../assets/mascot/y_hello.webp" alt="" loading="lazy"><span class="bubble">助手 Y：想好了嗎？一起來看解題影片吧！</span></div>
     <div class="yt"><iframe src="https://www.youtube-nocookie.com/embed/tCYpYodn964?rel=0" title="數9-7 資優2｜新兵體重分群平均（移多補少） 解題影片" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe></div>
     <h3 class="sec"><span class="snum">3</span>文字詳解</h3>
     <details class="steps"><summary>打開一步一步的算法</summary><ol><li>全體平均 68.2 kg｜前 50 人平均 70.5 kg｜剩餘平均 63.6 kg</li><li>把全體平均 68.2 kg 當成「水平基準線」</li><li>前 50 人每人高出：70.5 − 68.2 ＝ 2.3（公斤）</li><li>前 50 人共多出：2.3 × 50 ＝ 115（公斤）</li><li>剩餘新兵每人少：68.2 − 63.6 ＝ 4.6（公斤）</li><li>移多補少：把多出的 115 kg 全部補進右側缺口</li><li>剩餘人數：115 ÷ 4.6 ＝ 25（人）</li><li>答案：50 ＋ 25 ＝ 75（人） ✓</li></ol>
@@ -495,7 +494,6 @@
     <details class="hint"><summary><span class="bulb">💡</span>提示 1</summary><p>見平均，先求總和！分別算出第 1～5 次總分（95×5）、第 1～3 次總分（93×3）、第 2～5 次總分（96×4）。</p></details><details class="hint"><summary><span class="bulb">💡</span>提示 2</summary><p>把「第 1～3 次」與「第 2～5 次」相加時，第 2 次與第 3 次被重疊算了兩次！減去全體 5 次總分，剩下的就是 ② ＋ ③。</p></details>
     </div><div class="qb">
     <h3 class="sec"><span class="snum">2</span>解題影片</h3>
-    <div class="talk"><img class="ch" src="../../assets/mascot/y_hello.webp" alt="" loading="lazy"><span class="bubble">助手 Y：想好了嗎？一起來看解題影片吧！</span></div>
     <div class="yt"><iframe src="https://www.youtube-nocookie.com/embed/ZJVAWgBfXwY?rel=0" title="數9-7 資優3｜5 次小考重疊平均反推成績 解題影片" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe></div>
     <h3 class="sec"><span class="snum">3</span>文字詳解</h3>
     <details class="steps"><summary>打開一步一步的算法</summary><ol><li>5 次平均 95｜第 1～3 次平均 93｜第 2～5 次平均 96｜②＝③</li><li>第一步：把每組「平均數」轉成「總分」</li><li>第 1～5 次總分：95 × 5 ＝ 475（分）</li><li>第 1～3 次總分：93 × 3 ＝ 279（分）</li><li>第 2～5 次總分：96 × 4 ＝ 384（分）</li><li>把 ①～③ 與 ②～⑤ 相加：② 和 ③ 重疊算了 2 次！</li><li>(279 ＋ 384) − 475 ＝ 188（分）＝ ② ＋ ③</li><li>答案：188 ÷ 2 ＝ 94（分） ✓</li></ol>
@@ -515,7 +513,6 @@
     <details class="hint"><summary><span class="bulb">💡</span>提示 1</summary><p>(1) 60 分左邊的三組都完好無缺：30～40 分（10 人）、40～50 分（30 人）、50～60 分（40 人），加起來除以 200 人就是不及格率。</p></details><details class="hint"><summary><span class="bulb">💡</span>提示 2</summary><p>(2) 雖然 60～80 分被撕破了，但 80～100 分兩組（20 人 ＋ 10 人 ＝ 30 人）很清楚！用全部 200 人減去前後兩段即可。</p></details>
     </div><div class="qb">
     <h3 class="sec"><span class="snum">2</span>解題影片</h3>
-    <div class="talk"><img class="ch" src="../../assets/mascot/y_hello.webp" alt="" loading="lazy"><span class="bubble">助手 Y：想好了嗎？一起來看解題影片吧！</span></div>
     <div class="yt"><iframe src="https://www.youtube-nocookie.com/embed/IAhB9hA7m1M?rel=0" title="數9-8 資優6｜破損成績折線圖反推區間人數 解題影片" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe></div>
     <h3 class="sec"><span class="snum">3</span>文字詳解</h3>
     <details class="steps"><summary>打開一步一步的算法</summary><ol><li>全體 200 人｜求 (1) 不及格率 (2) 60～80 分人數</li><li>(1) 未滿 60 分：找 60 分左側的三組</li><li>不及格人數：10 ＋ 30 ＋ 40 ＝ 80（人）</li><li>不及格率：80 ÷ 200 ＝ 40%</li><li>(2) 60～80 分被撕毀，改用「全部減去已知」！</li><li>80～100 分（右側完整）：20 ＋ 10 ＝ 30（人）</li><li>60～80 分人數：200 − 80 − 30 ＝ 90（人）</li><li>答案：(1) 40%　(2) 90 人 ✓</li></ol>
@@ -535,7 +532,6 @@
     <details class="hint"><summary><span class="bulb">💡</span>提示 1</summary><p>(1) 盯住縱軸 14% 到 20% 的黃色帶狀區：線段越陡、橫軸跨度越窄的國家，花的時間越短！</p></details><details class="hint"><summary><span class="bulb">💡</span>提示 2</summary><p>(2) 2019 年是 14%，2025 年至少 20%，占比至少增加 20% − 14% ＝ 6%。再把 2300 萬乘以 6% 即可。</p></details>
     </div><div class="qb">
     <h3 class="sec"><span class="snum">2</span>解題影片</h3>
-    <div class="talk"><img class="ch" src="../../assets/mascot/y_hello.webp" alt="" loading="lazy"><span class="bubble">助手 Y：想好了嗎？一起來看解題影片吧！</span></div>
     <div class="yt"><iframe src="https://www.youtube-nocookie.com/embed/CXjh044u5xI?rel=0" title="數9-8 ★素養新試界｜高齡與超高齡社會多國折線圖（會考題） 解題影片" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe></div>
     <h3 class="sec"><span class="snum">3</span>文字詳解</h3>
     <details class="steps"><summary>打開一步一步的算法</summary><ol><li>門檻：14%「高齡社會」｜20%「超高齡社會」</li><li>(1) 哪一國從 14% 升到 20% 所花時間最短？</li><li>視覺判讀：14%～20% 區間「越陡、越窄」＝時間越短</li><li>法約 30 年｜義美約 15 年｜韓國僅約 7 年 → 選 (D)</li><li>(2) 我國 2019 年 14% → 2025 年至少 20%</li><li>占比至少增加：20% − 14% ＝ 6%</li><li>2300 萬 × 6% ＝ 2300 × 0.06 ＝ 138（萬人）</li><li>答案：(1) (D) 韓國　(2) (A) 138 萬人 ✓</li></ol>
@@ -548,22 +544,71 @@
 <script>
   (function () {
     var toc = document.getElementById("toc");
-    if (!toc) return;
-    var html = '<p class="toc-h">目錄</p>';
-    document.querySelectorAll("h2.unit").forEach(function (h) {
-      var tab = h.querySelector(".utab"), t = h.querySelector(".utitle");
-      html += '<div class="toc-unit"><a class="toc-u" href="#' + h.id + '">' + (tab ? tab.outerHTML : "") + (t ? t.textContent : h.textContent) + '</a>';
-      var el = h.nextElementSibling;
-      while (el && !(el.matches && el.matches("h2.unit"))) {
-        if (el.matches && el.matches("section.card")) {
-          var no = el.querySelector(".qno"), ct = el.querySelector(".ct");
-          html += '<a class="toc-q ' + el.className.replace("card", "").trim() + '" href="#' + el.id + '"><b>' + (no ? no.textContent : "") + '</b>' + (ct ? ct.textContent : "") + '</a>';
-        }
-        el = el.nextElementSibling;
+    var main = document.querySelector("main");
+    if (!toc || !main) return;
+    var units = Array.prototype.slice.call(main.querySelectorAll("h2.unit"));
+    if (!units.length) return;
+    var panels = [], tabs = [];
+    var navHtml = '<p class="toc-h">目錄</p><div class="toc-tabs" role="tablist" aria-label="單元分頁">';
+    units.forEach(function (h) {
+      var panel = document.createElement("div");
+      panel.className = "unit-panel";
+      panel.setAttribute("role", "tabpanel");
+      panel.dataset.unit = h.id;
+      main.insertBefore(panel, h);
+      var el = h;
+      while (el) {
+        var next = el.nextElementSibling;
+        panel.appendChild(el);
+        if (next && next.matches && next.matches("h2.unit")) break;
+        el = next;
       }
-      html += '</div>';
+      panels.push(panel);
+      var tab = h.querySelector(".utab"), t = h.querySelector(".utitle");
+      var num = tab ? tab.textContent.trim() : "";
+      var title = t ? t.textContent.trim() : h.textContent.trim();
+      navHtml += '<button type="button" class="toc-tab" role="tab" aria-selected="false" data-unit="' + h.id + '">' +
+        (num ? '<span class="tnum">' + num + '</span>' : '') + title + '</button>';
     });
-    toc.innerHTML = html;
+    navHtml += '</div>';
+    toc.innerHTML = navHtml;
+    tabs = Array.prototype.slice.call(toc.querySelectorAll(".toc-tab"));
+
+    function activate(uid, updateHash) {
+      var found = panels.some(function (p) { return p.dataset.unit === uid; });
+      if (!found) uid = panels[0].dataset.unit;
+      panels.forEach(function (p) {
+        var on = p.dataset.unit === uid;
+        if (!on && p.classList.contains("active")) {
+          p.querySelectorAll("video").forEach(function (v) { try { v.pause(); } catch (e) {} });
+          p.querySelectorAll("iframe").forEach(function (f) { var s = f.src; f.src = s; });
+        }
+        p.classList.toggle("active", on);
+      });
+      tabs.forEach(function (b) {
+        var on = b.dataset.unit === uid;
+        b.classList.toggle("active", on);
+        b.setAttribute("aria-selected", on ? "true" : "false");
+      });
+      if (updateHash && history.replaceState) history.replaceState(null, "", "#" + uid);
+      window.dispatchEvent(new Event("resize"));
+    }
+
+    tabs.forEach(function (b) {
+      b.addEventListener("click", function () { activate(b.dataset.unit, true); });
+    });
+
+    function syncFromHash() {
+      var id = decodeURIComponent((location.hash || "").replace(/^#/, ""));
+      if (!id) { activate(panels[0].dataset.unit, false); return; }
+      var target = document.getElementById(id);
+      var owner = target ? target.closest(".unit-panel") : null;
+      activate(owner ? owner.dataset.unit : id, false);
+      if (target && target !== owner) setTimeout(function () { target.scrollIntoView({ behavior: "smooth" }); }, 60);
+    }
+    window.addEventListener("hashchange", syncFromHash);
+    syncFromHash();
+
     var top = document.createElement("a");
     top.className = "to-top"; top.href = "#toc"; top.textContent = "↑ 回目錄";
     document.body.appendChild(top);
