@@ -1020,11 +1020,11 @@
     var t = slider.value / 100, a = 90 * t, S = faces[0].S;
     faces.forEach(function (f) {
       var st = f.el.style;
-      if (f.dir === "root") { st.left = (-S / 2 + f.off[0] * (1 - t)) + "px"; st.top = (-S / 2 + f.off[1] * (1 - t)) + "px"; st.transform = "translateZ(" + (-S / 2 * t) + "px)"; }
-      if (f.dir === "R") st.transform = "rotateY(" + (-a) + "deg)";
-      if (f.dir === "L") st.transform = "rotateY(" + a + "deg)";
-      if (f.dir === "U") st.transform = "rotateX(" + (-a) + "deg)";
-      if (f.dir === "D") st.transform = "rotateX(" + a + "deg)";
+      if (f.dir === "root") { st.left = (-S / 2 + f.off[0] * (1 - t)) + "px"; st.top = (-S / 2 + f.off[1] * (1 - t)) + "px"; st.transform = "translateZ(" + (S / 2 * t) + "px)"; }
+      if (f.dir === "R") st.transform = "rotateY(" + a + "deg)";
+      if (f.dir === "L") st.transform = "rotateY(" + (-a) + "deg)";
+      if (f.dir === "U") st.transform = "rotateX(" + a + "deg)";
+      if (f.dir === "D") st.transform = "rotateX(" + (-a) + "deg)";
     });
     scene.style.transform = "rotateX(" + rx + "deg) rotateY(" + ry + "deg)";
     if (t >= 1) { msg.textContent = faces.ok ? "✅ 可以摺成正方體！" : "❌ 有兩個面疊在一起，還缺一個面，摺不成正方體。"; msg.className = "u5-msg " + (faces.ok ? "ok" : "no"); }
